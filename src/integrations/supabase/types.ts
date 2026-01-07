@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      alerts: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          resolved: boolean | null
+          student_id: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          resolved?: boolean | null
+          student_id: string
+          type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          resolved?: boolean | null
+          student_id?: string
+          type?: string
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_crisis: boolean | null
+          role: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_crisis?: boolean | null
+          role: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_crisis?: boolean | null
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       conversations: {
         Row: {
           created_at: string
@@ -154,6 +208,108 @@ export type Database = {
           full_name?: string
           id?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      psychologist_notes: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          psychologist_id: string
+          student_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          psychologist_id: string
+          student_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          psychologist_id?: string
+          student_id?: string
+        }
+        Relationships: []
+      }
+      student_data: {
+        Row: {
+          class: string | null
+          created_at: string
+          grade: number | null
+          id: string
+          last_survey_date: string | null
+          risk_level: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          class?: string | null
+          created_at?: string
+          grade?: number | null
+          id?: string
+          last_survey_date?: string | null
+          risk_level?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          class?: string | null
+          created_at?: string
+          grade?: number | null
+          id?: string
+          last_survey_date?: string | null
+          risk_level?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      survey_responses: {
+        Row: {
+          ai_analysis: Json | null
+          answers: Json
+          burnout_score: number | null
+          completed_at: string
+          created_at: string
+          gad7_score: number | null
+          id: string
+          overall_risk: string | null
+          phq9_score: number | null
+          survey_id: string
+          survey_type: string
+          user_id: string
+        }
+        Insert: {
+          ai_analysis?: Json | null
+          answers?: Json
+          burnout_score?: number | null
+          completed_at?: string
+          created_at?: string
+          gad7_score?: number | null
+          id?: string
+          overall_risk?: string | null
+          phq9_score?: number | null
+          survey_id: string
+          survey_type: string
+          user_id: string
+        }
+        Update: {
+          ai_analysis?: Json | null
+          answers?: Json
+          burnout_score?: number | null
+          completed_at?: string
+          created_at?: string
+          gad7_score?: number | null
+          id?: string
+          overall_risk?: string | null
+          phq9_score?: number | null
+          survey_id?: string
+          survey_type?: string
+          user_id?: string
         }
         Relationships: []
       }
