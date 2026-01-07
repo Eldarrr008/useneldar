@@ -50,6 +50,9 @@ const Index = () => {
             </p>
           </div>
           <div className="flex items-center gap-3">
+            <Button variant="outline" onClick={() => navigate("/survey")}>
+              Пройти опрос
+            </Button>
             {isAdmin && (
               <Button variant="outline" onClick={() => navigate("/admin")}>
                 Админ панель

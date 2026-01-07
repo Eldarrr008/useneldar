@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import Psychologist from "./pages/Psychologist";
+import Survey from "./pages/Survey";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <Index />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/survey"
+            element={
+              <ProtectedRoute>
+                <Survey />
               </ProtectedRoute>
             }
           />
