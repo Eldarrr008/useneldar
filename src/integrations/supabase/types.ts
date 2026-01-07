@@ -68,6 +68,68 @@ export type Database = {
         }
         Relationships: []
       }
+      classroom_members: {
+        Row: {
+          classroom_id: string
+          id: string
+          joined_at: string
+          student_id: string
+        }
+        Insert: {
+          classroom_id: string
+          id?: string
+          joined_at?: string
+          student_id: string
+        }
+        Update: {
+          classroom_id?: string
+          id?: string
+          joined_at?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "classroom_members_classroom_id_fkey"
+            columns: ["classroom_id"]
+            isOneToOne: false
+            referencedRelation: "classrooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      classrooms: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          join_code: string
+          name: string
+          psychologist_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          join_code: string
+          name: string
+          psychologist_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          join_code?: string
+          name?: string
+          psychologist_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       conversations: {
         Row: {
           created_at: string
@@ -238,6 +300,7 @@ export type Database = {
       student_data: {
         Row: {
           class: string | null
+          classroom_id: string | null
           created_at: string
           grade: number | null
           id: string
@@ -248,6 +311,7 @@ export type Database = {
         }
         Insert: {
           class?: string | null
+          classroom_id?: string | null
           created_at?: string
           grade?: number | null
           id?: string
@@ -258,6 +322,7 @@ export type Database = {
         }
         Update: {
           class?: string | null
+          classroom_id?: string | null
           created_at?: string
           grade?: number | null
           id?: string
@@ -266,7 +331,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "student_data_classroom_id_fkey"
+            columns: ["classroom_id"]
+            isOneToOne: false
+            referencedRelation: "classrooms"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       survey_responses: {
         Row: {
@@ -339,6 +412,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_classroom_code: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
