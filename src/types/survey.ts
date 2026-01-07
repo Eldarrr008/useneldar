@@ -9,12 +9,13 @@ export interface QuestionOption {
 
 export interface Question {
   id: string;
-  category: "phq9" | "gad7" | "burnout" | "social_media" | "exam_stress" | "career" | "family" | "open";
+  category: "phq9" | "gad7" | "pss" | "burnout" | "open";
   text: string;
   type: QuestionType;
   options?: QuestionOption[];
   required: boolean;
   placeholder?: string;
+  inverted?: boolean; // Для инвертированных вопросов в PSS-10
 }
 
 export interface Answer {
@@ -42,7 +43,7 @@ export interface Survey {
 
 export interface SurveyResponse {
   id: string;
-  studentId: number;
+  studentId: string;
   surveyId: string;
   surveyType: SurveyType;
   answers: Answer[];
@@ -50,28 +51,21 @@ export interface SurveyResponse {
   aiAnalysis?: AnalysisResult;
 }
 
+export interface ScaleResult {
+  score: number;
+  maxScore: number;
+  severity: string;
+  riskLevel: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+  description: string;
+}
+
 export interface AnalysisResult {
   id: string;
   responseId: string;
-  depression: {
-    phq9Score: number;
-    severity: "minimal" | "mild" | "moderate" | "moderately-severe" | "severe";
-    confidence: number;
-  };
-  anxiety: {
-    gad7Score: number;
-    severity: "minimal" | "mild" | "moderate" | "severe";
-    confidence: number;
-  };
-  burnout: {
-    score: number;
-    level: "low" | "moderate" | "high" | "critical";
-  };
-  socialMedia: {
-    dependencyScore: number;
-    fomoScore: number;
-    hoursPerDay: number;
-  };
+  phq9: ScaleResult;
+  gad7: ScaleResult;
+  pss10?: ScaleResult;
+  burnout?: ScaleResult;
   overallRisk: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
   keyThemes: string[];
   recommendations: string[];
