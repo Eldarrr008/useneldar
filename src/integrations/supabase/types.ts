@@ -352,6 +352,7 @@ export type Database = {
           id: string
           overall_risk: string | null
           phq9_score: number | null
+          pss_score: number | null
           survey_id: string
           survey_type: string
           user_id: string
@@ -366,6 +367,7 @@ export type Database = {
           id?: string
           overall_risk?: string | null
           phq9_score?: number | null
+          pss_score?: number | null
           survey_id: string
           survey_type: string
           user_id: string
@@ -380,6 +382,7 @@ export type Database = {
           id?: string
           overall_risk?: string | null
           phq9_score?: number | null
+          pss_score?: number | null
           survey_id?: string
           survey_type?: string
           user_id?: string

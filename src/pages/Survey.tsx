@@ -104,7 +104,8 @@ const SurveyPage = () => {
         answers: JSON.parse(JSON.stringify(answerArray)),
         phq9_score: phq9,
         gad7_score: gad7,
-        burnout_score: burnout,
+        pss_score: pss > 0 ? pss : null,
+        burnout_score: burnout > 0 ? burnout : null,
         overall_risk: riskLevel,
       }).select().single();
 
