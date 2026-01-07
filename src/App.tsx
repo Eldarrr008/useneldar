@@ -9,6 +9,9 @@ import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import Psychologist from "./pages/Psychologist";
 import Survey from "./pages/Survey";
+import Results from "./pages/Results";
+import History from "./pages/History";
+import JoinClassroom from "./pages/JoinClassroom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -38,6 +41,30 @@ const App = () => (
             }
           />
           <Route
+            path="/results"
+            element={
+              <ProtectedRoute>
+                <Results />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <ProtectedRoute>
+                <History />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/join"
+            element={
+              <ProtectedRoute>
+                <JoinClassroom />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/admin"
             element={
               <ProtectedRoute requiredRole="admin">
@@ -53,7 +80,6 @@ const App = () => (
               </ProtectedRoute>
             }
           />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -97,16 +97,16 @@ const SurveyPage = () => {
       const riskLevel = calculateOverallRisk(phq9, gad7, pss || undefined, burnout || undefined, answerArray);
 
       // Insert survey response
-      const { data, error } = await supabase.from("survey_responses").insert([{
+      const { data, error } = await supabase.from("survey_responses").insert({
         user_id: user.id,
         survey_id: selectedSurvey.id,
         survey_type: selectedSurvey.type,
-        answers: answerArray as unknown as Record<string, unknown>,
+        answers: JSON.parse(JSON.stringify(answerArray)),
         phq9_score: phq9,
         gad7_score: gad7,
         burnout_score: burnout,
         overall_risk: riskLevel,
-      }]).select().single();
+      }).select().single();
 
       if (error) throw error;
 
