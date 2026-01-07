@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { Building2, ShieldCheck, Lock } from "lucide-react";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -17,7 +18,6 @@ const Auth = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if user is already logged in
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (user) {
         navigate("/");
@@ -39,8 +39,8 @@ const Auth = () => {
         if (error) throw error;
 
         toast({
-          title: "Успешно!",
-          description: "Вы вошли в систему",
+          title: "Авторизация успешна",
+          description: "Добро пожаловать в систему",
         });
         
         navigate("/");
@@ -58,8 +58,8 @@ const Auth = () => {
         if (error) throw error;
 
         toast({
-          title: "Успешно!",
-          description: "Аккаунт создан. Вы можете войти.",
+          title: "Регистрация завершена",
+          description: "Учётная запись успешно создана",
         });
 
         navigate("/");
@@ -68,8 +68,8 @@ const Auth = () => {
       console.error("Auth error:", error);
       toast({
         variant: "destructive",
-        title: "Ошибка",
-        description: error.message || "Произошла ошибка при аутентификации",
+        title: "Ошибка авторизации",
+        description: error.message || "Проверьте введённые данные",
       });
     } finally {
       setLoading(false);
@@ -77,77 +77,127 @@ const Auth = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary/10 via-background to-accent/10 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">
-            {isLogin ? "Вход" : "Регистрация"}
-          </CardTitle>
-          <CardDescription className="text-center">
-            {isLogin
-              ? "Войдите в свой аккаунт"
-              : "Создайте новый аккаунт"}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleAuth} className="space-y-4">
-            {!isLogin && (
-              <div className="space-y-2">
-                <Label htmlFor="fullName">Полное имя</Label>
-                <Input
-                  id="fullName"
-                  type="text"
-                  placeholder="Иван Иванов"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  required={!isLogin}
-                />
-              </div>
-            )}
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="student@university.ru"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+    <div className="flex min-h-screen flex-col bg-background">
+      {/* Header */}
+      <header className="border-b bg-primary text-primary-foreground">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/10">
+              <Building2 className="h-5 w-5" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Пароль</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-              />
+            <div>
+              <h1 className="text-lg font-bold">ZenithMind</h1>
+              <p className="text-xs text-primary-foreground/80">Система психологического мониторинга</p>
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading
-                ? "Загрузка..."
-                : isLogin
-                ? "Войти"
-                : "Зарегистрироваться"}
-            </Button>
-          </form>
-          <div className="mt-4 text-center text-sm">
-            <button
-              type="button"
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-primary hover:underline"
-            >
-              {isLogin
-                ? "Нет аккаунта? Зарегистрируйтесь"
-                : "Уже есть аккаунт? Войдите"}
-            </button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="flex flex-1 items-center justify-center p-6">
+        <div className="w-full max-w-md space-y-6">
+          {/* Login Card */}
+          <Card className="border shadow-institutional-md">
+            <CardHeader className="space-y-1 text-center">
+              <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                <Lock className="h-6 w-6 text-primary" />
+              </div>
+              <CardTitle className="text-xl">
+                {isLogin ? "Вход в систему" : "Регистрация"}
+              </CardTitle>
+              <CardDescription>
+                {isLogin
+                  ? "Используйте учётные данные организации"
+                  : "Создание новой учётной записи"}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleAuth} className="space-y-4">
+                {!isLogin && (
+                  <div className="space-y-2">
+                    <Label htmlFor="fullName">ФИО</Label>
+                    <Input
+                      id="fullName"
+                      type="text"
+                      placeholder="Иванов Иван Иванович"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      required={!isLogin}
+                      className="bg-background"
+                    />
+                  </div>
+                )}
+                <div className="space-y-2">
+                  <Label htmlFor="email">Электронная почта</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="user@university.edu"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="bg-background"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="password">Пароль</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    minLength={6}
+                    className="bg-background"
+                  />
+                </div>
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading
+                    ? "Обработка..."
+                    : isLogin
+                    ? "Войти"
+                    : "Зарегистрироваться"}
+                </Button>
+              </form>
+              <div className="mt-6 text-center">
+                <button
+                  type="button"
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="text-sm text-primary hover:underline"
+                >
+                  {isLogin
+                    ? "Нет учётной записи? Зарегистрироваться"
+                    : "Уже зарегистрированы? Войти"}
+                </button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Security Notice */}
+          <div className="flex items-start gap-3 rounded-lg border bg-muted/30 p-4">
+            <ShieldCheck className="mt-0.5 h-5 w-5 text-muted-foreground" />
+            <div className="space-y-1">
+              <p className="text-xs font-medium text-muted-foreground">
+                Защищённое соединение
+              </p>
+              <p className="text-xs text-muted-foreground/80">
+                Все данные передаются по защищённому протоколу и соответствуют 
+                требованиям безопасности персональных данных.
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t bg-muted/30">
+        <div className="container mx-auto px-6 py-3">
+          <p className="text-center text-xs text-muted-foreground">
+            © 2024 ZenithMind. Система психологического мониторинга
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };

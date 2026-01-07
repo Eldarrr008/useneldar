@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Send, Loader2, AlertCircle } from "lucide-react";
+import { Send, Loader2, AlertTriangle, Bot, User } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface Message {
@@ -32,7 +32,6 @@ export const ChatInterface = ({ userId }: ChatInterfaceProps) => {
     if (conversationId) {
       loadMessages();
 
-      // Subscribe to new messages
       const channel = supabase
         .channel(`messages:${conversationId}`)
         .on(
@@ -113,14 +112,14 @@ export const ChatInterface = ({ userId }: ChatInterfaceProps) => {
         toast({
           variant: "destructive",
           title: "Обнаружена кризисная ситуация",
-          description: `Уровень: ${severity === "critical" ? "Критический" : "Высокий"}. Психолог будет уведомлен.`,
+          description: `Уровень: ${severity === "critical" ? "Критический" : "Высокий"}. Специалист будет уведомлён.`,
         });
       }
     } catch (error: any) {
       console.error("Error sending message:", error);
       toast({
         variant: "destructive",
-        title: "Ошибка",
+        title: "Ошибка отправки",
         description: error.message || "Не удалось отправить сообщение",
       });
     } finally {
@@ -136,14 +135,14 @@ export const ChatInterface = ({ userId }: ChatInterfaceProps) => {
   };
 
   return (
-    <div className="flex h-[600px] flex-col">
+    <div className="flex h-[600px] flex-col bg-background">
       {/* Crisis Warning */}
       {crisisWarning && (
-        <Alert variant="destructive" className="m-4 mb-0">
-          <AlertCircle className="h-4 w-4" />
+        <Alert variant="destructive" className="m-4 mb-0 border-destructive/50">
+          <AlertTriangle className="h-4 w-4" />
           <AlertDescription>
-            Обнаружены признаки кризисной ситуации. Психолог будет уведомлён. 
-            Пожалуйста, рассмотрите возможность обращения за профессиональной помощью.
+            Обнаружены признаки кризисной ситуации. Специалист психологической службы будет уведомлён. 
+            При необходимости обратитесь за помощью.
           </AlertDescription>
         </Alert>
       )}
@@ -152,36 +151,51 @@ export const ChatInterface = ({ userId }: ChatInterfaceProps) => {
       <ScrollArea className="flex-1 p-4">
         <div className="space-y-4">
           {messages.length === 0 && (
-            <div className="flex h-full flex-col items-center justify-center gap-2 text-center text-muted-foreground">
-              <p className="text-lg font-medium">Добро пожаловать!</p>
-              <p className="text-sm">
-                Я AI-помощник для студентов. Расскажите мне о своих переживаниях,
-                стрессе или проблемах. Я здесь, чтобы поддержать вас.
-              </p>
+            <div className="flex h-full flex-col items-center justify-center gap-4 py-12 text-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent/10">
+                <Bot className="h-8 w-8 text-accent" />
+              </div>
+              <div className="space-y-2">
+                <p className="text-lg font-medium">Служба психологической поддержки</p>
+                <p className="text-sm text-muted-foreground max-w-md">
+                  Здравствуйте. Я AI-ассистент психологической службы. Расскажите о том, 
+                  что вас беспокоит. Все сообщения конфиденциальны.
+                </p>
+              </div>
             </div>
           )}
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`flex ${
+              className={`flex items-start gap-3 ${
                 message.is_ai ? "justify-start" : "justify-end"
               }`}
             >
+              {message.is_ai && (
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/10">
+                  <Bot className="h-4 w-4 text-accent" />
+                </div>
+              )}
               <Card
-                className={`max-w-[80%] p-3 ${
+                className={`max-w-[75%] px-4 py-3 shadow-sm ${
                   message.is_ai
-                    ? "bg-muted"
-                    : "bg-primary text-primary-foreground"
+                    ? "bg-muted border-muted"
+                    : "bg-primary text-primary-foreground border-primary"
                 }`}
               >
-                <p className="whitespace-pre-wrap text-sm">{message.content}</p>
-                <p className="mt-1 text-xs opacity-70">
+                <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.content}</p>
+                <p className={`mt-2 text-xs ${message.is_ai ? "text-muted-foreground" : "text-primary-foreground/70"}`}>
                   {new Date(message.created_at).toLocaleTimeString("ru-RU", {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
                 </p>
               </Card>
+              {!message.is_ai && (
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                  <User className="h-4 w-4 text-primary" />
+                </div>
+              )}
             </div>
           ))}
           <div ref={messagesEndRef} />
@@ -190,14 +204,14 @@ export const ChatInterface = ({ userId }: ChatInterfaceProps) => {
 
       {/* Input */}
       <div className="border-t bg-card p-4">
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Напишите сообщение..."
+            placeholder="Введите сообщение..."
             disabled={loading}
-            className="flex-1"
+            className="flex-1 bg-background"
           />
           <Button onClick={handleSend} disabled={loading || !input.trim()}>
             {loading ? (
@@ -207,6 +221,9 @@ export const ChatInterface = ({ userId }: ChatInterfaceProps) => {
             )}
           </Button>
         </div>
+        <p className="mt-2 text-xs text-muted-foreground text-center">
+          Данные передаются по защищённому каналу
+        </p>
       </div>
     </div>
   );

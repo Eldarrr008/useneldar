@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { ProgressBar } from "@/components/survey/ProgressBar";
 import { QuestionCard } from "@/components/survey/QuestionCard";
 import { quickSurvey, comprehensiveSurvey } from "@/data/surveyQuestions";
@@ -15,7 +16,16 @@ import {
 } from "@/lib/surveyLogic";
 import { Answer, Survey } from "@/types/survey";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Clock, FileText, CheckCircle } from "lucide-react";
+import { 
+  ArrowLeft, 
+  Clock, 
+  FileText, 
+  CheckCircle, 
+  Building2, 
+  ClipboardList,
+  ChevronRight,
+  ShieldCheck
+} from "lucide-react";
 
 type SurveyMode = "select" | "survey" | "completed";
 
@@ -30,11 +40,9 @@ const SurveyPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Check for classroom code in URL
   const classroomCode = searchParams.get("code");
 
   useEffect(() => {
-    // Auto-select survey type if specified in URL
     const type = searchParams.get("type");
     if (type === "quick") {
       handleSelectSurvey(quickSurvey);
@@ -64,7 +72,6 @@ const SurveyPage = () => {
     if (currentQuestionIndex < selectedSurvey.questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      // Submit survey
       await submitSurvey();
     }
   };
@@ -83,20 +90,17 @@ const SurveyPage = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      // Convert answers to Answer format
       const answerArray: Answer[] = Object.entries(answers).map(([questionId, value]) => ({
         questionId,
         value,
       }));
 
-      // Calculate scores
       const phq9 = calculatePHQ9Score(answerArray);
       const gad7 = calculateGAD7Score(answerArray);
       const pss = calculatePSS10Score(answerArray);
       const burnout = calculateBurnoutScore(answerArray);
       const riskLevel = calculateOverallRisk(phq9, gad7, pss || undefined, burnout || undefined, answerArray);
 
-      // Insert survey response
       const { data, error } = await supabase.from("survey_responses").insert({
         user_id: user.id,
         survey_id: selectedSurvey.id,
@@ -111,7 +115,6 @@ const SurveyPage = () => {
 
       if (error) throw error;
 
-      // Update student data
       await supabase
         .from("student_data")
         .update({
@@ -120,7 +123,6 @@ const SurveyPage = () => {
         })
         .eq("user_id", user.id);
 
-      // If classroom code provided, join classroom
       if (classroomCode) {
         const { data: classroom } = await supabase
           .from("classrooms")
@@ -146,16 +148,16 @@ const SurveyPage = () => {
       setMode("completed");
 
       toast({
-        title: "Опрос завершён",
-        description: "Ваши ответы сохранены. Переход к результатам...",
+        title: "Диагностика завершена",
+        description: "Результаты сохранены в системе",
       });
 
     } catch (error: any) {
       console.error("Error submitting survey:", error);
       toast({
         variant: "destructive",
-        title: "Ошибка",
-        description: error.message || "Не удалось сохранить ответы",
+        title: "Ошибка сохранения",
+        description: error.message || "Не удалось сохранить результаты",
       });
     } finally {
       setLoading(false);
@@ -165,94 +167,141 @@ const SurveyPage = () => {
   // Survey Selection Screen
   if (mode === "select") {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5">
-        <header className="border-b bg-card/50 backdrop-blur-sm">
-          <div className="container mx-auto flex items-center gap-4 px-4 py-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div>
-              <h1 className="text-xl font-bold">Психологическая диагностика</h1>
-              <p className="text-sm text-muted-foreground">Выберите тип тестирования</p>
+      <div className="min-h-screen bg-background">
+        {/* Header */}
+        <header className="border-b bg-primary text-primary-foreground">
+          <div className="container mx-auto px-6 py-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/10">
+                <Building2 className="h-5 w-5" />
+              </div>
+              <div>
+                <h1 className="text-lg font-bold">ZenithMind</h1>
+                <p className="text-xs text-primary-foreground/80">Модуль психодиагностики</p>
+              </div>
             </div>
           </div>
         </header>
 
-        <main className="container mx-auto max-w-2xl p-4 py-8 space-y-6">
+        {/* Secondary Header */}
+        <div className="border-b bg-card">
+          <div className="container mx-auto px-6 py-3">
+            <div className="flex items-center gap-4">
+              <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Назад к панели
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <main className="container mx-auto max-w-3xl px-6 py-8 space-y-6">
+          {/* Title */}
+          <div className="space-y-1">
+            <h2 className="text-2xl font-semibold">Выбор методики</h2>
+            <p className="text-muted-foreground">
+              Выберите диагностический инструмент для прохождения
+            </p>
+          </div>
+
           {classroomCode && (
-            <Card className="border-primary bg-primary/5">
-              <CardContent className="pt-4">
-                <p className="text-sm text-center">
-                  🎓 Вы проходите тестирование по коду класса: <strong>{classroomCode}</strong>
-                </p>
+            <Card className="border-primary/30 bg-primary/5">
+              <CardContent className="py-3">
+                <div className="flex items-center gap-2 text-sm">
+                  <ShieldCheck className="h-4 w-4 text-primary" />
+                  <span>Тестирование по коду группы: <strong className="font-mono">{classroomCode}</strong></span>
+                </div>
               </CardContent>
             </Card>
           )}
 
-          <Card 
-            className="cursor-pointer hover:border-primary transition-colors"
-            onClick={() => handleSelectSurvey(quickSurvey)}
-          >
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="text-xl">{quickSurvey.title}</CardTitle>
-                  <CardDescription className="mt-2">{quickSurvey.description}</CardDescription>
+          {/* Survey Options */}
+          <div className="space-y-4">
+            <Card 
+              className="group cursor-pointer border transition-all hover:border-primary hover:shadow-institutional-md"
+              onClick={() => handleSelectSurvey(quickSurvey)}
+            >
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+                      <ClipboardList className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">{quickSurvey.title}</CardTitle>
+                      <CardDescription className="mt-1">{quickSurvey.description}</CardDescription>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1" />
                 </div>
-                <FileText className="h-8 w-8 text-primary" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  <span>~{quickSurvey.estimatedMinutes} мин</span>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="h-4 w-4" />
+                      <span>~{quickSurvey.estimatedMinutes} мин</span>
+                    </div>
+                    <span>{quickSurvey.totalQuestions} вопросов</span>
+                  </div>
+                  <div className="flex gap-1.5">
+                    <Badge variant="secondary">PHQ-9</Badge>
+                    <Badge variant="secondary">GAD-7</Badge>
+                  </div>
                 </div>
-                <div>{quickSurvey.totalQuestions} вопросов</div>
-              </div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">PHQ-9</span>
-                <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">GAD-7</span>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          <Card 
-            className="cursor-pointer hover:border-primary transition-colors"
-            onClick={() => handleSelectSurvey(comprehensiveSurvey)}
-          >
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="text-xl">{comprehensiveSurvey.title}</CardTitle>
-                  <CardDescription className="mt-2">{comprehensiveSurvey.description}</CardDescription>
+            <Card 
+              className="group cursor-pointer border transition-all hover:border-accent hover:shadow-institutional-md"
+              onClick={() => handleSelectSurvey(comprehensiveSurvey)}
+            >
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10">
+                      <FileText className="h-6 w-6 text-accent" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">{comprehensiveSurvey.title}</CardTitle>
+                      <CardDescription className="mt-1">{comprehensiveSurvey.description}</CardDescription>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1" />
                 </div>
-                <FileText className="h-8 w-8 text-accent" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  <span>~{comprehensiveSurvey.estimatedMinutes} мин</span>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="h-4 w-4" />
+                      <span>~{comprehensiveSurvey.estimatedMinutes} мин</span>
+                    </div>
+                    <span>{comprehensiveSurvey.totalQuestions} вопросов</span>
+                  </div>
+                  <div className="flex gap-1.5">
+                    <Badge variant="secondary">PHQ-9</Badge>
+                    <Badge variant="secondary">GAD-7</Badge>
+                    <Badge variant="secondary">PSS-10</Badge>
+                    <Badge variant="secondary">Burnout</Badge>
+                  </div>
                 </div>
-                <div>{comprehensiveSurvey.totalQuestions} вопросов</div>
-              </div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">PHQ-9</span>
-                <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">GAD-7</span>
-                <span className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">PSS-10</span>
-                <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Выгорание</span>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
 
-          <Card className="bg-muted/50">
-            <CardContent className="pt-4">
-              <p className="text-xs text-muted-foreground text-center">
-                ℹ️ Все методики являются научно валидированными инструментами психодиагностики.
-                Ваши ответы конфиденциальны и используются только для оценки состояния.
-              </p>
+          {/* Info Notice */}
+          <Card className="border-muted bg-muted/30">
+            <CardContent className="py-4">
+              <div className="flex items-start gap-3">
+                <ShieldCheck className="mt-0.5 h-5 w-5 text-muted-foreground" />
+                <div>
+                  <p className="text-sm text-muted-foreground">
+                    Все методики являются научно валидированными инструментами психодиагностики.
+                    Результаты конфиденциальны и доступны только уполномоченным специалистам.
+                  </p>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </main>
@@ -263,35 +312,51 @@ const SurveyPage = () => {
   // Completed Screen
   if (mode === "completed") {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full text-center">
-          <CardHeader>
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-accent/20">
-              <CheckCircle className="h-8 w-8 text-accent" />
+      <div className="min-h-screen bg-background">
+        <header className="border-b bg-primary text-primary-foreground">
+          <div className="container mx-auto px-6 py-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/10">
+                <Building2 className="h-5 w-5" />
+              </div>
+              <div>
+                <h1 className="text-lg font-bold">ZenithMind</h1>
+                <p className="text-xs text-primary-foreground/80">Результаты диагностики</p>
+              </div>
             </div>
-            <CardTitle className="text-2xl">Тестирование завершено!</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-muted-foreground">
-              Спасибо за ваши ответы. Теперь вы можете посмотреть результаты анализа.
-            </p>
-            <div className="flex flex-col gap-2">
-              <Button 
-                onClick={() => navigate(`/results?id=${responseId}`)} 
-                className="w-full"
-              >
-                Посмотреть результаты
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => navigate("/")} 
-                className="w-full"
-              >
-                Вернуться на главную
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+          </div>
+        </header>
+
+        <main className="flex flex-1 items-center justify-center p-6">
+          <Card className="max-w-md w-full border shadow-institutional-md text-center">
+            <CardHeader>
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success/10">
+                <CheckCircle className="h-8 w-8 text-success" />
+              </div>
+              <CardTitle className="text-xl">Диагностика завершена</CardTitle>
+              <CardDescription>
+                Результаты успешно сохранены в системе
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-col gap-2">
+                <Button 
+                  onClick={() => navigate(`/results?id=${responseId}`)} 
+                  className="w-full"
+                >
+                  Просмотреть результаты
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate("/")} 
+                  className="w-full"
+                >
+                  Вернуться на главную
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </main>
       </div>
     );
   }
@@ -303,66 +368,70 @@ const SurveyPage = () => {
   const totalQuestions = selectedSurvey.questions.length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5">
-      <header className="border-b bg-card/50 backdrop-blur-sm">
-        <div className="container mx-auto flex items-center gap-4 px-4 py-4">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => {
-              if (currentQuestionIndex === 0) {
-                setMode("select");
-                setSelectedSurvey(null);
-              } else {
-                handlePrevious();
-              }
-            }}
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div className="flex-1">
-            <h1 className="text-lg font-bold">{selectedSurvey.title}</h1>
-            <p className="text-sm text-muted-foreground">
-              Вопрос {currentQuestionIndex + 1} из {totalQuestions}
-            </p>
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b bg-primary text-primary-foreground">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/10">
+              <Building2 className="h-5 w-5" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold">{selectedSurvey.title}</h1>
+              <p className="text-xs text-primary-foreground/80">
+                Вопрос {currentQuestionIndex + 1} из {totalQuestions}
+              </p>
+            </div>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto max-w-2xl p-4 py-8">
-        <ProgressBar
-          currentQuestion={currentQuestionIndex + 1}
-          totalQuestions={totalQuestions}
-        />
+      {/* Progress */}
+      <div className="border-b bg-card">
+        <div className="container mx-auto px-6 py-3">
+          <ProgressBar
+            currentQuestion={currentQuestionIndex + 1}
+            totalQuestions={totalQuestions}
+          />
+        </div>
+      </div>
 
-        <div className="mt-8">
+      <main className="container mx-auto max-w-2xl px-6 py-8">
+        <div className="space-y-8">
           <QuestionCard
             question={currentQuestion}
             selectedValue={answers[currentQuestion.id]}
             onAnswer={handleAnswer}
           />
-        </div>
 
-        <div className="mt-8 flex justify-between">
-          <Button
-            variant="outline"
-            onClick={handlePrevious}
-            disabled={currentQuestionIndex === 0}
-          >
-            Назад
-          </Button>
-          <Button
-            onClick={handleNext}
-            disabled={
-              (currentQuestion.required && answers[currentQuestion.id] === undefined) || loading
-            }
-          >
-            {loading
-              ? "Сохранение..."
-              : currentQuestionIndex === totalQuestions - 1
-              ? "Завершить"
-              : "Далее"}
-          </Button>
+          <div className="flex justify-between">
+            <Button
+              variant="outline"
+              onClick={() => {
+                if (currentQuestionIndex === 0) {
+                  setMode("select");
+                  setSelectedSurvey(null);
+                } else {
+                  handlePrevious();
+                }
+              }}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              {currentQuestionIndex === 0 ? "К выбору теста" : "Назад"}
+            </Button>
+            <Button
+              onClick={handleNext}
+              disabled={
+                (currentQuestion.required && answers[currentQuestion.id] === undefined) || loading
+              }
+            >
+              {loading
+                ? "Сохранение..."
+                : currentQuestionIndex === totalQuestions - 1
+                ? "Завершить тест"
+                : "Далее"}
+            </Button>
+          </div>
         </div>
       </main>
     </div>

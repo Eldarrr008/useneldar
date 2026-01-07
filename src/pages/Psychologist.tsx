@@ -33,7 +33,11 @@ import {
   Copy, 
   BarChart3,
   Loader2,
-  ArrowLeft
+  ArrowLeft,
+  Building2,
+  FolderOpen,
+  AlertTriangle,
+  UserCheck
 } from "lucide-react";
 
 interface Classroom {
@@ -67,10 +71,10 @@ interface CrisisDetection {
 }
 
 const riskColors: Record<string, string> = {
-  LOW: "bg-green-100 text-green-800",
-  MEDIUM: "bg-yellow-100 text-yellow-800",
-  HIGH: "bg-orange-100 text-orange-800",
-  CRITICAL: "bg-red-100 text-red-800",
+  LOW: "bg-success/10 text-success border-success/20",
+  MEDIUM: "bg-warning/10 text-warning border-warning/20",
+  HIGH: "bg-destructive/20 text-destructive border-destructive/30",
+  CRITICAL: "bg-destructive text-destructive-foreground",
 };
 
 const riskLabels: Record<string, string> = {
@@ -103,7 +107,6 @@ const Psychologist = () => {
   useEffect(() => {
     fetchData();
     
-    // Subscribe to crisis updates
     const channel = supabase
       .channel("crisis_updates")
       .on(
@@ -113,8 +116,8 @@ const Psychologist = () => {
           fetchCrises();
           toast({
             variant: "destructive",
-            title: "⚠️ Новый кризис обнаружен",
-            description: "Требуется ваше внимание",
+            title: "Новое кризисное оповещение",
+            description: "Требуется рассмотрение специалиста",
           });
         }
       )
@@ -136,7 +139,6 @@ const Psychologist = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      // Fetch classrooms
       const { data: classroomsData, error: classroomsError } = await supabase
         .from("classrooms")
         .select("*")
@@ -145,7 +147,6 @@ const Psychologist = () => {
 
       if (classroomsError) throw classroomsError;
 
-      // Get member counts
       const classroomsWithCounts = await Promise.all(
         (classroomsData || []).map(async (classroom) => {
           const { count } = await supabase
@@ -158,15 +159,12 @@ const Psychologist = () => {
 
       setClassrooms(classroomsWithCounts);
 
-      // Set first classroom as selected
       if (classroomsWithCounts.length > 0 && !selectedClassroom) {
         setSelectedClassroom(classroomsWithCounts[0].id);
       }
 
-      // Fetch crises
       await fetchCrises();
 
-      // Calculate stats
       const totalStudents = classroomsWithCounts.reduce((sum, c) => sum + (c.member_count || 0), 0);
       setStats(prev => ({ ...prev, totalStudents }));
 
@@ -174,8 +172,8 @@ const Psychologist = () => {
       console.error("Error fetching data:", error);
       toast({
         variant: "destructive",
-        title: "Ошибка",
-        description: "Не удалось загрузить данные",
+        title: "Ошибка загрузки",
+        description: "Не удалось получить данные",
       });
     } finally {
       setLoading(false);
@@ -198,7 +196,6 @@ const Psychologist = () => {
 
   const fetchStudentsByClassroom = async (classroomId: string) => {
     try {
-      // Get student IDs from classroom_members
       const { data: members, error: membersError } = await supabase
         .from("classroom_members")
         .select("student_id")
@@ -209,7 +206,6 @@ const Psychologist = () => {
       if (members && members.length > 0) {
         const studentIds = members.map(m => m.student_id);
         
-        // Get student data
         const { data: studentsData, error: studentsError } = await supabase
           .from("student_data")
           .select("*")
@@ -217,13 +213,11 @@ const Psychologist = () => {
 
         if (studentsError) throw studentsError;
 
-        // Get profiles separately
         const { data: profilesData } = await supabase
           .from("profiles")
           .select("id, full_name")
           .in("id", studentIds);
 
-        // Merge data
         const mergedStudents: StudentData[] = (studentsData || []).map(student => ({
           ...student,
           profiles: profilesData?.find(p => p.id === student.user_id) || undefined,
@@ -231,7 +225,6 @@ const Psychologist = () => {
 
         setStudents(mergedStudents);
 
-        // Update high risk count
         const highRisk = mergedStudents.filter(
           s => s.risk_level === "HIGH" || s.risk_level === "CRITICAL"
         ).length;
@@ -246,7 +239,7 @@ const Psychologist = () => {
 
   const createClassroom = async () => {
     if (!newClassName.trim()) {
-      toast({ variant: "destructive", title: "Введите название класса" });
+      toast({ variant: "destructive", title: "Введите название группы" });
       return;
     }
 
@@ -255,7 +248,6 @@ const Psychologist = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      // Generate join code
       const { data: codeData } = await supabase.rpc("generate_classroom_code");
       const joinCode = codeData || Math.random().toString(36).substring(2, 8).toUpperCase();
 
@@ -273,8 +265,8 @@ const Psychologist = () => {
       if (error) throw error;
 
       toast({
-        title: "Класс создан!",
-        description: `Код для учеников: ${joinCode}`,
+        title: "Группа создана",
+        description: `Код доступа: ${joinCode}`,
       });
 
       setClassrooms(prev => [{ ...data, member_count: 0 }, ...prev]);
@@ -286,8 +278,8 @@ const Psychologist = () => {
       console.error("Error creating classroom:", error);
       toast({
         variant: "destructive",
-        title: "Ошибка",
-        description: error.message || "Не удалось создать класс",
+        title: "Ошибка создания",
+        description: error.message || "Не удалось создать группу",
       });
     } finally {
       setCreating(false);
@@ -296,7 +288,7 @@ const Psychologist = () => {
 
   const copyJoinCode = (code: string) => {
     navigator.clipboard.writeText(code);
-    toast({ title: "Код скопирован!" });
+    toast({ title: "Код скопирован в буфер обмена" });
   };
 
   const markCrisisReviewed = async (crisisId: string) => {
@@ -314,7 +306,7 @@ const Psychologist = () => {
 
       if (error) throw error;
       
-      toast({ title: "Отмечено как проверенное" });
+      toast({ title: "Статус обновлён" });
       fetchCrises();
     } catch (error) {
       console.error("Error:", error);
@@ -323,136 +315,166 @@ const Psychologist = () => {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-sm text-muted-foreground">Загрузка панели...</p>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="container mx-auto flex items-center justify-between px-4 py-4">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold">Панель психолога</h1>
-              <p className="text-sm text-muted-foreground">Управление классами и мониторинг</p>
-            </div>
-          </div>
-          <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                Создать класс
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Создать новый класс</DialogTitle>
-                <DialogDescription>
-                  Создайте класс и получите код для учеников
-                </DialogDescription>
-              </DialogHeader>
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Название класса</Label>
-                  <Input
-                    id="name"
-                    placeholder="Например: 10А класс"
-                    value={newClassName}
-                    onChange={(e) => setNewClassName(e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="desc">Описание (необязательно)</Label>
-                  <Textarea
-                    id="desc"
-                    placeholder="Краткое описание класса"
-                    value={newClassDescription}
-                    onChange={(e) => setNewClassDescription(e.target.value)}
-                  />
-                </div>
-                <Button onClick={createClassroom} disabled={creating} className="w-full">
-                  {creating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                  Создать класс
-                </Button>
+      {/* Header */}
+      <header className="border-b bg-primary text-primary-foreground">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/10">
+                <Building2 className="h-5 w-5" />
               </div>
-            </DialogContent>
-          </Dialog>
+              <div>
+                <h1 className="text-lg font-bold">ZenithMind</h1>
+                <p className="text-xs text-primary-foreground/80">Панель специалиста</p>
+              </div>
+            </div>
+            <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="secondary" size="sm">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Создать группу
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Создание новой группы</DialogTitle>
+                  <DialogDescription>
+                    Заполните данные для создания учебной группы
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Название группы</Label>
+                    <Input
+                      id="name"
+                      placeholder="Например: 10-А класс"
+                      value={newClassName}
+                      onChange={(e) => setNewClassName(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="desc">Описание (опционально)</Label>
+                    <Textarea
+                      id="desc"
+                      placeholder="Краткое описание группы"
+                      value={newClassDescription}
+                      onChange={(e) => setNewClassDescription(e.target.value)}
+                    />
+                  </div>
+                  <Button onClick={createClassroom} disabled={creating} className="w-full">
+                    {creating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Создать группу
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
       </header>
 
-      <main className="container mx-auto p-4 py-6 space-y-6">
-        {/* Stats */}
+      {/* Secondary Nav */}
+      <div className="border-b bg-card">
+        <div className="container mx-auto px-6 py-3">
+          <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Назад к панели
+          </Button>
+        </div>
+      </div>
+
+      <main className="container mx-auto px-6 py-6 space-y-6">
+        {/* Stats Grid */}
         <div className="grid gap-4 md:grid-cols-4">
-          <Card>
+          <Card className="border">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Всего учеников</CardTitle>
+              <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <Users className="h-4 w-4" />
+                Всего учащихся
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.totalStudents}</div>
+              <div className="text-3xl font-bold">{stats.totalStudents}</div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Классов</CardTitle>
+              <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <FolderOpen className="h-4 w-4" />
+                Групп
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{classrooms.length}</div>
+              <div className="text-3xl font-bold">{classrooms.length}</div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Высокий риск</CardTitle>
+              <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <AlertTriangle className="h-4 w-4" />
+                Высокий риск
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-orange-500">{stats.highRiskStudents}</div>
+              <div className="text-3xl font-bold text-warning">{stats.highRiskStudents}</div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Кризисы</CardTitle>
+              <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <AlertCircle className="h-4 w-4" />
+                Кризисные ситуации
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-destructive">{stats.unreviewedCrises}</div>
+              <div className="text-3xl font-bold text-destructive">{stats.unreviewedCrises}</div>
             </CardContent>
           </Card>
         </div>
 
         <Tabs defaultValue="classrooms" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="classrooms">
-              <Users className="mr-2 h-4 w-4" />
-              Классы
+          <TabsList className="bg-muted">
+            <TabsTrigger value="classrooms" className="gap-2">
+              <FolderOpen className="h-4 w-4" />
+              Группы
             </TabsTrigger>
-            <TabsTrigger value="students">
-              <BarChart3 className="mr-2 h-4 w-4" />
-              Ученики
+            <TabsTrigger value="students" className="gap-2">
+              <UserCheck className="h-4 w-4" />
+              Учащиеся
             </TabsTrigger>
-            <TabsTrigger value="crises">
-              <AlertCircle className="mr-2 h-4 w-4" />
+            <TabsTrigger value="crises" className="gap-2">
+              <AlertCircle className="h-4 w-4" />
               Кризисы
               {stats.unreviewedCrises > 0 && (
-                <Badge variant="destructive" className="ml-2">{stats.unreviewedCrises}</Badge>
+                <Badge variant="destructive" className="ml-1 px-1.5 py-0 text-xs">
+                  {stats.unreviewedCrises}
+                </Badge>
               )}
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="classrooms" className="space-y-4">
             {classrooms.length === 0 ? (
-              <Card className="text-center py-12">
+              <Card className="border text-center py-12">
                 <CardContent>
-                  <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-medium mb-2">Нет созданных классов</h3>
+                  <FolderOpen className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                  <h3 className="text-lg font-medium mb-2">Группы не созданы</h3>
                   <p className="text-muted-foreground mb-4">
-                    Создайте класс и поделитесь кодом с учениками
+                    Создайте группу и передайте код учащимся
                   </p>
                   <Button onClick={() => setCreateDialogOpen(true)}>
                     <Plus className="mr-2 h-4 w-4" />
-                    Создать первый класс
+                    Создать первую группу
                   </Button>
                 </CardContent>
               </Card>
@@ -461,17 +483,17 @@ const Psychologist = () => {
                 {classrooms.map((classroom) => (
                   <Card 
                     key={classroom.id}
-                    className={`cursor-pointer transition-colors ${
-                      selectedClassroom === classroom.id ? "border-primary" : ""
+                    className={`cursor-pointer border transition-all hover:shadow-institutional-md ${
+                      selectedClassroom === classroom.id ? "border-primary ring-1 ring-primary" : ""
                     }`}
                     onClick={() => setSelectedClassroom(classroom.id)}
                   >
-                    <CardHeader>
+                    <CardHeader className="pb-3">
                       <div className="flex items-start justify-between">
                         <div>
-                          <CardTitle>{classroom.name}</CardTitle>
+                          <CardTitle className="text-base">{classroom.name}</CardTitle>
                           {classroom.description && (
-                            <CardDescription>{classroom.description}</CardDescription>
+                            <CardDescription className="mt-1">{classroom.description}</CardDescription>
                           )}
                         </div>
                         <Badge variant="secondary">
@@ -482,13 +504,13 @@ const Psychologist = () => {
                     <CardContent>
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-xs text-muted-foreground mb-1">Код для входа:</p>
-                          <code className="text-lg font-mono font-bold tracking-wider">
+                          <p className="text-xs text-muted-foreground mb-1">Код доступа:</p>
+                          <code className="text-lg font-mono font-bold tracking-widest text-primary">
                             {classroom.join_code}
                           </code>
                         </div>
                         <Button
-                          size="sm"
+                          size="icon"
                           variant="outline"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -506,46 +528,47 @@ const Psychologist = () => {
           </TabsContent>
 
           <TabsContent value="students">
-            <Card>
+            <Card className="border">
               <CardHeader>
-                <CardTitle>Ученики класса</CardTitle>
+                <CardTitle className="text-lg">Список учащихся</CardTitle>
                 <CardDescription>
                   {selectedClassroom 
-                    ? `${classrooms.find(c => c.id === selectedClassroom)?.name || ""}`
-                    : "Выберите класс для просмотра учеников"
+                    ? `Группа: ${classrooms.find(c => c.id === selectedClassroom)?.name || ""}`
+                    : "Выберите группу для отображения списка"
                   }
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 {students.length === 0 ? (
-                  <p className="text-center text-muted-foreground py-8">
-                    В этом классе пока нет учеников
-                  </p>
+                  <div className="text-center text-muted-foreground py-12">
+                    <Users className="h-10 w-10 mx-auto mb-3 opacity-50" />
+                    <p>В данной группе пока нет учащихся</p>
+                  </div>
                 ) : (
                   <Table>
                     <TableHeader>
-                      <TableRow>
-                        <TableHead>Имя</TableHead>
-                        <TableHead>Уровень риска</TableHead>
-                        <TableHead>Последний тест</TableHead>
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead className="font-semibold">ФИО</TableHead>
+                        <TableHead className="font-semibold">Уровень риска</TableHead>
+                        <TableHead className="font-semibold">Последняя диагностика</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {students.map((student) => (
                         <TableRow key={student.id}>
                           <TableCell className="font-medium">
-                            {student.profiles?.full_name || "Ученик"}
+                            {student.profiles?.full_name || "Учащийся"}
                           </TableCell>
                           <TableCell>
                             {student.risk_level ? (
-                              <Badge className={riskColors[student.risk_level]}>
+                              <Badge variant="outline" className={riskColors[student.risk_level]}>
                                 {riskLabels[student.risk_level] || student.risk_level}
                               </Badge>
                             ) : (
-                              <span className="text-muted-foreground">Не пройден</span>
+                              <span className="text-sm text-muted-foreground">Не определён</span>
                             )}
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="text-muted-foreground">
                             {student.last_survey_date 
                               ? new Date(student.last_survey_date).toLocaleDateString("ru-RU")
                               : "—"
@@ -561,63 +584,66 @@ const Psychologist = () => {
           </TabsContent>
 
           <TabsContent value="crises">
-            <Card>
+            <Card className="border">
               <CardHeader>
-                <CardTitle>Обнаруженные кризисы</CardTitle>
-                <CardDescription>Требуют вашего внимания</CardDescription>
+                <CardTitle className="text-lg">Журнал кризисных ситуаций</CardTitle>
+                <CardDescription>Требуют рассмотрения специалиста</CardDescription>
               </CardHeader>
               <CardContent>
                 {crises.length === 0 ? (
-                  <p className="text-center text-muted-foreground py-8">
-                    Кризисных ситуаций не обнаружено
-                  </p>
+                  <div className="text-center text-muted-foreground py-12">
+                    <CheckCircle2 className="h-10 w-10 mx-auto mb-3 text-success opacity-70" />
+                    <p>Кризисных ситуаций не зарегистрировано</p>
+                  </div>
                 ) : (
                   <Table>
                     <TableHeader>
-                      <TableRow>
-                        <TableHead>Уровень</TableHead>
-                        <TableHead>Ключевые слова</TableHead>
-                        <TableHead>Контекст</TableHead>
-                        <TableHead>Дата</TableHead>
-                        <TableHead>Статус</TableHead>
-                        <TableHead>Действия</TableHead>
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead className="font-semibold">Уровень</TableHead>
+                        <TableHead className="font-semibold">Триггеры</TableHead>
+                        <TableHead className="font-semibold">Контекст</TableHead>
+                        <TableHead className="font-semibold">Дата</TableHead>
+                        <TableHead className="font-semibold">Статус</TableHead>
+                        <TableHead className="font-semibold">Действие</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {crises.map((crisis) => (
                         <TableRow key={crisis.id}>
                           <TableCell>
-                            <Badge variant={crisis.severity === "critical" ? "destructive" : "secondary"}>
+                            <Badge variant={crisis.severity === "critical" ? "destructive" : "outline"}>
                               {crisis.severity === "critical" ? "Критический" : "Высокий"}
                             </Badge>
                           </TableCell>
                           <TableCell>
                             <div className="flex flex-wrap gap-1">
                               {crisis.keywords?.slice(0, 3).map((kw, i) => (
-                                <Badge key={i} variant="outline" className="text-xs">{kw}</Badge>
+                                <Badge key={i} variant="secondary" className="text-xs">{kw}</Badge>
                               ))}
                             </div>
                           </TableCell>
-                          <TableCell className="max-w-xs truncate">{crisis.context}</TableCell>
-                          <TableCell>
+                          <TableCell className="max-w-xs truncate text-muted-foreground">
+                            {crisis.context}
+                          </TableCell>
+                          <TableCell className="text-muted-foreground">
                             {new Date(crisis.created_at).toLocaleDateString("ru-RU")}
                           </TableCell>
                           <TableCell>
                             {crisis.reviewed ? (
-                              <div className="flex items-center gap-1 text-green-600">
+                              <div className="flex items-center gap-1.5 text-success">
                                 <CheckCircle2 className="h-4 w-4" />
-                                <span className="text-xs">Проверено</span>
+                                <span className="text-xs font-medium">Рассмотрено</span>
                               </div>
                             ) : (
-                              <div className="flex items-center gap-1 text-orange-500">
+                              <div className="flex items-center gap-1.5 text-warning">
                                 <AlertCircle className="h-4 w-4" />
-                                <span className="text-xs">Ожидает</span>
+                                <span className="text-xs font-medium">Ожидает</span>
                               </div>
                             )}
                           </TableCell>
                           <TableCell>
                             {!crisis.reviewed && (
-                              <Button size="sm" onClick={() => markCrisisReviewed(crisis.id)}>
+                              <Button size="sm" variant="outline" onClick={() => markCrisisReviewed(crisis.id)}>
                                 Отметить
                               </Button>
                             )}
