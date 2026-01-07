@@ -1,219 +1,381 @@
 import { Survey, Question } from "@/types/survey";
 
+/**
+ * PHQ-9 (Patient Health Questionnaire-9)
+ * Валидированный инструмент для оценки депрессии
+ * Шкала: 0-3 (0=никогда, 1=редко, 2=иногда, 3=часто)
+ * Интерпретация: 0-4 минимальная, 5-9 лёгкая, 10-14 умеренная, 15-19 умеренно-тяжёлая, 20-27 тяжёлая
+ */
 const phq9Questions: Question[] = [
   {
     id: "phq9_1",
     category: "phq9",
-    text: "Как часто вы испытывали слабый интерес или удовольствие от выполнения каких-либо дел за последние 2 недели?",
+    text: "За последние 2 недели как часто вас беспокоил слабый интерес или отсутствие удовольствия от занятий?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "phq9_1_0", label: "Совсем не испытывал", value: 0 },
-      { id: "phq9_1_1", label: "Несколько дней", value: 1 },
-      { id: "phq9_1_2", label: "Больше половины времени", value: 2 },
-      { id: "phq9_1_3", label: "Почти каждый день", value: 3 },
+      { id: "phq9_1_0", label: "Никогда", value: 0 },
+      { id: "phq9_1_1", label: "Редко", value: 1 },
+      { id: "phq9_1_2", label: "Иногда", value: 2 },
+      { id: "phq9_1_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "phq9_2",
     category: "phq9",
-    text: "Как часто вы чувствовали подавленность, депрессию или безнадежность?",
+    text: "За последние 2 недели как часто вас беспокоило чувство подавленности, тоски или безнадёжности?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "phq9_2_0", label: "Совсем не испытывал", value: 0 },
-      { id: "phq9_2_1", label: "Несколько дней", value: 1 },
-      { id: "phq9_2_2", label: "Больше половины времени", value: 2 },
-      { id: "phq9_2_3", label: "Почти каждый день", value: 3 },
+      { id: "phq9_2_0", label: "Никогда", value: 0 },
+      { id: "phq9_2_1", label: "Редко", value: 1 },
+      { id: "phq9_2_2", label: "Иногда", value: 2 },
+      { id: "phq9_2_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "phq9_3",
     category: "phq9",
-    text: "Проблемы с засыпанием, беспокойным сном или слишком долгим сном?",
+    text: "За последние 2 недели как часто вас беспокоили проблемы со сном (трудности с засыпанием, прерывистый сон или слишком долгий сон)?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "phq9_3_0", label: "Совсем не испытывал", value: 0 },
-      { id: "phq9_3_1", label: "Несколько дней", value: 1 },
-      { id: "phq9_3_2", label: "Больше половины времени", value: 2 },
-      { id: "phq9_3_3", label: "Почти каждый день", value: 3 },
+      { id: "phq9_3_0", label: "Никогда", value: 0 },
+      { id: "phq9_3_1", label: "Редко", value: 1 },
+      { id: "phq9_3_2", label: "Иногда", value: 2 },
+      { id: "phq9_3_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "phq9_4",
     category: "phq9",
-    text: "Чувство усталости или отсутствие энергии?",
+    text: "За последние 2 недели как часто вас беспокоило чувство усталости или упадка сил?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "phq9_4_0", label: "Совсем не испытывал", value: 0 },
-      { id: "phq9_4_1", label: "Несколько дней", value: 1 },
-      { id: "phq9_4_2", label: "Больше половины времени", value: 2 },
-      { id: "phq9_4_3", label: "Почти каждый день", value: 3 },
+      { id: "phq9_4_0", label: "Никогда", value: 0 },
+      { id: "phq9_4_1", label: "Редко", value: 1 },
+      { id: "phq9_4_2", label: "Иногда", value: 2 },
+      { id: "phq9_4_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "phq9_5",
     category: "phq9",
-    text: "Плохой аппетит или переедание?",
+    text: "За последние 2 недели как часто вас беспокоило снижение аппетита или переедание?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "phq9_5_0", label: "Совсем не испытывал", value: 0 },
-      { id: "phq9_5_1", label: "Несколько дней", value: 1 },
-      { id: "phq9_5_2", label: "Больше половины времени", value: 2 },
-      { id: "phq9_5_3", label: "Почти каждый день", value: 3 },
+      { id: "phq9_5_0", label: "Никогда", value: 0 },
+      { id: "phq9_5_1", label: "Редко", value: 1 },
+      { id: "phq9_5_2", label: "Иногда", value: 2 },
+      { id: "phq9_5_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "phq9_6",
     category: "phq9",
-    text: "Плохое мнение о себе — ощущение, что вы неудачник или подвели себя или свою семью?",
+    text: "За последние 2 недели как часто вас беспокоило плохое мнение о себе (ощущение неудачника или что подвели себя или близких)?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "phq9_6_0", label: "Совсем не испытывал", value: 0 },
-      { id: "phq9_6_1", label: "Несколько дней", value: 1 },
-      { id: "phq9_6_2", label: "Больше половины времени", value: 2 },
-      { id: "phq9_6_3", label: "Почти каждый день", value: 3 },
+      { id: "phq9_6_0", label: "Никогда", value: 0 },
+      { id: "phq9_6_1", label: "Редко", value: 1 },
+      { id: "phq9_6_2", label: "Иногда", value: 2 },
+      { id: "phq9_6_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "phq9_7",
     category: "phq9",
-    text: "Проблемы с концентрацией внимания, например, при чтении газеты или просмотре телевизора?",
+    text: "За последние 2 недели как часто вас беспокоили трудности с концентрацией внимания (при чтении или просмотре)?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "phq9_7_0", label: "Совсем не испытывал", value: 0 },
-      { id: "phq9_7_1", label: "Несколько дней", value: 1 },
-      { id: "phq9_7_2", label: "Больше половины времени", value: 2 },
-      { id: "phq9_7_3", label: "Почти каждый день", value: 3 },
+      { id: "phq9_7_0", label: "Никогда", value: 0 },
+      { id: "phq9_7_1", label: "Редко", value: 1 },
+      { id: "phq9_7_2", label: "Иногда", value: 2 },
+      { id: "phq9_7_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "phq9_8",
     category: "phq9",
-    text: "Движения или речь настолько медленны, что окружающие могут это заметить? Или наоборот — вы настолько беспокойны или нервозны, что двигаетесь больше обычного?",
+    text: "За последние 2 недели как часто вас беспокоила заторможенность или чрезмерная суетливость?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "phq9_8_0", label: "Совсем не испытывал", value: 0 },
-      { id: "phq9_8_1", label: "Несколько дней", value: 1 },
-      { id: "phq9_8_2", label: "Больше половины времени", value: 2 },
-      { id: "phq9_8_3", label: "Почти каждый день", value: 3 },
+      { id: "phq9_8_0", label: "Никогда", value: 0 },
+      { id: "phq9_8_1", label: "Редко", value: 1 },
+      { id: "phq9_8_2", label: "Иногда", value: 2 },
+      { id: "phq9_8_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "phq9_9",
     category: "phq9",
-    text: "Мысли о том, что вам лучше умереть, или о причинении себе какого-либо вреда?",
+    text: "За последние 2 недели как часто вас посещали мысли, что лучше было бы умереть, или мысли о причинении себе вреда?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "phq9_9_0", label: "Совсем не испытывал", value: 0 },
-      { id: "phq9_9_1", label: "Несколько дней", value: 1 },
-      { id: "phq9_9_2", label: "Больше половины времени", value: 2 },
-      { id: "phq9_9_3", label: "Почти каждый день", value: 3 },
+      { id: "phq9_9_0", label: "Никогда", value: 0 },
+      { id: "phq9_9_1", label: "Редко", value: 1 },
+      { id: "phq9_9_2", label: "Иногда", value: 2 },
+      { id: "phq9_9_3", label: "Часто", value: 3 },
     ],
   },
 ];
 
+/**
+ * GAD-7 (Generalized Anxiety Disorder-7)
+ * Валидированный инструмент для оценки тревожности
+ * Шкала: 0-3 (0=никогда, 1=редко, 2=иногда, 3=часто)
+ * Интерпретация: 0-4 минимальная, 5-9 лёгкая, 10-14 умеренная, 15-21 тяжёлая
+ */
 const gad7Questions: Question[] = [
   {
     id: "gad7_1",
     category: "gad7",
-    text: "Как часто вы чувствовали нервозность, тревожность или были на взводе за последние 2 недели?",
+    text: "За последние 2 недели как часто вас беспокоило чувство нервозности, тревоги или напряжения?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "gad7_1_0", label: "Совсем не испытывал", value: 0 },
-      { id: "gad7_1_1", label: "Несколько дней", value: 1 },
-      { id: "gad7_1_2", label: "Больше половины времени", value: 2 },
-      { id: "gad7_1_3", label: "Почти каждый день", value: 3 },
+      { id: "gad7_1_0", label: "Никогда", value: 0 },
+      { id: "gad7_1_1", label: "Редко", value: 1 },
+      { id: "gad7_1_2", label: "Иногда", value: 2 },
+      { id: "gad7_1_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "gad7_2",
     category: "gad7",
-    text: "Как часто вы не могли перестать беспокоиться или контролировать свое беспокойство?",
+    text: "За последние 2 недели как часто вы не могли остановить или контролировать беспокойство?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "gad7_2_0", label: "Совсем не испытывал", value: 0 },
-      { id: "gad7_2_1", label: "Несколько дней", value: 1 },
-      { id: "gad7_2_2", label: "Больше половины времени", value: 2 },
-      { id: "gad7_2_3", label: "Почти каждый день", value: 3 },
+      { id: "gad7_2_0", label: "Никогда", value: 0 },
+      { id: "gad7_2_1", label: "Редко", value: 1 },
+      { id: "gad7_2_2", label: "Иногда", value: 2 },
+      { id: "gad7_2_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "gad7_3",
     category: "gad7",
-    text: "Как часто вы слишком много беспокоились о разных вещах?",
+    text: "За последние 2 недели как часто вы слишком много беспокоились о разных вещах?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "gad7_3_0", label: "Совсем не испытывал", value: 0 },
-      { id: "gad7_3_1", label: "Несколько дней", value: 1 },
-      { id: "gad7_3_2", label: "Больше половины времени", value: 2 },
-      { id: "gad7_3_3", label: "Почти каждый день", value: 3 },
+      { id: "gad7_3_0", label: "Никогда", value: 0 },
+      { id: "gad7_3_1", label: "Редко", value: 1 },
+      { id: "gad7_3_2", label: "Иногда", value: 2 },
+      { id: "gad7_3_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "gad7_4",
     category: "gad7",
-    text: "Как часто вам было трудно расслабиться?",
+    text: "За последние 2 недели как часто вам было трудно расслабиться?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "gad7_4_0", label: "Совсем не испытывал", value: 0 },
-      { id: "gad7_4_1", label: "Несколько дней", value: 1 },
-      { id: "gad7_4_2", label: "Больше половины времени", value: 2 },
-      { id: "gad7_4_3", label: "Почти каждый день", value: 3 },
+      { id: "gad7_4_0", label: "Никогда", value: 0 },
+      { id: "gad7_4_1", label: "Редко", value: 1 },
+      { id: "gad7_4_2", label: "Иногда", value: 2 },
+      { id: "gad7_4_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "gad7_5",
     category: "gad7",
-    text: "Как часто вы были настолько беспокойны, что не могли усидеть на месте?",
+    text: "За последние 2 недели как часто вы были настолько беспокойны, что трудно было усидеть на месте?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "gad7_5_0", label: "Совсем не испытывал", value: 0 },
-      { id: "gad7_5_1", label: "Несколько дней", value: 1 },
-      { id: "gad7_5_2", label: "Больше половины времени", value: 2 },
-      { id: "gad7_5_3", label: "Почти каждый день", value: 3 },
+      { id: "gad7_5_0", label: "Никогда", value: 0 },
+      { id: "gad7_5_1", label: "Редко", value: 1 },
+      { id: "gad7_5_2", label: "Иногда", value: 2 },
+      { id: "gad7_5_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "gad7_6",
     category: "gad7",
-    text: "Как часто вы становились легко раздражительным или сердитым?",
+    text: "За последние 2 недели как часто вы легко раздражались или становились нетерпимы?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "gad7_6_0", label: "Совсем не испытывал", value: 0 },
-      { id: "gad7_6_1", label: "Несколько дней", value: 1 },
-      { id: "gad7_6_2", label: "Больше половины времени", value: 2 },
-      { id: "gad7_6_3", label: "Почти каждый день", value: 3 },
+      { id: "gad7_6_0", label: "Никогда", value: 0 },
+      { id: "gad7_6_1", label: "Редко", value: 1 },
+      { id: "gad7_6_2", label: "Иногда", value: 2 },
+      { id: "gad7_6_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "gad7_7",
     category: "gad7",
-    text: "Как часто вы чувствовали страх, как будто должно произойти что-то ужасное?",
+    text: "За последние 2 недели как часто вас охватывало чувство страха, будто должно произойти что-то ужасное?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "gad7_7_0", label: "Совсем не испытывал", value: 0 },
-      { id: "gad7_7_1", label: "Несколько дней", value: 1 },
-      { id: "gad7_7_2", label: "Больше половины времени", value: 2 },
-      { id: "gad7_7_3", label: "Почти каждый день", value: 3 },
+      { id: "gad7_7_0", label: "Никогда", value: 0 },
+      { id: "gad7_7_1", label: "Редко", value: 1 },
+      { id: "gad7_7_2", label: "Иногда", value: 2 },
+      { id: "gad7_7_3", label: "Часто", value: 3 },
     ],
   },
 ];
 
+/**
+ * PSS-10 (Perceived Stress Scale)
+ * Валидированный инструмент для оценки воспринимаемого стресса
+ * Шкала: 0-3 (0=никогда, 1=редко, 2=иногда, 3=часто)
+ * Примечание: вопросы 4, 5, 7, 8 инвертируются (3-value)
+ * Интерпретация: 0-13 низкий, 14-26 умеренный, 27-40 высокий
+ */
+const pss10Questions: Question[] = [
+  {
+    id: "pss_1",
+    category: "pss",
+    text: "За последний месяц как часто вы расстраивались из-за неожиданных событий?",
+    type: "single-choice",
+    required: true,
+    options: [
+      { id: "pss_1_0", label: "Никогда", value: 0 },
+      { id: "pss_1_1", label: "Редко", value: 1 },
+      { id: "pss_1_2", label: "Иногда", value: 2 },
+      { id: "pss_1_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "pss_2",
+    category: "pss",
+    text: "За последний месяц как часто вам казалось, что вы не в состоянии контролировать важные вещи в жизни?",
+    type: "single-choice",
+    required: true,
+    options: [
+      { id: "pss_2_0", label: "Никогда", value: 0 },
+      { id: "pss_2_1", label: "Редко", value: 1 },
+      { id: "pss_2_2", label: "Иногда", value: 2 },
+      { id: "pss_2_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "pss_3",
+    category: "pss",
+    text: "За последний месяц как часто вы чувствовали нервное напряжение и стресс?",
+    type: "single-choice",
+    required: true,
+    options: [
+      { id: "pss_3_0", label: "Никогда", value: 0 },
+      { id: "pss_3_1", label: "Редко", value: 1 },
+      { id: "pss_3_2", label: "Иногда", value: 2 },
+      { id: "pss_3_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "pss_4",
+    category: "pss",
+    text: "За последний месяц как часто вы чувствовали уверенность в своих способностях справляться с личными проблемами?",
+    type: "single-choice",
+    required: true,
+    inverted: true,
+    options: [
+      { id: "pss_4_0", label: "Никогда", value: 0 },
+      { id: "pss_4_1", label: "Редко", value: 1 },
+      { id: "pss_4_2", label: "Иногда", value: 2 },
+      { id: "pss_4_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "pss_5",
+    category: "pss",
+    text: "За последний месяц как часто вам казалось, что всё идёт так, как вам хочется?",
+    type: "single-choice",
+    required: true,
+    inverted: true,
+    options: [
+      { id: "pss_5_0", label: "Никогда", value: 0 },
+      { id: "pss_5_1", label: "Редко", value: 1 },
+      { id: "pss_5_2", label: "Иногда", value: 2 },
+      { id: "pss_5_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "pss_6",
+    category: "pss",
+    text: "За последний месяц как часто вам казалось, что вы не справляетесь со всем, что нужно сделать?",
+    type: "single-choice",
+    required: true,
+    options: [
+      { id: "pss_6_0", label: "Никогда", value: 0 },
+      { id: "pss_6_1", label: "Редко", value: 1 },
+      { id: "pss_6_2", label: "Иногда", value: 2 },
+      { id: "pss_6_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "pss_7",
+    category: "pss",
+    text: "За последний месяц как часто вы могли контролировать раздражение в своей жизни?",
+    type: "single-choice",
+    required: true,
+    inverted: true,
+    options: [
+      { id: "pss_7_0", label: "Никогда", value: 0 },
+      { id: "pss_7_1", label: "Редко", value: 1 },
+      { id: "pss_7_2", label: "Иногда", value: 2 },
+      { id: "pss_7_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "pss_8",
+    category: "pss",
+    text: "За последний месяц как часто вы чувствовали, что держите ситуацию под контролем?",
+    type: "single-choice",
+    required: true,
+    inverted: true,
+    options: [
+      { id: "pss_8_0", label: "Никогда", value: 0 },
+      { id: "pss_8_1", label: "Редко", value: 1 },
+      { id: "pss_8_2", label: "Иногда", value: 2 },
+      { id: "pss_8_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "pss_9",
+    category: "pss",
+    text: "За последний месяц как часто вы злились из-за вещей, которые были вне вашего контроля?",
+    type: "single-choice",
+    required: true,
+    options: [
+      { id: "pss_9_0", label: "Никогда", value: 0 },
+      { id: "pss_9_1", label: "Редко", value: 1 },
+      { id: "pss_9_2", label: "Иногда", value: 2 },
+      { id: "pss_9_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "pss_10",
+    category: "pss",
+    text: "За последний месяц как часто вам казалось, что трудности накапливаются настолько, что вы не можете их преодолеть?",
+    type: "single-choice",
+    required: true,
+    options: [
+      { id: "pss_10_0", label: "Никогда", value: 0 },
+      { id: "pss_10_1", label: "Редко", value: 1 },
+      { id: "pss_10_2", label: "Иногда", value: 2 },
+      { id: "pss_10_3", label: "Часто", value: 3 },
+    ],
+  },
+];
+
+/**
+ * Шкала учебного выгорания (адаптированная для подростков и студентов)
+ * Основана на MBI-SS (Maslach Burnout Inventory - Student Survey)
+ * Шкала: 0-3 (0=никогда, 1=редко, 2=иногда, 3=часто)
+ * Интерпретация: 0-9 низкий, 10-18 умеренный, 19-27 высокий
+ */
 const burnoutQuestions: Question[] = [
   {
     id: "burnout_1",
@@ -222,246 +384,148 @@ const burnoutQuestions: Question[] = [
     type: "single-choice",
     required: true,
     options: [
-      { id: "burnout_1_1", label: "Никогда", value: 1 },
-      { id: "burnout_1_2", label: "Редко", value: 2 },
-      { id: "burnout_1_3", label: "Иногда", value: 3 },
-      { id: "burnout_1_4", label: "Часто", value: 4 },
-      { id: "burnout_1_5", label: "Всегда", value: 5 },
+      { id: "burnout_1_0", label: "Никогда", value: 0 },
+      { id: "burnout_1_1", label: "Редко", value: 1 },
+      { id: "burnout_1_2", label: "Иногда", value: 2 },
+      { id: "burnout_1_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "burnout_2",
     category: "burnout",
-    text: "Чувствуете ли вы, что учёба потеряла для вас смысл?",
+    text: "Как часто к концу учебного дня вы чувствуете себя полностью опустошённым?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "burnout_2_1", label: "Нет, всё в порядке", value: 1 },
-      { id: "burnout_2_2", label: "Иногда возникают сомнения", value: 2 },
-      { id: "burnout_2_3", label: "Часто задумываюсь об этом", value: 3 },
-      { id: "burnout_2_4", label: "Почти не вижу смысла", value: 4 },
-      { id: "burnout_2_5", label: "Полностью потерял мотивацию", value: 5 },
+      { id: "burnout_2_0", label: "Никогда", value: 0 },
+      { id: "burnout_2_1", label: "Редко", value: 1 },
+      { id: "burnout_2_2", label: "Иногда", value: 2 },
+      { id: "burnout_2_3", label: "Часто", value: 3 },
     ],
   },
   {
     id: "burnout_3",
     category: "burnout",
-    text: "Как часто у вас бывает ощущение, что сил совсем не осталось?",
+    text: "Как часто вы чувствуете усталость при мысли о предстоящем учебном дне?",
     type: "single-choice",
     required: true,
     options: [
-      { id: "burnout_3_1", label: "Никогда", value: 1 },
-      { id: "burnout_3_2", label: "Редко", value: 2 },
-      { id: "burnout_3_3", label: "Иногда", value: 3 },
-      { id: "burnout_3_4", label: "Часто", value: 4 },
-      { id: "burnout_3_5", label: "Постоянно", value: 5 },
+      { id: "burnout_3_0", label: "Никогда", value: 0 },
+      { id: "burnout_3_1", label: "Редко", value: 1 },
+      { id: "burnout_3_2", label: "Иногда", value: 2 },
+      { id: "burnout_3_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "burnout_4",
+    category: "burnout",
+    text: "Как часто вам кажется, что учёба теряет для вас смысл?",
+    type: "single-choice",
+    required: true,
+    options: [
+      { id: "burnout_4_0", label: "Никогда", value: 0 },
+      { id: "burnout_4_1", label: "Редко", value: 1 },
+      { id: "burnout_4_2", label: "Иногда", value: 2 },
+      { id: "burnout_4_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "burnout_5",
+    category: "burnout",
+    text: "Как часто вы сомневаетесь в значимости своей учёбы?",
+    type: "single-choice",
+    required: true,
+    options: [
+      { id: "burnout_5_0", label: "Никогда", value: 0 },
+      { id: "burnout_5_1", label: "Редко", value: 1 },
+      { id: "burnout_5_2", label: "Иногда", value: 2 },
+      { id: "burnout_5_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "burnout_6",
+    category: "burnout",
+    text: "Как часто вам трудно сконцентрироваться на учебных задачах?",
+    type: "single-choice",
+    required: true,
+    options: [
+      { id: "burnout_6_0", label: "Никогда", value: 0 },
+      { id: "burnout_6_1", label: "Редко", value: 1 },
+      { id: "burnout_6_2", label: "Иногда", value: 2 },
+      { id: "burnout_6_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "burnout_7",
+    category: "burnout",
+    text: "Как часто вы чувствуете, что не справляетесь с учебной нагрузкой?",
+    type: "single-choice",
+    required: true,
+    options: [
+      { id: "burnout_7_0", label: "Никогда", value: 0 },
+      { id: "burnout_7_1", label: "Редко", value: 1 },
+      { id: "burnout_7_2", label: "Иногда", value: 2 },
+      { id: "burnout_7_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "burnout_8",
+    category: "burnout",
+    text: "Как часто вы откладываете выполнение учебных заданий?",
+    type: "single-choice",
+    required: true,
+    options: [
+      { id: "burnout_8_0", label: "Никогда", value: 0 },
+      { id: "burnout_8_1", label: "Редко", value: 1 },
+      { id: "burnout_8_2", label: "Иногда", value: 2 },
+      { id: "burnout_8_3", label: "Часто", value: 3 },
+    ],
+  },
+  {
+    id: "burnout_9",
+    category: "burnout",
+    text: "Как часто вы теряете интерес к учёбе, которая раньше была вам интересна?",
+    type: "single-choice",
+    required: true,
+    options: [
+      { id: "burnout_9_0", label: "Никогда", value: 0 },
+      { id: "burnout_9_1", label: "Редко", value: 1 },
+      { id: "burnout_9_2", label: "Иногда", value: 2 },
+      { id: "burnout_9_3", label: "Часто", value: 3 },
     ],
   },
 ];
 
-const socialMediaQuestions: Question[] = [
-  {
-    id: "social_1",
-    category: "social_media",
-    text: "Сколько часов в день вы проводите в социальных сетях?",
-    type: "single-choice",
-    required: true,
-    options: [
-      { id: "social_1_1", label: "Меньше 1 часа", value: 1 },
-      { id: "social_1_2", label: "1-2 часа", value: 2 },
-      { id: "social_1_3", label: "3-4 часа", value: 3 },
-      { id: "social_1_4", label: "5-6 часов", value: 4 },
-      { id: "social_1_5", label: "Больше 6 часов", value: 5 },
-    ],
-  },
-  {
-    id: "social_2",
-    category: "social_media",
-    text: "Как часто вы сравниваете свою жизнь с жизнью других людей в соцсетях?",
-    type: "single-choice",
-    required: true,
-    options: [
-      { id: "social_2_1", label: "Никогда", value: 1 },
-      { id: "social_2_2", label: "Редко", value: 2 },
-      { id: "social_2_3", label: "Иногда", value: 3 },
-      { id: "social_2_4", label: "Часто", value: 4 },
-      { id: "social_2_5", label: "Постоянно", value: 5 },
-    ],
-  },
-  {
-    id: "social_3",
-    category: "social_media",
-    text: "Испытываете ли вы FOMO (страх упустить что-то важное), когда не проверяете соцсети?",
-    type: "single-choice",
-    required: true,
-    options: [
-      { id: "social_3_1", label: "Нет, совсем не испытываю", value: 1 },
-      { id: "social_3_2", label: "Иногда немного беспокоюсь", value: 2 },
-      { id: "social_3_3", label: "Да, часто беспокоюсь", value: 3 },
-      { id: "social_3_4", label: "Очень сильно беспокоюсь", value: 4 },
-      { id: "social_3_5", label: "Не могу без соцсетей", value: 5 },
-    ],
-  },
-];
-
-const examStressQuestions: Question[] = [
-  {
-    id: "exam_1",
-    category: "exam_stress",
-    text: "Насколько сильный стресс вы испытываете в связи с подготовкой к ЕНТ/экзаменам?",
-    type: "single-choice",
-    required: true,
-    options: [
-      { id: "exam_1_1", label: "Минимальный", value: 1 },
-      { id: "exam_1_2", label: "Умеренный", value: 2 },
-      { id: "exam_1_3", label: "Значительный", value: 3 },
-      { id: "exam_1_4", label: "Очень высокий", value: 4 },
-      { id: "exam_1_5", label: "Критический", value: 5 },
-    ],
-  },
-  {
-    id: "exam_2",
-    category: "exam_stress",
-    text: "Как часто у вас бывают проблемы со сном из-за мыслей об экзаменах?",
-    type: "single-choice",
-    required: true,
-    options: [
-      { id: "exam_2_1", label: "Никогда", value: 1 },
-      { id: "exam_2_2", label: "Редко", value: 2 },
-      { id: "exam_2_3", label: "Иногда", value: 3 },
-      { id: "exam_2_4", label: "Часто", value: 4 },
-      { id: "exam_2_5", label: "Почти каждую ночь", value: 5 },
-    ],
-  },
-];
-
-const careerQuestions: Question[] = [
-  {
-    id: "career_1",
-    category: "career",
-    text: "Выбрали ли вы будущую профессию?",
-    type: "single-choice",
-    required: true,
-    options: [
-      { id: "career_1_1", label: "Да, полностью уверен", value: 1 },
-      { id: "career_1_2", label: "Да, но есть сомнения", value: 2 },
-      { id: "career_1_3", label: "Есть несколько вариантов", value: 3 },
-      { id: "career_1_4", label: "Пока не определился", value: 4 },
-      { id: "career_1_5", label: "Совсем не знаю", value: 5 },
-    ],
-  },
-  {
-    id: "career_2",
-    category: "career",
-    text: "Насколько вы чувствуете давление со стороны семьи в выборе профессии?",
-    type: "single-choice",
-    required: true,
-    options: [
-      { id: "career_2_1", label: "Совсем не чувствую", value: 1 },
-      { id: "career_2_2", label: "Немного", value: 2 },
-      { id: "career_2_3", label: "Умеренно", value: 3 },
-      { id: "career_2_4", label: "Сильно", value: 4 },
-      { id: "career_2_5", label: "Очень сильное давление", value: 5 },
-    ],
-  },
-];
-
-const familyQuestions: Question[] = [
-  {
-    id: "family_1",
-    category: "family",
-    text: "Как бы вы оценили отношения с родителями?",
-    type: "single-choice",
-    required: true,
-    options: [
-      { id: "family_1_1", label: "Отличные", value: 1 },
-      { id: "family_1_2", label: "Хорошие", value: 2 },
-      { id: "family_1_3", label: "Нормальные", value: 3 },
-      { id: "family_1_4", label: "Напряжённые", value: 4 },
-      { id: "family_1_5", label: "Очень плохие", value: 5 },
-    ],
-  },
-  {
-    id: "family_2",
-    category: "family",
-    text: "Чувствуете ли вы поддержку от семьи?",
-    type: "single-choice",
-    required: true,
-    options: [
-      { id: "family_2_1", label: "Да, всегда", value: 1 },
-      { id: "family_2_2", label: "Чаще да", value: 2 },
-      { id: "family_2_3", label: "Иногда", value: 3 },
-      { id: "family_2_4", label: "Редко", value: 4 },
-      { id: "family_2_5", label: "Нет, совсем не чувствую", value: 5 },
-    ],
-  },
-];
-
-const openQuestions: Question[] = [
-  {
-    id: "open_1",
-    category: "open",
-    text: "Что больше всего беспокоит вас в жизни прямо сейчас?",
-    type: "text",
-    required: false,
-    placeholder: "Напишите здесь...",
-  },
-  {
-    id: "open_2",
-    category: "open",
-    text: "Есть ли у вас хобби или занятия, которые помогают вам расслабиться?",
-    type: "text",
-    required: false,
-    placeholder: "Напишите здесь...",
-  },
-  {
-    id: "open_3",
-    category: "open",
-    text: "Что бы вы хотели изменить в своей жизни?",
-    type: "text",
-    required: false,
-    placeholder: "Напишите здесь...",
-  },
-];
-
+/**
+ * Полный психологический опросник
+ * Включает все 4 валидированных шкалы
+ */
 export const comprehensiveSurvey: Survey = {
-  id: "comprehensive",
-  title: "Комплексный психологический опрос",
-  description: "Подробная оценка вашего психологического состояния, включая PHQ-9, GAD-7 и другие шкалы",
+  id: "comprehensive-psychological-assessment",
+  title: "Комплексная психологическая диагностика",
+  description: "Научно валидированный опросник для оценки депрессии (PHQ-9), тревожности (GAD-7), стресса (PSS-10) и учебного выгорания",
   type: "comprehensive",
-  estimatedMinutes: 25,
-  totalQuestions: 35,
   questions: [
     ...phq9Questions,
     ...gad7Questions,
+    ...pss10Questions,
     ...burnoutQuestions,
-    ...socialMediaQuestions,
-    ...examStressQuestions,
-    ...careerQuestions,
-    ...familyQuestions,
-    ...openQuestions,
   ],
+  estimatedMinutes: 15,
+  totalQuestions: phq9Questions.length + gad7Questions.length + pss10Questions.length + burnoutQuestions.length,
 };
 
+/**
+ * Экспресс-опросник (только PHQ-9 и GAD-7)
+ */
 export const quickSurvey: Survey = {
-  id: "quick",
-  title: "Быстрая проверка самочувствия",
-  description: "Краткий опрос для оценки текущего состояния",
+  id: "quick-screening",
+  title: "Экспресс-диагностика",
+  description: "Быстрая оценка депрессии и тревожности (PHQ-9, GAD-7)",
   type: "quick",
+  questions: [...phq9Questions, ...gad7Questions],
   estimatedMinutes: 5,
-  totalQuestions: 10,
-  questions: [
-    phq9Questions[0],
-    phq9Questions[1],
-    gad7Questions[0],
-    gad7Questions[1],
-    burnoutQuestions[0],
-    socialMediaQuestions[0],
-    examStressQuestions[0],
-    familyQuestions[0],
-    openQuestions[0],
-    openQuestions[2],
-  ],
+  totalQuestions: phq9Questions.length + gad7Questions.length,
 };
 
-export const allSurveys: Survey[] = [quickSurvey, comprehensiveSurvey];
+export { phq9Questions, gad7Questions, pss10Questions, burnoutQuestions };
