@@ -3,10 +3,19 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, MessageCircle, AlertTriangle, CheckCircle, Info, Loader2 } from "lucide-react";
+import { 
+  ArrowLeft, 
+  MessageCircle, 
+  Loader2, 
+  Brain, 
+  Heart, 
+  Zap, 
+  Flame,
+  Building2,
+  FileText,
+  Download
+} from "lucide-react";
 import { ScaleResult } from "@/types/survey";
 import {
   calculatePHQ9Score,
@@ -21,6 +30,9 @@ import {
   generateRecommendations,
 } from "@/lib/surveyLogic";
 import { Answer } from "@/types/survey";
+import { ScaleChart } from "@/components/results/ScaleChart";
+import { RiskIndicator } from "@/components/results/RiskIndicator";
+import { RecommendationsList } from "@/components/results/RecommendationsList";
 
 interface SurveyResult {
   phq9: ScaleResult;
@@ -29,55 +41,7 @@ interface SurveyResult {
   burnout?: ScaleResult;
   overallRisk: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
   recommendations: string[];
-}
-
-const riskColors = {
-  LOW: "bg-green-100 text-green-800 border-green-300",
-  MEDIUM: "bg-yellow-100 text-yellow-800 border-yellow-300",
-  HIGH: "bg-orange-100 text-orange-800 border-orange-300",
-  CRITICAL: "bg-red-100 text-red-800 border-red-300",
-};
-
-const riskLabels = {
-  LOW: "Низкий",
-  MEDIUM: "Средний",
-  HIGH: "Высокий",
-  CRITICAL: "Критический",
-};
-
-const riskIcons = {
-  LOW: CheckCircle,
-  MEDIUM: Info,
-  HIGH: AlertTriangle,
-  CRITICAL: AlertTriangle,
-};
-
-function ScaleCard({ title, result, color }: { title: string; result: ScaleResult; color: string }) {
-  const percentage = (result.score / result.maxScore) * 100;
-  
-  return (
-    <Card className="overflow-hidden">
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">{title}</CardTitle>
-          <Badge 
-            variant="outline" 
-            className={riskColors[result.riskLevel]}
-          >
-            {riskLabels[result.riskLevel]}
-          </Badge>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">Баллы</span>
-          <span className="font-medium">{result.score} / {result.maxScore}</span>
-        </div>
-        <Progress value={percentage} className={color} />
-        <p className="text-sm text-muted-foreground">{result.description}</p>
-      </CardContent>
-    </Card>
-  );
+  completedAt?: string;
 }
 
 export default function Results() {
@@ -117,7 +81,7 @@ export default function Results() {
 
       const phq9Score = data.phq9_score ?? calculatePHQ9Score(answers);
       const gad7Score = data.gad7_score ?? calculateGAD7Score(answers);
-      const pssScore = calculatePSS10Score(answers);
+      const pssScore = data.pss_score ?? calculatePSS10Score(answers);
       const burnoutScore = data.burnout_score ?? calculateBurnoutScore(answers);
 
       const phq9 = interpretPHQ9(phq9Score);
@@ -135,9 +99,9 @@ export default function Results() {
         burnout,
         overallRisk,
         recommendations,
+        completedAt: data.completed_at,
       });
 
-      // Auto-fetch AI analysis if available
       if (data.ai_analysis) {
         setAiAnalysis(typeof data.ai_analysis === "string" ? data.ai_analysis : JSON.stringify(data.ai_analysis));
       }
@@ -170,7 +134,6 @@ export default function Results() {
       
       setAiAnalysis(response.data.analysis);
 
-      // Save to database
       await supabase
         .from("survey_responses")
         .update({ ai_analysis: response.data.analysis })
@@ -185,15 +148,18 @@ export default function Results() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-sm text-muted-foreground">Загрузка результатов...</p>
+        </div>
       </div>
     );
   }
 
   if (!result) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <Card className="max-w-md text-center p-6">
           <p className="text-muted-foreground">Результаты не найдены</p>
           <Button onClick={() => navigate("/survey")} className="mt-4">
@@ -204,116 +170,121 @@ export default function Results() {
     );
   }
 
-  const RiskIcon = riskIcons[result.overallRisk];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5">
-      <header className="border-b bg-card/50 backdrop-blur-sm">
-        <div className="container mx-auto flex items-center gap-4 px-4 py-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div>
-            <h1 className="text-xl font-bold">Результаты диагностики</h1>
-            <p className="text-sm text-muted-foreground">Анализ психологического состояния</p>
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="bg-primary text-primary-foreground">
+        <div className="container mx-auto px-6 py-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={() => navigate("/")}
+                className="text-primary-foreground hover:bg-primary-foreground/10"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/10">
+                  <Building2 className="h-5 w-5" />
+                </div>
+                <div>
+                  <h1 className="text-lg font-bold">Результаты диагностики</h1>
+                  <p className="text-sm text-primary-foreground/80">
+                    {result.completedAt && new Date(result.completedAt).toLocaleDateString("ru-RU", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <Button
+              variant="ghost"
+              className="gap-2 text-primary-foreground hover:bg-primary-foreground/10"
+              onClick={() => navigate("/history")}
+            >
+              <FileText className="h-4 w-4" />
+              История
+            </Button>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto max-w-4xl p-4 py-8 space-y-6">
-        {/* Overall Risk Card */}
-        <Card className={`border-2 ${riskColors[result.overallRisk]}`}>
-          <CardHeader>
-            <div className="flex items-center gap-3">
-              <RiskIcon className="h-8 w-8" />
-              <div>
-                <CardTitle className="text-2xl">
-                  Общий уровень риска: {riskLabels[result.overallRisk]}
-                </CardTitle>
-                <CardDescription>
-                  На основе стандартизированных психодиагностических методик
-                </CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-        </Card>
+      <main className="container mx-auto max-w-5xl px-6 py-8 space-y-6">
+        {/* Overall Risk */}
+        <RiskIndicator risk={result.overallRisk} />
 
-        {/* Scale Results */}
+        {/* Scale Charts */}
         <div className="grid gap-4 md:grid-cols-2">
-          <ScaleCard 
+          <ScaleChart 
             title="Депрессия (PHQ-9)" 
-            result={result.phq9} 
-            color="bg-blue-500"
+            result={result.phq9}
+            color="hsl(var(--primary))"
+            icon={<Heart className="h-4 w-4 text-primary" />}
           />
-          <ScaleCard 
+          <ScaleChart 
             title="Тревожность (GAD-7)" 
-            result={result.gad7} 
-            color="bg-purple-500"
+            result={result.gad7}
+            color="hsl(var(--accent))"
+            icon={<Brain className="h-4 w-4 text-accent" />}
           />
           {result.pss10 && (
-            <ScaleCard 
+            <ScaleChart 
               title="Стресс (PSS-10)" 
-              result={result.pss10} 
-              color="bg-orange-500"
+              result={result.pss10}
+              color="hsl(var(--warning))"
+              icon={<Zap className="h-4 w-4 text-warning" />}
             />
           )}
           {result.burnout && (
-            <ScaleCard 
+            <ScaleChart 
               title="Учебное выгорание" 
-              result={result.burnout} 
-              color="bg-red-500"
+              result={result.burnout}
+              color="hsl(var(--destructive))"
+              icon={<Flame className="h-4 w-4 text-destructive" />}
             />
           )}
         </div>
 
         {/* Recommendations */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Рекомендации</CardTitle>
-            <CardDescription>
-              На основе анализа ваших результатов
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-3">
-              {result.recommendations.map((rec, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span className="text-sm">{rec}</span>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
+        <RecommendationsList recommendations={result.recommendations} />
 
         {/* AI Analysis */}
-        <Card>
-          <CardHeader>
+        <Card className="border shadow-sm">
+          <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>AI-анализ</CardTitle>
-                <CardDescription>
-                  Персонализированные рекомендации от AI-психолога
-                </CardDescription>
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+                  <Brain className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <CardTitle className="text-base">AI-анализ</CardTitle>
+                  <CardDescription className="text-xs">
+                    Персонализированный анализ результатов
+                  </CardDescription>
+                </div>
               </div>
               {!aiAnalysis && (
-                <Button onClick={getAiAnalysis} disabled={loadingAi}>
+                <Button size="sm" onClick={getAiAnalysis} disabled={loadingAi}>
                   {loadingAi ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <Loader2 className="mr-2 h-3 w-3 animate-spin" />
                       Анализ...
                     </>
                   ) : (
-                    "Получить AI-анализ"
+                    "Получить анализ"
                   )}
                 </Button>
               )}
             </div>
           </CardHeader>
           {aiAnalysis && (
-            <CardContent>
-              <div className="prose prose-sm max-w-none dark:prose-invert">
-                <p className="whitespace-pre-wrap text-sm">{aiAnalysis}</p>
+            <CardContent className="pt-0">
+              <div className="rounded-lg bg-muted/30 p-4">
+                <p className="whitespace-pre-wrap text-sm leading-relaxed">{aiAnalysis}</p>
               </div>
             </CardContent>
           )}
@@ -323,21 +294,21 @@ export default function Results() {
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-4">
-          <Button onClick={() => navigate("/")} className="flex-1">
-            <MessageCircle className="mr-2 h-4 w-4" />
-            Поговорить с AI-помощником
+          <Button onClick={() => navigate("/")} className="flex-1 gap-2">
+            <MessageCircle className="h-4 w-4" />
+            Консультация с AI-ассистентом
           </Button>
           <Button variant="outline" onClick={() => navigate("/survey")} className="flex-1">
-            Пройти новый опрос
+            Новая диагностика
           </Button>
         </div>
 
         {/* Disclaimer */}
-        <Card className="bg-muted/50">
-          <CardContent className="pt-4">
+        <Card className="border-muted bg-muted/30">
+          <CardContent className="py-4">
             <p className="text-xs text-muted-foreground text-center">
               ⚠️ Данные результаты носят информационный характер и не являются медицинским диагнозом. 
-              При высоком уровне риска обязательно обратитесь к квалифицированному специалисту.
+              При высоком уровне риска обязательно обратитесь к квалифицированному специалисту психологической службы.
             </p>
           </CardContent>
         </Card>

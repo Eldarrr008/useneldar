@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { ChatInterface } from "@/components/ChatInterface";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { 
   FileText, 
   Users, 
@@ -151,6 +152,7 @@ const Index = () => {
                 </Button>
               )}
               <Separator orientation="vertical" className="h-8 bg-primary-foreground/20" />
+              <ThemeToggle />
               <Button 
                 variant="ghost" 
                 onClick={handleLogout}
