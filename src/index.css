@@ -2,116 +2,136 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Professional University Design System
-   - Clean, institutional aesthetic
-   - Calming, trustworthy colors
-   - Corporate software feel
+/* Calming Psychological Wellness Design System
+   - Soft, soothing pastel colors
+   - Trust and comfort focused
+   - Minimal visual stress
 */
 
 @layer base {
   :root {
-    /* Core - Slate/Navy institutional palette */
-    --background: 210 20% 98%;
-    --foreground: 220 25% 15%;
+    /* Core - Soft cream/beige background */
+    --background: 40 30% 97%;
+    --foreground: 200 25% 20%;
 
-    /* Card - Clean white with subtle warmth */
-    --card: 0 0% 100%;
-    --card-foreground: 220 25% 15%;
+    /* Card - Warm white */
+    --card: 45 40% 99%;
+    --card-foreground: 200 25% 20%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 25% 15%;
+    --popover: 45 40% 99%;
+    --popover-foreground: 200 25% 20%;
 
-    /* Primary - Deep professional navy */
-    --primary: 215 55% 32%;
+    /* Primary - Calming teal/sage */
+    --primary: 170 35% 40%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary - Warm neutral gray */
-    --secondary: 210 12% 93%;
-    --secondary-foreground: 220 20% 25%;
+    /* Secondary - Soft lavender */
+    --secondary: 240 20% 95%;
+    --secondary-foreground: 220 20% 35%;
 
-    /* Muted - Soft institutional gray */
-    --muted: 210 15% 95%;
-    --muted-foreground: 215 12% 45%;
+    /* Muted - Warm beige */
+    --muted: 35 25% 93%;
+    --muted-foreground: 200 15% 45%;
 
-    /* Accent - Calm teal for positive actions */
-    --accent: 175 40% 38%;
+    /* Accent - Soft sage green */
+    --accent: 145 30% 55%;
     --accent-foreground: 0 0% 100%;
 
-    /* Success - Sage green */
-    --success: 150 35% 42%;
+    /* Success - Gentle green */
+    --success: 150 40% 45%;
     --success-foreground: 0 0% 100%;
 
-    /* Warning - Muted amber */
-    --warning: 38 70% 50%;
+    /* Warning - Soft peach/coral */
+    --warning: 25 80% 60%;
     --warning-foreground: 0 0% 100%;
 
-    /* Destructive - Subdued but clear red */
-    --destructive: 0 55% 48%;
+    /* Destructive - Muted rose */
+    --destructive: 350 50% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Borders and inputs */
-    --border: 214 18% 86%;
-    --input: 214 18% 86%;
-    --ring: 215 55% 32%;
+    /* Borders and inputs - Soft warm gray */
+    --border: 35 15% 85%;
+    --input: 35 15% 85%;
+    --ring: 170 35% 40%;
 
-    /* Radius - More conservative for corporate feel */
-    --radius: 0.5rem;
+    /* Radius - Softer rounded corners */
+    --radius: 0.75rem;
 
-    /* Sidebar */
-    --sidebar-background: 215 25% 22%;
-    --sidebar-foreground: 210 20% 95%;
-    --sidebar-primary: 175 40% 50%;
+    /* Sidebar - Soft teal */
+    --sidebar-background: 170 30% 30%;
+    --sidebar-foreground: 40 30% 95%;
+    --sidebar-primary: 145 35% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 215 25% 28%;
-    --sidebar-accent-foreground: 210 20% 95%;
-    --sidebar-border: 215 25% 30%;
-    --sidebar-ring: 175 40% 50%;
+    --sidebar-accent: 170 30% 35%;
+    --sidebar-accent-foreground: 40 30% 95%;
+    --sidebar-border: 170 25% 35%;
+    --sidebar-ring: 145 35% 55%;
+
+    /* Custom psychological wellness colors */
+    --calm-blue: 195 50% 70%;
+    --calm-blue-foreground: 200 50% 20%;
+    --soft-green: 145 35% 65%;
+    --soft-green-foreground: 150 40% 20%;
+    --warm-beige: 35 40% 85%;
+    --warm-beige-foreground: 30 30% 25%;
+    --gentle-lavender: 260 30% 85%;
+    --gentle-lavender-foreground: 260 30% 25%;
   }
 
   .dark {
-    /* Dark mode - Deep navy institutional */
-    --background: 220 25% 10%;
-    --foreground: 210 20% 95%;
+    /* Dark mode - Deep calming navy/teal */
+    --background: 200 30% 10%;
+    --foreground: 40 20% 90%;
 
-    --card: 220 22% 14%;
-    --card-foreground: 210 20% 95%;
+    --card: 200 25% 14%;
+    --card-foreground: 40 20% 90%;
 
-    --popover: 220 22% 14%;
-    --popover-foreground: 210 20% 95%;
+    --popover: 200 25% 14%;
+    --popover-foreground: 40 20% 90%;
 
-    --primary: 200 50% 55%;
-    --primary-foreground: 220 25% 10%;
+    --primary: 170 40% 50%;
+    --primary-foreground: 200 30% 10%;
 
-    --secondary: 220 20% 20%;
-    --secondary-foreground: 210 20% 90%;
+    --secondary: 200 20% 20%;
+    --secondary-foreground: 40 20% 85%;
 
-    --muted: 220 18% 18%;
-    --muted-foreground: 215 15% 55%;
+    --muted: 200 20% 18%;
+    --muted-foreground: 35 15% 55%;
 
-    --accent: 175 45% 45%;
-    --accent-foreground: 220 25% 10%;
+    --accent: 145 35% 50%;
+    --accent-foreground: 200 30% 10%;
 
-    --success: 150 35% 45%;
-    --success-foreground: 220 25% 10%;
+    --success: 150 40% 45%;
+    --success-foreground: 200 30% 10%;
 
-    --warning: 38 65% 55%;
-    --warning-foreground: 220 25% 10%;
+    --warning: 25 70% 55%;
+    --warning-foreground: 200 30% 10%;
 
-    --destructive: 0 50% 45%;
+    --destructive: 350 45% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 18% 22%;
-    --input: 220 18% 22%;
-    --ring: 200 50% 55%;
+    --border: 200 20% 22%;
+    --input: 200 20% 22%;
+    --ring: 170 40% 50%;
 
-    --sidebar-background: 220 25% 8%;
-    --sidebar-foreground: 210 20% 90%;
-    --sidebar-primary: 175 45% 50%;
+    --sidebar-background: 200 30% 8%;
+    --sidebar-foreground: 40 20% 90%;
+    --sidebar-primary: 145 40% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 22% 14%;
-    --sidebar-accent-foreground: 210 20% 90%;
-    --sidebar-border: 220 18% 18%;
-    --sidebar-ring: 175 45% 50%;
+    --sidebar-accent: 200 25% 14%;
+    --sidebar-accent-foreground: 40 20% 90%;
+    --sidebar-border: 200 20% 18%;
+    --sidebar-ring: 145 40% 50%;
+
+    /* Custom psychological wellness colors - dark mode */
+    --calm-blue: 195 40% 45%;
+    --calm-blue-foreground: 195 40% 90%;
+    --soft-green: 145 35% 45%;
+    --soft-green-foreground: 145 35% 90%;
+    --warm-beige: 35 30% 30%;
+    --warm-beige-foreground: 35 30% 85%;
+    --gentle-lavender: 260 25% 40%;
+    --gentle-lavender-foreground: 260 25% 90%;
   }
 }
 
@@ -125,20 +145,24 @@
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
-  /* Professional typography adjustments */
+  /* Soft, calming typography */
   h1, h2, h3, h4, h5, h6 {
     @apply tracking-tight font-semibold;
   }
 }
 
-/* Custom utility classes for institutional design */
+/* Custom utility classes for psychological wellness design */
 @layer utilities {
-  .university-header {
+  .wellness-header {
     @apply bg-primary text-primary-foreground;
   }
 
-  .institutional-card {
-    @apply bg-card border border-border shadow-sm;
+  .wellness-card {
+    @apply bg-card border border-border shadow-sm rounded-xl;
+  }
+
+  .wellness-gradient {
+    background: linear-gradient(135deg, hsl(var(--calm-blue) / 0.15), hsl(var(--soft-green) / 0.15));
   }
 
   .status-safe {
@@ -151,5 +175,15 @@
 
   .status-danger {
     @apply bg-destructive/10 text-destructive border-destructive/20;
+  }
+
+  /* Calming animations */
+  .animate-breathe {
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.02); opacity: 1; }
   }
 }

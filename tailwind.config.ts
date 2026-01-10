@@ -68,6 +68,23 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Custom wellness colors
+        calm: {
+          blue: "hsl(var(--calm-blue))",
+          "blue-foreground": "hsl(var(--calm-blue-foreground))",
+        },
+        soft: {
+          green: "hsl(var(--soft-green))",
+          "green-foreground": "hsl(var(--soft-green-foreground))",
+        },
+        warm: {
+          beige: "hsl(var(--warm-beige))",
+          "beige-foreground": "hsl(var(--warm-beige-foreground))",
+        },
+        gentle: {
+          lavender: "hsl(var(--gentle-lavender))",
+          "lavender-foreground": "hsl(var(--gentle-lavender-foreground))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
