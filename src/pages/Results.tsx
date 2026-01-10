@@ -175,10 +175,7 @@ export default function Results() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3">
-          <div className="relative">
-            <Loader2 className="h-10 w-10 animate-spin text-primary" />
-            <Leaf className="absolute inset-0 m-auto h-4 w-4 text-accent animate-pulse" />
-          </div>
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
           <p className="text-sm text-muted-foreground">Загрузка результатов...</p>
         </div>
       </div>
@@ -356,13 +353,45 @@ export default function Results() {
           </Button>
         </div>
 
+        {/* How Results Are Formed */}
+        <Card className="border-border/50 bg-muted/20">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <FileText className="h-4 w-4 text-muted-foreground" />
+              Как формируется результат?
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0 space-y-2">
+            <ul className="text-xs text-muted-foreground space-y-1.5">
+              <li className="flex items-start gap-2">
+                <span className="text-primary mt-0.5">•</span>
+                Анализ основан исключительно на ваших ответах в анкете
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-primary mt-0.5">•</span>
+                Используется автоматизированная обработка данных по валидированным шкалам
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-primary mt-0.5">•</span>
+                Система не ставит диагнозов и не заменяет консультацию специалиста
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+
         {/* Disclaimer */}
-        <Card className="border-muted bg-muted/30">
+        <Card className="border-warning/30 bg-warning/5">
           <CardContent className="py-4">
-            <p className="text-xs text-muted-foreground text-center">
-              ⚠️ Данные результаты носят информационный характер и не являются медицинским диагнозом. 
-              При высоком уровне риска обязательно обратитесь к квалифицированному специалисту психологической службы.
-            </p>
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="h-5 w-5 text-warning flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-foreground mb-1">Важно</p>
+                <p className="text-sm text-muted-foreground">
+                  Результаты носят рекомендательный характер и не заменяют консультацию психолога. 
+                  При необходимости обратитесь к специалисту психологической службы.
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </main>
