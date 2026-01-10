@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 import { 
   ArrowLeft, 
   MessageCircle, 
@@ -12,9 +13,13 @@ import {
   Heart, 
   Zap, 
   Flame,
-  Building2,
+  Leaf,
   FileText,
-  Download
+  Sparkles,
+  AlertTriangle,
+  CheckCircle2,
+  TrendingUp,
+  Lightbulb
 } from "lucide-react";
 import { ScaleResult } from "@/types/survey";
 import {
@@ -44,11 +49,25 @@ interface SurveyResult {
   completedAt?: string;
 }
 
+interface StructuredAnalysis {
+  summary: string;
+  detailedAnalysis: {
+    depression: string;
+    anxiety: string;
+    stress?: string;
+    burnout?: string;
+  };
+  keyFactors: string[];
+  recommendations: string[];
+  professionalHelp: boolean;
+}
+
 export default function Results() {
   const [searchParams] = useSearchParams();
   const [result, setResult] = useState<SurveyResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [aiAnalysis, setAiAnalysis] = useState<string | null>(null);
+  const [structuredAnalysis, setStructuredAnalysis] = useState<StructuredAnalysis | null>(null);
   const [loadingAi, setLoadingAi] = useState(false);
   const navigate = useNavigate();
 
@@ -103,7 +122,10 @@ export default function Results() {
       });
 
       if (data.ai_analysis) {
-        setAiAnalysis(typeof data.ai_analysis === "string" ? data.ai_analysis : JSON.stringify(data.ai_analysis));
+        const parsed = typeof data.ai_analysis === "string" 
+          ? data.ai_analysis 
+          : JSON.stringify(data.ai_analysis);
+        setAiAnalysis(parsed);
       }
     } catch (error) {
       console.error("Error fetching results:", error);
@@ -133,6 +155,9 @@ export default function Results() {
       if (response.error) throw response.error;
       
       setAiAnalysis(response.data.analysis);
+      if (response.data.structured) {
+        setStructuredAnalysis(response.data.structured);
+      }
 
       await supabase
         .from("survey_responses")
@@ -150,7 +175,10 @@ export default function Results() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <div className="relative">
+            <Loader2 className="h-10 w-10 animate-spin text-primary" />
+            <Leaf className="absolute inset-0 m-auto h-4 w-4 text-accent animate-pulse" />
+          </div>
           <p className="text-sm text-muted-foreground">Загрузка результатов...</p>
         </div>
       </div>
@@ -173,8 +201,8 @@ export default function Results() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-primary text-primary-foreground">
-        <div className="container mx-auto px-6 py-5">
+      <header className="bg-gradient-to-r from-primary to-accent text-primary-foreground">
+        <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Button 
@@ -186,11 +214,11 @@ export default function Results() {
                 <ArrowLeft className="h-5 w-5" />
               </Button>
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/10">
-                  <Building2 className="h-5 w-5" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-foreground/15 backdrop-blur">
+                  <Leaf className="h-6 w-6" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold">Результаты диагностики</h1>
+                  <h1 className="text-xl font-bold">Результаты диагностики</h1>
                   <p className="text-sm text-primary-foreground/80">
                     {result.completedAt && new Date(result.completedAt).toLocaleDateString("ru-RU", {
                       day: "numeric",
@@ -252,40 +280,62 @@ export default function Results() {
         {/* Recommendations */}
         <RecommendationsList recommendations={result.recommendations} />
 
-        {/* AI Analysis */}
-        <Card className="border shadow-sm">
-          <CardHeader className="pb-3">
+        {/* AI Analysis Section */}
+        <Card className="border shadow-sm overflow-hidden">
+          <CardHeader className="pb-3 bg-gradient-to-r from-primary/5 to-accent/5">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-                  <Brain className="h-4 w-4 text-primary" />
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-accent/20">
+                  <Sparkles className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <CardTitle className="text-base">AI-анализ</CardTitle>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    AI-анализ
+                    <Badge variant="secondary" className="text-xs font-normal">
+                      Персонализированный
+                    </Badge>
+                  </CardTitle>
                   <CardDescription className="text-xs">
-                    Персонализированный анализ результатов
+                    Глубокий анализ с объяснением факторов
                   </CardDescription>
                 </div>
               </div>
               {!aiAnalysis && (
-                <Button size="sm" onClick={getAiAnalysis} disabled={loadingAi}>
+                <Button 
+                  size="sm" 
+                  onClick={getAiAnalysis} 
+                  disabled={loadingAi}
+                  className="bg-gradient-to-r from-primary to-accent hover:opacity-90"
+                >
                   {loadingAi ? (
                     <>
                       <Loader2 className="mr-2 h-3 w-3 animate-spin" />
-                      Анализ...
+                      Анализирую...
                     </>
                   ) : (
-                    "Получить анализ"
+                    <>
+                      <Brain className="mr-2 h-3 w-3" />
+                      Получить анализ
+                    </>
                   )}
                 </Button>
               )}
             </div>
           </CardHeader>
+          
           {aiAnalysis && (
-            <CardContent className="pt-0">
-              <div className="rounded-lg bg-muted/30 p-4">
-                <p className="whitespace-pre-wrap text-sm leading-relaxed">{aiAnalysis}</p>
-              </div>
+            <CardContent className="pt-4 space-y-4">
+              {structuredAnalysis ? (
+                <StructuredAnalysisView 
+                  data={structuredAnalysis} 
+                  hasPss={!!result.pss10}
+                  hasBurnout={!!result.burnout}
+                />
+              ) : (
+                <div className="rounded-xl bg-muted/30 p-5">
+                  <p className="whitespace-pre-wrap text-sm leading-relaxed">{aiAnalysis}</p>
+                </div>
+              )}
             </CardContent>
           )}
         </Card>
@@ -294,7 +344,10 @@ export default function Results() {
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-4">
-          <Button onClick={() => navigate("/")} className="flex-1 gap-2">
+          <Button 
+            onClick={() => navigate("/")} 
+            className="flex-1 gap-2 bg-gradient-to-r from-primary to-accent hover:opacity-90"
+          >
             <MessageCircle className="h-4 w-4" />
             Консультация с AI-ассистентом
           </Button>
@@ -313,6 +366,159 @@ export default function Results() {
           </CardContent>
         </Card>
       </main>
+    </div>
+  );
+}
+
+function StructuredAnalysisView({ 
+  data, 
+  hasPss, 
+  hasBurnout 
+}: { 
+  data: StructuredAnalysis;
+  hasPss: boolean;
+  hasBurnout: boolean;
+}) {
+  return (
+    <div className="space-y-5">
+      {/* Summary */}
+      <div className="rounded-xl bg-gradient-to-r from-primary/5 to-accent/5 p-4 border border-primary/10">
+        <div className="flex items-start gap-3">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 mt-0.5">
+            <CheckCircle2 className="h-4 w-4 text-primary" />
+          </div>
+          <div>
+            <h4 className="font-semibold text-sm mb-1">Краткий вывод</h4>
+            <p className="text-sm text-muted-foreground leading-relaxed">{data.summary}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Detailed Analysis */}
+      <div className="space-y-3">
+        <h4 className="font-semibold text-sm flex items-center gap-2">
+          <TrendingUp className="h-4 w-4 text-primary" />
+          Детальный анализ
+        </h4>
+        
+        <div className="grid gap-3 sm:grid-cols-2">
+          <AnalysisCard 
+            title="Депрессия" 
+            content={data.detailedAnalysis.depression}
+            icon={<Heart className="h-3.5 w-3.5" />}
+            color="primary"
+          />
+          <AnalysisCard 
+            title="Тревожность" 
+            content={data.detailedAnalysis.anxiety}
+            icon={<Brain className="h-3.5 w-3.5" />}
+            color="accent"
+          />
+          {hasPss && data.detailedAnalysis.stress && (
+            <AnalysisCard 
+              title="Стресс" 
+              content={data.detailedAnalysis.stress}
+              icon={<Zap className="h-3.5 w-3.5" />}
+              color="warning"
+            />
+          )}
+          {hasBurnout && data.detailedAnalysis.burnout && (
+            <AnalysisCard 
+              title="Выгорание" 
+              content={data.detailedAnalysis.burnout}
+              icon={<Flame className="h-3.5 w-3.5" />}
+              color="destructive"
+            />
+          )}
+        </div>
+      </div>
+
+      {/* Key Factors */}
+      <div className="space-y-3">
+        <h4 className="font-semibold text-sm flex items-center gap-2">
+          <Lightbulb className="h-4 w-4 text-warning" />
+          Ключевые факторы
+        </h4>
+        <div className="space-y-2">
+          {data.keyFactors.map((factor, i) => (
+            <div 
+              key={i}
+              className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 border border-border/50"
+            >
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-medium text-primary">
+                {i + 1}
+              </span>
+              <p className="text-sm text-muted-foreground flex-1">{factor}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* AI Recommendations */}
+      <div className="space-y-3">
+        <h4 className="font-semibold text-sm flex items-center gap-2">
+          <Sparkles className="h-4 w-4 text-accent" />
+          Персонализированные рекомендации
+        </h4>
+        <div className="grid gap-2">
+          {data.recommendations.map((rec, i) => (
+            <div 
+              key={i}
+              className="flex items-start gap-3 p-3 rounded-lg bg-accent/5 border border-accent/20"
+            >
+              <CheckCircle2 className="h-4 w-4 text-accent mt-0.5 flex-shrink-0" />
+              <p className="text-sm">{rec}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Professional Help Warning */}
+      {data.professionalHelp && (
+        <div className="rounded-xl bg-destructive/10 border border-destructive/30 p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
+            <div>
+              <h4 className="font-semibold text-sm text-destructive mb-1">
+                Рекомендуется консультация специалиста
+              </h4>
+              <p className="text-sm text-muted-foreground">
+                На основании результатов диагностики мы настоятельно рекомендуем обратиться к 
+                квалифицированному психологу или психотерапевту для получения профессиональной помощи.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AnalysisCard({ 
+  title, 
+  content, 
+  icon, 
+  color 
+}: { 
+  title: string; 
+  content: string; 
+  icon: React.ReactNode;
+  color: "primary" | "accent" | "warning" | "destructive";
+}) {
+  const colorClasses = {
+    primary: "bg-primary/5 border-primary/20 text-primary",
+    accent: "bg-accent/5 border-accent/20 text-accent",
+    warning: "bg-warning/5 border-warning/20 text-warning",
+    destructive: "bg-destructive/5 border-destructive/20 text-destructive",
+  };
+
+  return (
+    <div className={`rounded-lg border p-3 ${colorClasses[color].split(' ').slice(0, 2).join(' ')}`}>
+      <div className="flex items-center gap-2 mb-2">
+        <span className={colorClasses[color].split(' ').slice(2).join(' ')}>{icon}</span>
+        <h5 className="font-medium text-sm">{title}</h5>
+      </div>
+      <p className="text-xs text-muted-foreground leading-relaxed">{content}</p>
     </div>
   );
 }
