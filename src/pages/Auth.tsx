@@ -20,7 +20,7 @@ const Auth = () => {
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (user) {
-        navigate("/");
+        navigate("/dashboard");
       }
     });
   }, [navigate]);
@@ -43,7 +43,7 @@ const Auth = () => {
           description: "Добро пожаловать в систему",
         });
         
-        navigate("/");
+        navigate("/dashboard");
       } else {
         const { error } = await supabase.auth.signUp({
           email,
@@ -62,7 +62,7 @@ const Auth = () => {
           description: "Учётная запись успешно создана",
         });
 
-        navigate("/");
+        navigate("/dashboard");
       }
     } catch (error: any) {
       console.error("Auth error:", error);
