@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useUserRole } from "@/hooks/useUserRole";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
@@ -31,13 +34,16 @@ import {
   Plus, 
   Users, 
   Copy, 
-  BarChart3,
   Loader2,
   ArrowLeft,
   Building2,
   FolderOpen,
   AlertTriangle,
-  UserCheck
+  UserCheck,
+  LogOut,
+  RefreshCw,
+  GraduationCap,
+  Shield
 } from "lucide-react";
 
 interface Classroom {
@@ -71,15 +77,15 @@ interface CrisisDetection {
 }
 
 const riskColors: Record<string, string> = {
-  LOW: "bg-success/10 text-success border-success/20",
-  MEDIUM: "bg-warning/10 text-warning border-warning/20",
-  HIGH: "bg-destructive/20 text-destructive border-destructive/30",
-  CRITICAL: "bg-destructive text-destructive-foreground",
+  LOW: "bg-green-100 text-green-700 border-green-200 dark:bg-green-950/50 dark:text-green-400 dark:border-green-800",
+  MODERATE: "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-950/50 dark:text-yellow-400 dark:border-yellow-800",
+  HIGH: "bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-950/50 dark:text-orange-400 dark:border-orange-800",
+  CRITICAL: "bg-red-100 text-red-700 border-red-200 dark:bg-red-950/50 dark:text-red-400 dark:border-red-800",
 };
 
 const riskLabels: Record<string, string> = {
   LOW: "Низкий",
-  MEDIUM: "Средний",
+  MODERATE: "Умеренный",
   HIGH: "Высокий",
   CRITICAL: "Критический",
 };
@@ -89,11 +95,15 @@ const Psychologist = () => {
   const [students, setStudents] = useState<StudentData[]>([]);
   const [crises, setCrises] = useState<CrisisDetection[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedClassroom, setSelectedClassroom] = useState<string | null>(null);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [newClassName, setNewClassName] = useState("");
   const [newClassDescription, setNewClassDescription] = useState("");
   const [creating, setCreating] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  
+  const { isAdmin } = useUserRole();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -101,11 +111,18 @@ const Psychologist = () => {
     totalStudents: 0,
     highRiskStudents: 0,
     unreviewedCrises: 0,
-    surveysToday: 0,
   });
 
   useEffect(() => {
-    fetchData();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      fetchData();
+    }
     
     const channel = supabase
       .channel("crisis_updates")
@@ -126,7 +143,7 @@ const Psychologist = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (selectedClassroom) {
@@ -135,10 +152,9 @@ const Psychologist = () => {
   }, [selectedClassroom]);
 
   const fetchData = async () => {
+    if (!user) return;
+    
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
       const { data: classroomsData, error: classroomsError } = await supabase
         .from("classrooms")
         .select("*")
@@ -177,6 +193,7 @@ const Psychologist = () => {
       });
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -231,9 +248,18 @@ const Psychologist = () => {
         setStats(prev => ({ ...prev, highRiskStudents: highRisk }));
       } else {
         setStudents([]);
+        setStats(prev => ({ ...prev, highRiskStudents: 0 }));
       }
     } catch (error) {
       console.error("Error fetching students:", error);
+    }
+  };
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchData();
+    if (selectedClassroom) {
+      fetchStudentsByClassroom(selectedClassroom);
     }
   };
 
@@ -245,7 +271,6 @@ const Psychologist = () => {
 
     setCreating(true);
     try {
-      const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
       const { data: codeData } = await supabase.rpc("generate_classroom_code");
@@ -293,8 +318,6 @@ const Psychologist = () => {
 
   const markCrisisReviewed = async (crisisId: string) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
       const { error } = await supabase
         .from("crisis_detections")
         .update({
@@ -313,12 +336,17 @@ const Psychologist = () => {
     }
   };
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/auth");
+  };
+
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p className="text-sm text-muted-foreground">Загрузка панели...</p>
+          <p className="text-sm text-muted-foreground">Загрузка панели психолога...</p>
         </div>
       </div>
     );
@@ -327,69 +355,119 @@ const Psychologist = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b bg-primary text-primary-foreground">
-        <div className="container mx-auto px-6 py-4">
+      <header className="bg-primary text-primary-foreground">
+        <div className="container mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/10">
-                <Building2 className="h-5 w-5" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-foreground/10">
+                <UserCheck className="h-6 w-6" />
               </div>
               <div>
-                <h1 className="text-lg font-bold">ZenithMind</h1>
-                <p className="text-xs text-primary-foreground/80">Панель специалиста</p>
+                <h1 className="text-xl font-bold tracking-tight">Панель психолога</h1>
+                <p className="text-sm text-primary-foreground/80">
+                  Мониторинг и сопровождение студентов
+                </p>
               </div>
             </div>
-            <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant="secondary" size="sm">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Создать группу
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                onClick={() => navigate("/")}
+                className="text-primary-foreground hover:bg-primary-foreground/10"
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                На главную
+              </Button>
+              {isAdmin && (
+                <Button 
+                  variant="ghost" 
+                  onClick={() => navigate("/admin")}
+                  className="text-primary-foreground hover:bg-primary-foreground/10"
+                >
+                  <Shield className="mr-2 h-4 w-4" />
+                  Администрирование
                 </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Создание новой группы</DialogTitle>
-                  <DialogDescription>
-                    Заполните данные для создания учебной группы
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Название группы</Label>
-                    <Input
-                      id="name"
-                      placeholder="Например: 10-А класс"
-                      value={newClassName}
-                      onChange={(e) => setNewClassName(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="desc">Описание (опционально)</Label>
-                    <Textarea
-                      id="desc"
-                      placeholder="Краткое описание группы"
-                      value={newClassDescription}
-                      onChange={(e) => setNewClassDescription(e.target.value)}
-                    />
-                  </div>
-                  <Button onClick={createClassroom} disabled={creating} className="w-full">
-                    {creating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Создать группу
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+              )}
+              <Separator orientation="vertical" className="h-8 bg-primary-foreground/20" />
+              <ThemeToggle />
+              <Button 
+                variant="ghost" 
+                onClick={handleLogout}
+                className="text-primary-foreground hover:bg-primary-foreground/10"
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                Выход
+              </Button>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Secondary Nav */}
+      {/* Secondary Header */}
       <div className="border-b bg-card">
-        <div className="container mx-auto px-6 py-3">
-          <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Назад к панели
-          </Button>
+        <div className="container mx-auto px-6">
+          <div className="flex items-center justify-between py-3">
+            <div className="flex items-center gap-3">
+              <Badge variant="default" className="gap-2 px-3 py-1.5">
+                <UserCheck className="h-3.5 w-3.5" />
+                <span className="text-xs font-medium">
+                  {user?.user_metadata?.full_name || "Психолог"}
+                </span>
+              </Badge>
+              {stats.unreviewedCrises > 0 && (
+                <Badge variant="destructive" className="gap-2">
+                  <AlertCircle className="h-3.5 w-3.5" />
+                  {stats.unreviewedCrises} кризис{stats.unreviewedCrises === 1 ? "" : stats.unreviewedCrises < 5 ? "а" : "ов"}
+                </Badge>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button size="sm">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Создать группу
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Создание новой группы</DialogTitle>
+                    <DialogDescription>
+                      Заполните данные для создания учебной группы
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Название группы</Label>
+                      <Input
+                        id="name"
+                        placeholder="Например: 10-А класс"
+                        value={newClassName}
+                        onChange={(e) => setNewClassName(e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="desc">Описание (опционально)</Label>
+                      <Textarea
+                        id="desc"
+                        placeholder="Краткое описание группы"
+                        value={newClassDescription}
+                        onChange={(e) => setNewClassDescription(e.target.value)}
+                      />
+                    </div>
+                    <Button onClick={createClassroom} disabled={creating} className="w-full">
+                      {creating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                      Создать группу
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+              <Button variant="outline" size="sm" onClick={handleRefresh} disabled={refreshing}>
+                <RefreshCw className={`mr-2 h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
+                Обновить
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -411,33 +489,35 @@ const Psychologist = () => {
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
                 <FolderOpen className="h-4 w-4" />
-                Групп
+                Учебных групп
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">{classrooms.length}</div>
             </CardContent>
           </Card>
-          <Card className="border">
+          <Card className="border border-orange-200 bg-orange-50/50 dark:border-orange-800 dark:bg-orange-950/20">
             <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+              <CardTitle className="flex items-center gap-2 text-sm font-medium text-orange-700 dark:text-orange-400">
                 <AlertTriangle className="h-4 w-4" />
                 Высокий риск
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-warning">{stats.highRiskStudents}</div>
+              <div className="text-3xl font-bold text-orange-600">{stats.highRiskStudents}</div>
             </CardContent>
           </Card>
-          <Card className="border">
+          <Card className={`border ${stats.unreviewedCrises > 0 ? "border-red-200 bg-red-50/50 dark:border-red-800 dark:bg-red-950/20" : ""}`}>
             <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+              <CardTitle className={`flex items-center gap-2 text-sm font-medium ${stats.unreviewedCrises > 0 ? "text-red-700 dark:text-red-400" : "text-muted-foreground"}`}>
                 <AlertCircle className="h-4 w-4" />
-                Кризисные ситуации
+                Кризисные сигналы
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-destructive">{stats.unreviewedCrises}</div>
+              <div className={`text-3xl font-bold ${stats.unreviewedCrises > 0 ? "text-red-600" : ""}`}>
+                {stats.unreviewedCrises}
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -449,7 +529,7 @@ const Psychologist = () => {
               Группы
             </TabsTrigger>
             <TabsTrigger value="students" className="gap-2">
-              <UserCheck className="h-4 w-4" />
+              <GraduationCap className="h-4 w-4" />
               Учащиеся
             </TabsTrigger>
             <TabsTrigger value="crises" className="gap-2">
@@ -465,7 +545,7 @@ const Psychologist = () => {
 
           <TabsContent value="classrooms" className="space-y-4">
             {classrooms.length === 0 ? (
-              <Card className="border text-center py-12">
+              <Card className="border border-dashed text-center py-12">
                 <CardContent>
                   <FolderOpen className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                   <h3 className="text-lg font-medium mb-2">Группы не созданы</h3>
@@ -483,7 +563,7 @@ const Psychologist = () => {
                 {classrooms.map((classroom) => (
                   <Card 
                     key={classroom.id}
-                    className={`cursor-pointer border transition-all hover:shadow-institutional-md ${
+                    className={`cursor-pointer border transition-all hover:shadow-md ${
                       selectedClassroom === classroom.id ? "border-primary ring-1 ring-primary" : ""
                     }`}
                     onClick={() => setSelectedClassroom(classroom.id)}
@@ -539,7 +619,12 @@ const Psychologist = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {students.length === 0 ? (
+                {!selectedClassroom ? (
+                  <div className="text-center text-muted-foreground py-12">
+                    <FolderOpen className="h-10 w-10 mx-auto mb-3 opacity-50" />
+                    <p>Выберите группу во вкладке "Группы"</p>
+                  </div>
+                ) : students.length === 0 ? (
                   <div className="text-center text-muted-foreground py-12">
                     <Users className="h-10 w-10 mx-auto mb-3 opacity-50" />
                     <p>В данной группе пока нет учащихся</p>
@@ -592,7 +677,7 @@ const Psychologist = () => {
               <CardContent>
                 {crises.length === 0 ? (
                   <div className="text-center text-muted-foreground py-12">
-                    <CheckCircle2 className="h-10 w-10 mx-auto mb-3 text-success opacity-70" />
+                    <CheckCircle2 className="h-10 w-10 mx-auto mb-3 text-green-500 opacity-70" />
                     <p>Кризисных ситуаций не зарегистрировано</p>
                   </div>
                 ) : (
@@ -611,7 +696,8 @@ const Psychologist = () => {
                       {crises.map((crisis) => (
                         <TableRow key={crisis.id}>
                           <TableCell>
-                            <Badge variant={crisis.severity === "critical" ? "destructive" : "outline"}>
+                            <Badge variant={crisis.severity === "critical" ? "destructive" : "outline"} 
+                                   className={crisis.severity !== "critical" ? "bg-orange-100 text-orange-700 border-orange-200" : ""}>
                               {crisis.severity === "critical" ? "Критический" : "Высокий"}
                             </Badge>
                           </TableCell>
@@ -630,12 +716,12 @@ const Psychologist = () => {
                           </TableCell>
                           <TableCell>
                             {crisis.reviewed ? (
-                              <div className="flex items-center gap-1.5 text-success">
+                              <div className="flex items-center gap-1.5 text-green-600">
                                 <CheckCircle2 className="h-4 w-4" />
                                 <span className="text-xs font-medium">Рассмотрено</span>
                               </div>
                             ) : (
-                              <div className="flex items-center gap-1.5 text-warning">
+                              <div className="flex items-center gap-1.5 text-orange-600">
                                 <AlertCircle className="h-4 w-4" />
                                 <span className="text-xs font-medium">Ожидает</span>
                               </div>
@@ -657,7 +743,35 @@ const Psychologist = () => {
             </Card>
           </TabsContent>
         </Tabs>
+
+        {/* Info Notice */}
+        <Card className="border-muted bg-muted/30">
+          <CardContent className="py-4">
+            <div className="flex items-start gap-3">
+              <UserCheck className="mt-0.5 h-5 w-5 text-muted-foreground" />
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-muted-foreground">
+                  Информация о конфиденциальности
+                </p>
+                <p className="text-sm text-muted-foreground/80">
+                  Все данные учащихся являются конфиденциальными и защищены в соответствии с требованиями 
+                  законодательства о персональных данных. Доступ к информации имеют только уполномоченные специалисты.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </main>
+
+      {/* Footer */}
+      <footer className="mt-auto border-t bg-muted/30">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between text-xs text-muted-foreground">
+            <p>© 2024 ZenithMind. Панель психолога</p>
+            <p>Все данные конфиденциальны и защищены</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
