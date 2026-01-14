@@ -39,11 +39,22 @@ serve(async (req) => {
     // Get or create conversation
     let conversation;
     if (conversationId) {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("conversations")
         .select("*")
         .eq("id", conversationId)
         .single();
+      
+      if (error || !data) {
+        throw new Error("Conversation not found");
+      }
+      
+      // SECURITY: Verify user owns this conversation
+      if (data.student_id !== user.id) {
+        console.error("Authorization failed: user", user.id, "tried to access conversation owned by", data.student_id);
+        throw new Error("Unauthorized: You don't own this conversation");
+      }
+      
       conversation = data;
     } else {
       const { data, error } = await supabase
