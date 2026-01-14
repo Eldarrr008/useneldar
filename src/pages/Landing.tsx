@@ -198,70 +198,142 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Roles Section */}
+      {/* AI Section */}
       <section className="py-16 bg-muted/30 border-t">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
-            <h3 className="text-2xl font-bold mb-2">Для кого предназначена система</h3>
-            <p className="text-muted-foreground">
-              Разные уровни доступа для разных задач
+            <Badge variant="outline" className="gap-2 mb-4">
+              <Brain className="h-3.5 w-3.5" />
+              Искусственный интеллект
+            </Badge>
+            <h3 className="text-2xl font-bold mb-2">Современные AI-технологии</h3>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Система использует передовые модели искусственного интеллекта для анализа, 
+              поддержки и раннего выявления психологических проблем
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3 max-w-4xl mx-auto">
-            {/* Student */}
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
+            {/* AI Analysis */}
             <Card className="border bg-card">
-              <CardHeader className="text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 mb-2">
-                  <GraduationCap className="h-8 w-8 text-primary" />
+              <CardHeader>
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/60 mb-2">
+                  <Brain className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <CardTitle>Студент</CardTitle>
+                <CardTitle className="text-lg">Интеллектуальный анализ</CardTitle>
+                <CardDescription>
+                  AI анализирует результаты тестов
+                </CardDescription>
               </CardHeader>
-              <CardContent className="text-center">
+              <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>Прохождение диагностики</li>
-                  <li>Консультации с AI</li>
-                  <li>Просмотр своих результатов</li>
-                  <li>Присоединение к группам</li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    Глубокий анализ ответов
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    Выявление паттернов
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    Персональные рекомендации
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    Прогнозирование рисков
+                  </li>
                 </ul>
               </CardContent>
             </Card>
 
-            {/* Psychologist */}
-            <Card className="border bg-card">
-              <CardHeader className="text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 mb-2">
-                  <UserCheck className="h-8 w-8 text-accent" />
+            {/* AI Chat */}
+            <Card className="border bg-card relative overflow-hidden">
+              <div className="absolute top-2 right-2">
+                <Badge variant="secondary" className="text-xs">24/7</Badge>
+              </div>
+              <CardHeader>
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent/60 mb-2">
+                  <MessageCircle className="h-6 w-6 text-accent-foreground" />
                 </div>
-                <CardTitle>Психолог</CardTitle>
+                <CardTitle className="text-lg">AI-ассистент</CardTitle>
+                <CardDescription>
+                  Виртуальный психологический помощник
+                </CardDescription>
               </CardHeader>
-              <CardContent className="text-center">
+              <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>Создание учебных групп</li>
-                  <li>Мониторинг студентов</li>
-                  <li>Просмотр результатов</li>
-                  <li>Отслеживание кризисов</li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                    Эмпатичные диалоги
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                    Техники самопомощи
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                    Дыхательные упражнения
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                    Кризисная поддержка
+                  </li>
                 </ul>
               </CardContent>
             </Card>
 
-            {/* Admin */}
+            {/* AI Detection */}
             <Card className="border bg-card">
-              <CardHeader className="text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10 mb-2">
-                  <ShieldCheck className="h-8 w-8 text-destructive" />
+              <CardHeader>
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-destructive to-destructive/60 mb-2">
+                  <ShieldCheck className="h-6 w-6 text-destructive-foreground" />
                 </div>
-                <CardTitle>Администратор</CardTitle>
+                <CardTitle className="text-lg">Раннее выявление</CardTitle>
+                <CardDescription>
+                  Автоматическое обнаружение кризисов
+                </CardDescription>
               </CardHeader>
-              <CardContent className="text-center">
+              <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>Управление пользователями</li>
-                  <li>Назначение ролей</li>
-                  <li>Общая статистика</li>
-                  <li>Настройка системы</li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-destructive" />
+                    Анализ текста в реальном времени
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-destructive" />
+                    Обнаружение тревожных сигналов
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-destructive" />
+                    Мгновенные уведомления
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-destructive" />
+                    Эскалация к специалисту
+                  </li>
                 </ul>
               </CardContent>
             </Card>
+          </div>
+
+          {/* AI Tech Stack */}
+          <div className="mt-12 text-center">
+            <p className="text-sm text-muted-foreground mb-4">Технологии, которые мы используем</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              <Badge variant="outline" className="px-4 py-2">
+                🧠 NLP — обработка языка
+              </Badge>
+              <Badge variant="outline" className="px-4 py-2">
+                📊 ML — машинное обучение
+              </Badge>
+              <Badge variant="outline" className="px-4 py-2">
+                💬 LLM — языковые модели
+              </Badge>
+              <Badge variant="outline" className="px-4 py-2">
+                🔒 Безопасный AI
+              </Badge>
+            </div>
           </div>
         </div>
       </section>
