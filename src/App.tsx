@@ -4,7 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import Index from "./pages/Index";
+import Landing from "./pages/Landing";
+import StudentDashboard from "./pages/StudentDashboard";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
@@ -25,12 +26,16 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            {/* Public routes - accessible without login */}
+            <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<Auth />} />
+            
+            {/* Protected student routes - require login */}
             <Route
-              path="/"
+              path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <Index />
+                  <StudentDashboard />
                 </ProtectedRoute>
               }
             />
@@ -66,14 +71,8 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute requiredRole="admin">
-                  <Admin />
-                </ProtectedRoute>
-              }
-            />
+            
+            {/* Psychologist panel - requires psychologist or admin role */}
             <Route
               path="/psychologist"
               element={
@@ -82,6 +81,17 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
+            
+            {/* Admin panel - requires admin role */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <Admin />
+                </ProtectedRoute>
+              }
+            />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

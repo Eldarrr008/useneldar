@@ -36,15 +36,16 @@ import {
   Copy, 
   Loader2,
   ArrowLeft,
-  Building2,
   FolderOpen,
   AlertTriangle,
   UserCheck,
   LogOut,
   RefreshCw,
   GraduationCap,
-  Shield
+  Shield,
+  Eye
 } from "lucide-react";
+import { StudentResultsDialog } from "@/components/psychologist/StudentResultsDialog";
 
 interface Classroom {
   id: string;
@@ -102,6 +103,8 @@ const Psychologist = () => {
   const [newClassDescription, setNewClassDescription] = useState("");
   const [creating, setCreating] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [selectedStudent, setSelectedStudent] = useState<{ id: string; name: string } | null>(null);
+  const [resultsDialogOpen, setResultsDialogOpen] = useState(false);
   
   const { isAdmin } = useUserRole();
   const navigate = useNavigate();
@@ -636,6 +639,7 @@ const Psychologist = () => {
                         <TableHead className="font-semibold">ФИО</TableHead>
                         <TableHead className="font-semibold">Уровень риска</TableHead>
                         <TableHead className="font-semibold">Последняя диагностика</TableHead>
+                        <TableHead className="font-semibold">Действия</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -658,6 +662,22 @@ const Psychologist = () => {
                               ? new Date(student.last_survey_date).toLocaleDateString("ru-RU")
                               : "—"
                             }
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setSelectedStudent({
+                                  id: student.user_id,
+                                  name: student.profiles?.full_name || "Учащийся"
+                                });
+                                setResultsDialogOpen(true);
+                              }}
+                            >
+                              <Eye className="mr-1 h-3 w-3" />
+                              Результаты
+                            </Button>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -772,6 +792,15 @@ const Psychologist = () => {
           </div>
         </div>
       </footer>
+      {/* Student Results Dialog */}
+      {selectedStudent && (
+        <StudentResultsDialog
+          open={resultsDialogOpen}
+          onOpenChange={setResultsDialogOpen}
+          studentId={selectedStudent.id}
+          studentName={selectedStudent.name}
+        />
+      )}
     </div>
   );
 };

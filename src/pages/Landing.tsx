@@ -1,0 +1,368 @@
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { 
+  Building2, 
+  ShieldCheck, 
+  Brain, 
+  Heart, 
+  Users, 
+  ChevronRight,
+  ClipboardList,
+  MessageCircle,
+  BarChart3,
+  Lock,
+  GraduationCap,
+  UserCheck
+} from "lucide-react";
+
+const Landing = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b bg-primary text-primary-foreground">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/10">
+                <Building2 className="h-5 w-5" />
+              </div>
+              <div>
+                <h1 className="text-lg font-bold">ZenithMind</h1>
+                <p className="text-xs text-primary-foreground/80">
+                  Система психологического мониторинга
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <Button 
+                variant="ghost" 
+                onClick={() => navigate("/auth")}
+                className="text-primary-foreground hover:bg-primary-foreground/10"
+              >
+                <Lock className="mr-2 h-4 w-4" />
+                Войти
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="bg-gradient-to-b from-primary/5 to-background py-16 md:py-24">
+        <div className="container mx-auto px-6">
+          <div className="mx-auto max-w-3xl text-center space-y-6">
+            <Badge variant="secondary" className="gap-2">
+              <ShieldCheck className="h-3.5 w-3.5" />
+              Конфиденциально и безопасно
+            </Badge>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+              Психологический мониторинг
+              <br />
+              <span className="text-primary">для образовательных учреждений</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Комплексная система для диагностики психоэмоционального состояния студентов, 
+              выявления рисков и своевременной психологической поддержки
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+              <Button size="lg" onClick={() => navigate("/auth")} className="gap-2">
+                <GraduationCap className="h-5 w-5" />
+                Войти как студент
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+              <Button size="lg" variant="outline" onClick={() => navigate("/auth")}>
+                <UserCheck className="mr-2 h-5 w-5" />
+                Вход для специалистов
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16 border-t">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h3 className="text-2xl font-bold mb-2">Возможности системы</h3>
+            <p className="text-muted-foreground">
+              Инструменты для комплексной работы с психологическим здоровьем
+            </p>
+          </div>
+          
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
+            {/* Feature 1 */}
+            <Card className="border">
+              <CardHeader>
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-2">
+                  <ClipboardList className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle className="text-lg">Психодиагностика</CardTitle>
+                <CardDescription>
+                  Валидированные методики оценки состояния
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    PHQ-9 — оценка депрессии
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    GAD-7 — оценка тревожности
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    PSS-10 — шкала стресса
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    Burnout — учебное выгорание
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Feature 2 */}
+            <Card className="border">
+              <CardHeader>
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10 mb-2">
+                  <MessageCircle className="h-6 w-6 text-accent" />
+                </div>
+                <CardTitle className="text-lg">AI-консультации</CardTitle>
+                <CardDescription>
+                  Первичная психологическая поддержка
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                    Круглосуточная доступность
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                    Конфиденциальность общения
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                    Обнаружение кризисов
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                    Рекомендации и поддержка
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Feature 3 */}
+            <Card className="border">
+              <CardHeader>
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary mb-2">
+                  <BarChart3 className="h-6 w-6 text-secondary-foreground" />
+                </div>
+                <CardTitle className="text-lg">Аналитика</CardTitle>
+                <CardDescription>
+                  Мониторинг и отслеживание динамики
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-secondary-foreground" />
+                    История результатов
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-secondary-foreground" />
+                    Графики и тренды
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-secondary-foreground" />
+                    Сравнительный анализ
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-secondary-foreground" />
+                    Персональные отчёты
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Roles Section */}
+      <section className="py-16 bg-muted/30 border-t">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h3 className="text-2xl font-bold mb-2">Для кого предназначена система</h3>
+            <p className="text-muted-foreground">
+              Разные уровни доступа для разных задач
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3 max-w-4xl mx-auto">
+            {/* Student */}
+            <Card className="border bg-card">
+              <CardHeader className="text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 mb-2">
+                  <GraduationCap className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle>Студент</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>Прохождение диагностики</li>
+                  <li>Консультации с AI</li>
+                  <li>Просмотр своих результатов</li>
+                  <li>Присоединение к группам</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Psychologist */}
+            <Card className="border bg-card">
+              <CardHeader className="text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 mb-2">
+                  <UserCheck className="h-8 w-8 text-accent" />
+                </div>
+                <CardTitle>Психолог</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>Создание учебных групп</li>
+                  <li>Мониторинг студентов</li>
+                  <li>Просмотр результатов</li>
+                  <li>Отслеживание кризисов</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Admin */}
+            <Card className="border bg-card">
+              <CardHeader className="text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10 mb-2">
+                  <ShieldCheck className="h-8 w-8 text-destructive" />
+                </div>
+                <CardTitle>Администратор</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>Управление пользователями</li>
+                  <li>Назначение ролей</li>
+                  <li>Общая статистика</li>
+                  <li>Настройка системы</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="py-16 border-t">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h3 className="text-2xl font-bold mb-2">Как это работает</h3>
+            <p className="text-muted-foreground">
+              Простой процесс для студентов
+            </p>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-8 max-w-4xl mx-auto">
+            <div className="flex-1 text-center">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-lg mb-4">
+                1
+              </div>
+              <h4 className="font-semibold mb-2">Регистрация</h4>
+              <p className="text-sm text-muted-foreground">
+                Создайте учётную запись или войдите с кодом группы от психолога
+              </p>
+            </div>
+            <div className="flex-1 text-center">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-lg mb-4">
+                2
+              </div>
+              <h4 className="font-semibold mb-2">Диагностика</h4>
+              <p className="text-sm text-muted-foreground">
+                Пройдите тест — это займёт от 5 до 15 минут
+              </p>
+            </div>
+            <div className="flex-1 text-center">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-lg mb-4">
+                3
+              </div>
+              <h4 className="font-semibold mb-2">Результаты</h4>
+              <p className="text-sm text-muted-foreground">
+                Получите персонализированный анализ и рекомендации
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-primary text-primary-foreground">
+        <div className="container mx-auto px-6 text-center">
+          <h3 className="text-2xl md:text-3xl font-bold mb-4">
+            Начните прямо сейчас
+          </h3>
+          <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
+            Зарегистрируйтесь для прохождения диагностики или войдите в систему, 
+            если у вас уже есть учётная запись
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg" 
+              variant="secondary"
+              onClick={() => navigate("/auth")}
+            >
+              Зарегистрироваться
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              onClick={() => navigate("/auth")}
+              className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+            >
+              Войти в систему
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t bg-muted/30">
+        <div className="container mx-auto px-6 py-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Building2 className="h-5 w-5 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">
+                © 2024 ZenithMind. Система психологического мониторинга
+              </span>
+            </div>
+            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1">
+                <Heart className="h-3 w-3" />
+                Забота о ментальном здоровье
+              </span>
+              <span className="flex items-center gap-1">
+                <Brain className="h-3 w-3" />
+                Powered by AI
+              </span>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default Landing;
