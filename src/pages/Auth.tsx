@@ -7,6 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Building2, ShieldCheck, Lock } from "lucide-react";
+import type { Database } from "@/integrations/supabase/types";
+
+type UserRole = Database["public"]["Enums"]["app_role"];
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -17,10 +20,28 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Helper to fetch user roles and redirect accordingly
+  const fetchRolesAndRedirect = async (userId: string) => {
+    const { data: rolesData } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId);
+    
+    const roles: UserRole[] = rolesData?.map(r => r.role) || [];
+    
+    if (roles.includes("admin")) {
+      navigate("/admin");
+    } else if (roles.includes("psychologist")) {
+      navigate("/psychologist");
+    } else {
+      navigate("/dashboard");
+    }
+  };
+
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (user) {
-        navigate("/dashboard");
+        fetchRolesAndRedirect(user.id);
       }
     });
   }, [navigate]);
@@ -43,7 +64,11 @@ const Auth = () => {
           description: "Добро пожаловать в систему",
         });
         
-        navigate("/dashboard");
+        // Get current user and redirect by role
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await fetchRolesAndRedirect(user.id);
+        }
       } else {
         const { error } = await supabase.auth.signUp({
           email,

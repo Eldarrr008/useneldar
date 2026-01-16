@@ -48,13 +48,23 @@ export const ProtectedRoute = ({
     return <Navigate to="/auth" replace />;
   }
 
+  // Helper to get the appropriate redirect path based on user's role
+  const getRedirectPath = () => {
+    if (roles.includes("admin")) {
+      return "/admin";
+    } else if (roles.includes("psychologist")) {
+      return "/psychologist";
+    }
+    return "/dashboard";
+  };
+
   // Check role requirements
   if (requiredRole && !roles.includes(requiredRole)) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={getRedirectPath()} replace />;
   }
 
   if (allowedRoles && !allowedRoles.some(role => roles.includes(role))) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={getRedirectPath()} replace />;
   }
 
   return <>{children}</>;
