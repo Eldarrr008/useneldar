@@ -255,11 +255,11 @@ const Admin = () => {
             <div className="flex items-center gap-2">
               <Button 
                 variant="ghost" 
-                onClick={() => navigate("/")}
+                onClick={handleLogout}
                 className="text-destructive-foreground hover:bg-destructive-foreground/10"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                На главную
+                Выйти
               </Button>
               <Button 
                 variant="ghost" 
@@ -271,14 +271,6 @@ const Admin = () => {
               </Button>
               <Separator orientation="vertical" className="h-8 bg-destructive-foreground/20" />
               <ThemeToggle />
-              <Button 
-                variant="ghost" 
-                onClick={handleLogout}
-                className="text-destructive-foreground hover:bg-destructive-foreground/10"
-              >
-                <LogOut className="mr-2 h-4 w-4" />
-                Выход
-              </Button>
             </div>
           </div>
         </div>

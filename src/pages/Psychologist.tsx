@@ -375,11 +375,11 @@ const Psychologist = () => {
             <div className="flex items-center gap-2">
               <Button 
                 variant="ghost" 
-                onClick={() => navigate("/")}
+                onClick={handleLogout}
                 className="text-primary-foreground hover:bg-primary-foreground/10"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                На главную
+                Выйти
               </Button>
               {isAdmin && (
                 <Button 
@@ -393,14 +393,6 @@ const Psychologist = () => {
               )}
               <Separator orientation="vertical" className="h-8 bg-primary-foreground/20" />
               <ThemeToggle />
-              <Button 
-                variant="ghost" 
-                onClick={handleLogout}
-                className="text-primary-foreground hover:bg-primary-foreground/10"
-              >
-                <LogOut className="mr-2 h-4 w-4" />
-                Выход
-              </Button>
             </div>
           </div>
         </div>
