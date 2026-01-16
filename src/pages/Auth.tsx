@@ -171,6 +171,18 @@ const Auth = () => {
                     : "Уже зарегистрированы? Войти"}
                 </button>
               </div>
+
+              {/* Demo accounts info */}
+              {isLogin && (
+                <div className="mt-4 rounded-lg border border-dashed border-muted-foreground/30 bg-muted/20 p-3">
+                  <p className="mb-2 text-xs font-medium text-muted-foreground">Демо-аккаунты (пароль: 123456):</p>
+                  <div className="space-y-1 text-xs text-muted-foreground/80">
+                    <p>• <span className="font-mono">student@example.com</span> — Студент</p>
+                    <p>• <span className="font-mono">psycholog@example.com</span> — Психолог</p>
+                    <p>• <span className="font-mono">admin@example.com</span> — Администратор</p>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
 

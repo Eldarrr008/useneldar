@@ -23,7 +23,7 @@ Deno.serve(async (req) => {
 
     const demoAccounts = [
       { email: "student@example.com", password: "123456", role: "student", fullName: "Демо Студент" },
-      { email: "psiholog@example.com", password: "123456", role: "psychologist", fullName: "Демо Психолог" },
+      { email: "psycholog@example.com", password: "123456", role: "psychologist", fullName: "Демо Психолог" },
       { email: "admin@example.com", password: "123456", role: "admin", fullName: "Демо Админ" },
     ];
 
