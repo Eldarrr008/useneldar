@@ -14,6 +14,21 @@ serve(async (req) => {
   try {
     const { conversationId, message } = await req.json();
     
+    // Input validation
+    if (typeof message !== 'string' || !message || message.trim().length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid message format' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
+    if (message.length > 10000) {
+      return new Response(
+        JSON.stringify({ error: 'Message too long (max 10KB)' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const lovableApiKey = Deno.env.get("LOVABLE_API_KEY")!;
@@ -227,8 +242,7 @@ serve(async (req) => {
     console.error("Error in chat-ai function:", error);
     return new Response(
       JSON.stringify({ 
-        error: error instanceof Error ? error.message : "Unknown error",
-        details: error instanceof Error ? error.stack : undefined
+        error: "An error occurred processing your request. Please try again."
       }),
       {
         status: 500,
