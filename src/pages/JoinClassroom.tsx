@@ -95,11 +95,17 @@ const JoinClassroom = () => {
 
       if (memberError) throw memberError;
 
-      // Update student data with classroom
-      await supabase
+      // Update or create student data with classroom
+      const { error: studentDataError } = await supabase
         .from("student_data")
-        .update({ classroom_id: classroom.id })
-        .eq("user_id", user.id);
+        .upsert({
+          user_id: user.id,
+          classroom_id: classroom.id,
+        }, { onConflict: "user_id" });
+
+      if (studentDataError) {
+        console.error("Error updating student_data:", studentDataError);
+      }
 
       toast({
         title: "Успешно!",
