@@ -43,7 +43,8 @@ import {
   RefreshCw,
   GraduationCap,
   Shield,
-  Eye
+  Eye,
+  BarChart3
 } from "lucide-react";
 import { StudentResultsDialog } from "@/components/psychologist/StudentResultsDialog";
 
@@ -417,6 +418,14 @@ const Psychologist = () => {
               )}
             </div>
             <div className="flex items-center gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => navigate("/analytics")}
+              >
+                <BarChart3 className="mr-2 h-4 w-4" />
+                Аналитика
+              </Button>
               <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
                 <DialogTrigger asChild>
                   <Button size="sm">
