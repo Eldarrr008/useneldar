@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import Psychologist from "./pages/Psychologist";
+import Analytics from "./pages/Analytics";
 import Survey from "./pages/Survey";
 import Results from "./pages/Results";
 import History from "./pages/History";
@@ -78,6 +79,14 @@ const App = () => (
               element={
                 <ProtectedRoute allowedRoles={["psychologist", "admin"]}>
                   <Psychologist />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/analytics"
+              element={
+                <ProtectedRoute allowedRoles={["psychologist", "admin"]}>
+                  <Analytics />
                 </ProtectedRoute>
               }
             />
