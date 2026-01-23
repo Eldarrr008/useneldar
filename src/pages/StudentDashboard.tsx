@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { ChatInterface } from "@/components/ChatInterface";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { 
   FileText, 
   Users, 
@@ -29,6 +31,7 @@ const StudentDashboard = () => {
   const [showChat, setShowChat] = useState(false);
   const { roles, loading, isAdmin, isPsychologist, isStudent } = useUserRole();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -60,7 +63,7 @@ const StudentDashboard = () => {
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
-          <p className="text-sm text-muted-foreground">Загрузка системы...</p>
+          <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -79,12 +82,12 @@ const StudentDashboard = () => {
                 onClick={() => setShowChat(false)}
                 className="text-primary-foreground hover:bg-primary-foreground/10"
               >
-                ← Назад к панели
+                ← {t('common.back')}
               </Button>
             </div>
             <div className="flex items-center gap-2">
               <ShieldCheck className="h-5 w-5" />
-              <span className="text-sm font-medium">Конфиденциальная сессия</span>
+              <span className="text-sm font-medium">{t('dashboard.privacyNotice.title')}</span>
             </div>
           </div>
         </header>
@@ -96,8 +99,8 @@ const StudentDashboard = () => {
                 <MessageCircle className="h-5 w-5 text-accent" />
               </div>
               <div>
-                <h1 className="text-lg font-semibold">Служба психологической поддержки</h1>
-                <p className="text-sm text-muted-foreground">AI-ассистент для консультаций</p>
+                <h1 className="text-lg font-semibold">{t('dashboard.modules.consultation.title')}</h1>
+                <p className="text-sm text-muted-foreground">{t('chat.title')}</p>
               </div>
             </div>
           </div>
@@ -125,7 +128,7 @@ const StudentDashboard = () => {
               <div>
                 <h1 className="text-xl font-bold tracking-tight">ZenithMind</h1>
                 <p className="text-sm text-primary-foreground/80">
-                  Система психологического мониторинга
+                  {t('landing.title')}
                 </p>
               </div>
             </div>
@@ -137,7 +140,7 @@ const StudentDashboard = () => {
                   className="text-primary-foreground hover:bg-primary-foreground/10"
                 >
                   <Settings className="mr-2 h-4 w-4" />
-                  Администрирование
+                  {t('admin.title')}
                 </Button>
               )}
               {(isPsychologist || isAdmin) && (
@@ -147,10 +150,11 @@ const StudentDashboard = () => {
                   className="text-primary-foreground hover:bg-primary-foreground/10"
                 >
                   <Users className="mr-2 h-4 w-4" />
-                  Панель специалиста
+                  {t('psychologist.title')}
                 </Button>
               )}
               <Separator orientation="vertical" className="h-8 bg-primary-foreground/20" />
+              <LanguageSwitcher />
               <ThemeToggle />
               <Button 
                 variant="ghost" 
@@ -158,7 +162,7 @@ const StudentDashboard = () => {
                 className="text-primary-foreground hover:bg-primary-foreground/10"
               >
                 <LogOut className="mr-2 h-4 w-4" />
-                Выход
+                {t('common.logout')}
               </Button>
             </div>
           </div>
@@ -176,7 +180,7 @@ const StudentDashboard = () => {
               </span>
             </Badge>
             <span className="text-sm text-muted-foreground">
-              Роль: {isAdmin ? "Администратор" : isPsychologist ? "Психолог" : "Студент"}
+              {isAdmin ? t('dashboard.role.admin') : isPsychologist ? t('dashboard.role.psychologist') : t('dashboard.role.student')}
             </span>
           </div>
         </div>
@@ -187,9 +191,9 @@ const StudentDashboard = () => {
         <div className="mx-auto max-w-5xl space-y-8">
           {/* Welcome Section */}
           <div className="space-y-1">
-            <h2 className="text-2xl font-semibold text-foreground">Рабочая панель</h2>
+            <h2 className="text-2xl font-semibold text-foreground">{t('dashboard.title')}</h2>
             <p className="text-muted-foreground">
-              Выберите необходимый модуль для работы
+              {t('dashboard.welcome')}
             </p>
           </div>
 
@@ -209,9 +213,9 @@ const StudentDashboard = () => {
               </CardHeader>
               <CardContent className="space-y-3">
                 <div>
-                  <CardTitle className="text-lg">Психодиагностика</CardTitle>
+                  <CardTitle className="text-lg">{t('dashboard.modules.psychodiagnostics.title')}</CardTitle>
                   <CardDescription className="mt-1">
-                    Стандартизированные методики оценки
+                    {t('dashboard.modules.psychodiagnostics.description')}
                   </CardDescription>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
@@ -220,9 +224,6 @@ const StudentDashboard = () => {
                   <Badge variant="secondary" className="text-xs">PSS-10</Badge>
                   <Badge variant="secondary" className="text-xs">Burnout</Badge>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Научно валидированные инструменты для комплексной оценки психоэмоционального состояния
-                </p>
               </CardContent>
             </Card>
 
@@ -240,22 +241,19 @@ const StudentDashboard = () => {
               </CardHeader>
               <CardContent className="space-y-3">
                 <div>
-                  <CardTitle className="text-lg">Консультационная служба</CardTitle>
+                  <CardTitle className="text-lg">{t('dashboard.modules.consultation.title')}</CardTitle>
                   <CardDescription className="mt-1">
-                    Психологическая поддержка онлайн
+                    {t('dashboard.modules.consultation.description')}
                   </CardDescription>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   <Badge variant="outline" className="border-accent/30 text-xs text-accent">
-                    Конфиденциально
+                    {t('dashboard.privacyNotice.title')}
                   </Badge>
                   <Badge variant="outline" className="border-accent/30 text-xs text-accent">
                     24/7
                   </Badge>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Анонимное общение с AI-ассистентом для получения первичной психологической помощи
-                </p>
               </CardContent>
             </Card>
           </div>
@@ -269,9 +267,9 @@ const StudentDashboard = () => {
                     <Users className="h-5 w-5 text-secondary-foreground" />
                   </div>
                   <div>
-                    <CardTitle className="text-base">Присоединение к группе</CardTitle>
+                    <CardTitle className="text-base">{t('dashboard.joinGroup.title')}</CardTitle>
                     <CardDescription>
-                      Введите код, полученный от куратора или психолога
+                      {t('dashboard.joinGroup.placeholder')}
                     </CardDescription>
                   </div>
                 </div>
@@ -279,7 +277,7 @@ const StudentDashboard = () => {
               <CardContent>
                 <div className="flex gap-3">
                   <Input
-                    placeholder="Код группы (6 символов)"
+                    placeholder={t('dashboard.joinGroup.placeholder')}
                     value={joinCode}
                     onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
                     maxLength={6}
@@ -289,7 +287,7 @@ const StudentDashboard = () => {
                     onClick={handleJoinWithCode}
                     disabled={joinCode.length !== 6}
                   >
-                    Присоединиться
+                    {t('dashboard.joinGroup.button')}
                   </Button>
                 </div>
               </CardContent>
@@ -305,15 +303,15 @@ const StudentDashboard = () => {
                     <History className="h-5 w-5 text-secondary-foreground" />
                   </div>
                   <div>
-                    <CardTitle className="text-base">Архив результатов</CardTitle>
+                    <CardTitle className="text-base">{t('history.title')}</CardTitle>
                     <CardDescription>
-                      История пройденных диагностических сессий
+                      {t('dashboard.modules.history.description')}
                     </CardDescription>
                   </div>
                 </div>
                 <Button variant="outline" onClick={() => navigate("/history")}>
                   <FileText className="mr-2 h-4 w-4" />
-                  Открыть архив
+                  {t('history.viewDetails')}
                 </Button>
               </div>
             </CardHeader>
@@ -326,11 +324,10 @@ const StudentDashboard = () => {
                 <ShieldCheck className="mt-0.5 h-5 w-5 text-muted-foreground" />
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-muted-foreground">
-                    Информация о конфиденциальности
+                    {t('dashboard.privacyNotice.title')}
                   </p>
                   <p className="text-sm text-muted-foreground/80">
-                    Все данные обрабатываются в соответствии с требованиями защиты персональных данных. 
-                    Результаты диагностики доступны только уполномоченным специалистам психологической службы.
+                    {t('dashboard.privacyNotice.description')}
                   </p>
                 </div>
               </div>
@@ -343,8 +340,8 @@ const StudentDashboard = () => {
       <footer className="mt-auto border-t bg-muted/30">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <p>© 2024 ZenithMind. Система психологического мониторинга</p>
-            <p>Данная система не заменяет консультацию квалифицированного специалиста</p>
+            <p>{t('landing.footer.copyright')}</p>
+            <p>{t('dashboard.footer.disclaimer')}</p>
           </div>
         </div>
       </footer>

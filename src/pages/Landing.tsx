@@ -1,14 +1,15 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { 
   Building2, 
   ShieldCheck, 
   Brain, 
   Heart, 
-  Users, 
   ChevronRight,
   ClipboardList,
   MessageCircle,
@@ -20,6 +21,7 @@ import {
 
 const Landing = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-background">
@@ -34,11 +36,12 @@ const Landing = () => {
               <div>
                 <h1 className="text-lg font-bold">ZenithMind</h1>
                 <p className="text-xs text-primary-foreground/80">
-                  Система психологического мониторинга
+                  {t('landing.subtitle').slice(0, 50)}...
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <LanguageSwitcher />
               <ThemeToggle />
               <Button 
                 variant="ghost" 
@@ -46,7 +49,7 @@ const Landing = () => {
                 className="text-primary-foreground hover:bg-primary-foreground/10"
               >
                 <Lock className="mr-2 h-4 w-4" />
-                Войти
+                {t('common.login')}
               </Button>
             </div>
           </div>
@@ -59,26 +62,23 @@ const Landing = () => {
           <div className="mx-auto max-w-3xl text-center space-y-6">
             <Badge variant="secondary" className="gap-2">
               <ShieldCheck className="h-3.5 w-3.5" />
-              Конфиденциально и безопасно
+              {t('landing.features.title')}
             </Badge>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
-              Психологический мониторинг
-              <br />
-              <span className="text-primary">для образовательных учреждений</span>
+              {t('landing.title')}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Комплексная система для диагностики психоэмоционального состояния студентов, 
-              выявления рисков и своевременной психологической поддержки
+              {t('landing.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Button size="lg" onClick={() => navigate("/auth")} className="gap-2">
                 <GraduationCap className="h-5 w-5" />
-                Войти как студент
+                {t('landing.loginAsStudent')}
                 <ChevronRight className="h-4 w-4" />
               </Button>
               <Button size="lg" variant="outline" onClick={() => navigate("/auth")}>
                 <UserCheck className="mr-2 h-5 w-5" />
-                Вход для специалистов
+                {t('landing.getStarted')}
               </Button>
             </div>
           </div>
@@ -89,9 +89,9 @@ const Landing = () => {
       <section className="py-16 border-t">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
-            <h3 className="text-2xl font-bold mb-2">Возможности системы</h3>
+            <h3 className="text-2xl font-bold mb-2">{t('landing.features.title')}</h3>
             <p className="text-muted-foreground">
-              Инструменты для комплексной работы с психологическим здоровьем
+              {t('landing.subtitle')}
             </p>
           </div>
           
@@ -102,28 +102,28 @@ const Landing = () => {
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-2">
                   <ClipboardList className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle className="text-lg">Психодиагностика</CardTitle>
+                <CardTitle className="text-lg">{t('landing.features.psychodiagnostics.title')}</CardTitle>
                 <CardDescription>
-                  Валидированные методики оценки состояния
+                  {t('landing.features.psychodiagnostics.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                    PHQ-9 — оценка депрессии
+                    PHQ-9 — Depression
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                    GAD-7 — оценка тревожности
+                    GAD-7 — Anxiety
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                    PSS-10 — шкала стресса
+                    PSS-10 — Stress
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                    Burnout — учебное выгорание
+                    MBI-SS — Burnout
                   </li>
                 </ul>
               </CardContent>
@@ -135,28 +135,24 @@ const Landing = () => {
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10 mb-2">
                   <MessageCircle className="h-6 w-6 text-accent" />
                 </div>
-                <CardTitle className="text-lg">AI-консультации</CardTitle>
+                <CardTitle className="text-lg">{t('landing.features.aiConsultation.title')}</CardTitle>
                 <CardDescription>
-                  Первичная психологическая поддержка
+                  {t('landing.features.aiConsultation.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Круглосуточная доступность
+                    24/7
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Конфиденциальность общения
+                    {t('dashboard.privacyNotice.title')}
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Обнаружение кризисов
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Рекомендации и поддержка
+                    {t('landing.aiSection.earlyDetection')}
                   </li>
                 </ul>
               </CardContent>
@@ -168,28 +164,24 @@ const Landing = () => {
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary mb-2">
                   <BarChart3 className="h-6 w-6 text-secondary-foreground" />
                 </div>
-                <CardTitle className="text-lg">Аналитика</CardTitle>
+                <CardTitle className="text-lg">{t('landing.features.analytics.title')}</CardTitle>
                 <CardDescription>
-                  Мониторинг и отслеживание динамики
+                  {t('landing.features.analytics.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-secondary-foreground" />
-                    История результатов
+                    {t('history.title')}
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-secondary-foreground" />
-                    Графики и тренды
+                    {t('analytics.trends')}
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-secondary-foreground" />
-                    Сравнительный анализ
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-secondary-foreground" />
-                    Персональные отчёты
+                    {t('analytics.comparison')}
                   </li>
                 </ul>
               </CardContent>
@@ -204,12 +196,11 @@ const Landing = () => {
           <div className="text-center mb-12">
             <Badge variant="outline" className="gap-2 mb-4">
               <Brain className="h-3.5 w-3.5" />
-              Искусственный интеллект
+              {t('landing.aiSection.title')}
             </Badge>
-            <h3 className="text-2xl font-bold mb-2">Современные AI-технологии</h3>
+            <h3 className="text-2xl font-bold mb-2">{t('landing.aiSection.title')}</h3>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Система использует передовые модели искусственного интеллекта для анализа, 
-              поддержки и раннего выявления психологических проблем
+              {t('landing.subtitle')}
             </p>
           </div>
 
@@ -220,31 +211,11 @@ const Landing = () => {
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/60 mb-2">
                   <Brain className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <CardTitle className="text-lg">Интеллектуальный анализ</CardTitle>
+                <CardTitle className="text-lg">{t('landing.aiSection.intelligentAnalysis')}</CardTitle>
                 <CardDescription>
-                  AI анализирует результаты тестов
+                  {t('results.recommendations.aiAnalysis')}
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                    Глубокий анализ ответов
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                    Выявление паттернов
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                    Персональные рекомендации
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                    Прогнозирование рисков
-                  </li>
-                </ul>
-              </CardContent>
             </Card>
 
             {/* AI Chat */}
@@ -256,31 +227,11 @@ const Landing = () => {
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent/60 mb-2">
                   <MessageCircle className="h-6 w-6 text-accent-foreground" />
                 </div>
-                <CardTitle className="text-lg">AI-ассистент</CardTitle>
+                <CardTitle className="text-lg">{t('landing.aiSection.aiAssistant')}</CardTitle>
                 <CardDescription>
-                  Виртуальный психологический помощник
+                  {t('chat.title')}
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Эмпатичные диалоги
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Техники самопомощи
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Дыхательные упражнения
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Кризисная поддержка
-                  </li>
-                </ul>
-              </CardContent>
             </Card>
 
             {/* AI Detection */}
@@ -289,49 +240,28 @@ const Landing = () => {
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-destructive to-destructive/60 mb-2">
                   <ShieldCheck className="h-6 w-6 text-destructive-foreground" />
                 </div>
-                <CardTitle className="text-lg">Раннее выявление</CardTitle>
+                <CardTitle className="text-lg">{t('landing.aiSection.earlyDetection')}</CardTitle>
                 <CardDescription>
-                  Автоматическое обнаружение кризисов
+                  {t('psychologist.crises.title')}
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-destructive" />
-                    Анализ текста в реальном времени
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-destructive" />
-                    Обнаружение тревожных сигналов
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-destructive" />
-                    Мгновенные уведомления
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-destructive" />
-                    Эскалация к специалисту
-                  </li>
-                </ul>
-              </CardContent>
             </Card>
           </div>
 
           {/* AI Tech Stack */}
           <div className="mt-12 text-center">
-            <p className="text-sm text-muted-foreground mb-4">Технологии, которые мы используем</p>
             <div className="flex flex-wrap justify-center gap-3">
               <Badge variant="outline" className="px-4 py-2">
-                🧠 NLP — обработка языка
+                🧠 NLP
               </Badge>
               <Badge variant="outline" className="px-4 py-2">
-                📊 ML — машинное обучение
+                📊 ML
               </Badge>
               <Badge variant="outline" className="px-4 py-2">
-                💬 LLM — языковые модели
+                💬 LLM
               </Badge>
               <Badge variant="outline" className="px-4 py-2">
-                🔒 Безопасный AI
+                🔒 Secure AI
               </Badge>
             </div>
           </div>
@@ -342,10 +272,7 @@ const Landing = () => {
       <section className="py-16 border-t">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
-            <h3 className="text-2xl font-bold mb-2">Как это работает</h3>
-            <p className="text-muted-foreground">
-              Простой процесс для студентов
-            </p>
+            <h3 className="text-2xl font-bold mb-2">{t('landing.howItWorks.title')}</h3>
           </div>
 
           <div className="flex flex-col md:flex-row gap-8 max-w-4xl mx-auto">
@@ -353,27 +280,27 @@ const Landing = () => {
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-lg mb-4">
                 1
               </div>
-              <h4 className="font-semibold mb-2">Регистрация</h4>
+              <h4 className="font-semibold mb-2">{t('landing.howItWorks.step1.title')}</h4>
               <p className="text-sm text-muted-foreground">
-                Создайте учётную запись или войдите с кодом группы от психолога
+                {t('landing.howItWorks.step1.description')}
               </p>
             </div>
             <div className="flex-1 text-center">
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-lg mb-4">
                 2
               </div>
-              <h4 className="font-semibold mb-2">Диагностика</h4>
+              <h4 className="font-semibold mb-2">{t('landing.howItWorks.step2.title')}</h4>
               <p className="text-sm text-muted-foreground">
-                Пройдите тест — это займёт от 5 до 15 минут
+                {t('landing.howItWorks.step2.description')}
               </p>
             </div>
             <div className="flex-1 text-center">
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-lg mb-4">
                 3
               </div>
-              <h4 className="font-semibold mb-2">Результаты</h4>
+              <h4 className="font-semibold mb-2">{t('landing.howItWorks.step3.title')}</h4>
               <p className="text-sm text-muted-foreground">
-                Получите персонализированный анализ и рекомендации
+                {t('landing.howItWorks.step3.description')}
               </p>
             </div>
           </div>
@@ -384,11 +311,10 @@ const Landing = () => {
       <section className="py-16 bg-primary text-primary-foreground">
         <div className="container mx-auto px-6 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
-            Начните прямо сейчас
+            {t('landing.cta.title')}
           </h3>
           <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
-            Зарегистрируйтесь для прохождения диагностики или войдите в систему, 
-            если у вас уже есть учётная запись
+            {t('landing.cta.description')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
@@ -396,7 +322,7 @@ const Landing = () => {
               variant="secondary"
               onClick={() => navigate("/auth")}
             >
-              Зарегистрироваться
+              {t('common.register')}
             </Button>
             <Button 
               size="lg" 
@@ -404,7 +330,7 @@ const Landing = () => {
               onClick={() => navigate("/auth")}
               className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
             >
-              Войти в систему
+              {t('common.login')}
             </Button>
           </div>
         </div>
@@ -417,17 +343,17 @@ const Landing = () => {
             <div className="flex items-center gap-3">
               <Building2 className="h-5 w-5 text-muted-foreground" />
               <span className="text-sm text-muted-foreground">
-                © 2024 ZenithMind. Система психологического мониторинга
+                {t('landing.footer.copyright')}
               </span>
             </div>
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
               <span className="flex items-center gap-1">
                 <Heart className="h-3 w-3" />
-                Забота о ментальном здоровье
+                {t('landing.footer.mentalHealth')}
               </span>
               <span className="flex items-center gap-1">
                 <Brain className="h-3 w-3" />
-                Powered by AI
+                {t('landing.footer.aiPowered')}
               </span>
             </div>
           </div>
