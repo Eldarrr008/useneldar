@@ -103,11 +103,11 @@ const Navbar = () => {
               </DropdownMenu>
             ) : (
               <>
-                <Button variant="ghost" asChild>
-                  <Link to="/login">Войти</Link>
+                <Button variant="outline" asChild>
+                  <Link to="/auth">Вход</Link>
                 </Button>
                 <Button asChild>
-                  <Link to="/register">Регистрация</Link>
+                  <Link to="/auth?register=true">Регистрация</Link>
                 </Button>
               </>
             )}
