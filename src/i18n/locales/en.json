@@ -1,0 +1,258 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "refresh": "Refresh",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register",
+    "home": "Home",
+    "profile": "Profile",
+    "settings": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
+  },
+  "landing": {
+    "title": "Psychological Monitoring for Educational Institutions",
+    "subtitle": "A modern platform for diagnosing students' psychological state using AI technologies",
+    "getStarted": "Get Started",
+    "loginAsStudent": "Login as Student",
+    "features": {
+      "title": "Platform Features",
+      "psychodiagnostics": {
+        "title": "Psychodiagnostics",
+        "description": "Standardized methods: PHQ-9, GAD-7, PSS-10, MBI-SS, C-SSRS"
+      },
+      "aiConsultation": {
+        "title": "AI Consultations",
+        "description": "24/7 support with artificial intelligence"
+      },
+      "analytics": {
+        "title": "Analytics",
+        "description": "Progress tracking and detailed reports"
+      }
+    },
+    "aiSection": {
+      "title": "AI Technologies",
+      "intelligentAnalysis": "Intelligent Analysis",
+      "aiAssistant": "AI Assistant",
+      "earlyDetection": "Early Crisis Detection"
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "step1": {
+        "title": "Registration",
+        "description": "Create an account in a minute"
+      },
+      "step2": {
+        "title": "Diagnostics",
+        "description": "Take the assessment"
+      },
+      "step3": {
+        "title": "Results",
+        "description": "Get personalized recommendations"
+      }
+    },
+    "cta": {
+      "title": "Ready to Start?",
+      "description": "Register now and get access to all platform features"
+    },
+    "footer": {
+      "copyright": "© 2024 ZenithMind. All rights reserved.",
+      "aiPowered": "Powered by AI",
+      "mentalHealth": "Caring for Mental Health"
+    }
+  },
+  "auth": {
+    "loginTitle": "Login",
+    "registerTitle": "Registration",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "fullName": "Full Name",
+    "loginButton": "Login",
+    "registerButton": "Register",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "backToHome": "← Back to Home",
+    "loginSuccess": "Login Successful",
+    "welcome": "Welcome!",
+    "loginError": "Login Error",
+    "registerSuccess": "Registration Successful",
+    "registerError": "Registration Error",
+    "passwordMismatch": "Passwords do not match",
+    "enterCredentials": "Enter your credentials to login"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome",
+    "role": {
+      "admin": "Administrator",
+      "psychologist": "Psychologist",
+      "student": "Student"
+    },
+    "modules": {
+      "psychodiagnostics": {
+        "title": "Psychodiagnostics",
+        "description": "Take an assessment to evaluate your psychological state",
+        "button": "Start Assessment"
+      },
+      "consultation": {
+        "title": "Consultation Service",
+        "description": "Get support from an AI consultant",
+        "button": "Open Chat"
+      },
+      "history": {
+        "title": "Results History",
+        "description": "View your diagnostic session history"
+      }
+    },
+    "joinGroup": {
+      "title": "Join a Group",
+      "placeholder": "Enter group code",
+      "button": "Join"
+    },
+    "privacyNotice": {
+      "title": "Privacy",
+      "description": "Your data is protected and processed in accordance with personal data legislation"
+    },
+    "footer": {
+      "disclaimer": "Diagnostic results are advisory and do not constitute a medical diagnosis"
+    }
+  },
+  "survey": {
+    "title": "Psychodiagnostics",
+    "selectSurvey": "Select Assessment Type",
+    "quick": {
+      "title": "Quick Assessment",
+      "description": "Rapid evaluation of depression, anxiety, and suicide risk",
+      "time": "~10 minutes"
+    },
+    "comprehensive": {
+      "title": "Comprehensive Assessment",
+      "description": "Complete psychological state evaluation across all scales",
+      "time": "~25 minutes"
+    },
+    "progress": "Progress",
+    "question": "Question",
+    "of": "of",
+    "completed": {
+      "title": "Assessment Complete!",
+      "description": "Thank you for completing the diagnostics",
+      "viewResults": "View Results",
+      "backToDashboard": "Back to Dashboard"
+    }
+  },
+  "results": {
+    "title": "Diagnostic Results",
+    "overallRisk": "Overall Risk Level",
+    "riskLevels": {
+      "low": "Low",
+      "moderate": "Moderate",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "scales": {
+      "phq9": "Depression (PHQ-9)",
+      "gad7": "Anxiety (GAD-7)",
+      "pss10": "Stress (PSS-10)",
+      "burnout": "Burnout (MBI-SS)"
+    },
+    "recommendations": {
+      "title": "Recommendations",
+      "aiAnalysis": "AI Analysis",
+      "getAiAnalysis": "Get AI Analysis"
+    },
+    "disclaimer": "Results do not constitute a medical diagnosis. For serious concerns, please consult a specialist.",
+    "backToDashboard": "Back to Dashboard",
+    "downloadPdf": "Download PDF"
+  },
+  "psychologist": {
+    "title": "Psychologist Panel",
+    "tabs": {
+      "classrooms": "Classrooms",
+      "students": "Students",
+      "crises": "Crises"
+    },
+    "classrooms": {
+      "title": "Student Groups",
+      "create": "Create Group",
+      "joinCode": "Join Code",
+      "studentsCount": "Students"
+    },
+    "students": {
+      "title": "Students",
+      "selectClassroom": "Select a classroom",
+      "noStudents": "No students in this group",
+      "riskLevel": "Risk Level",
+      "lastSurvey": "Last Assessment",
+      "viewResults": "Results"
+    },
+    "crises": {
+      "title": "Crisis Situations",
+      "severity": "Severity",
+      "keywords": "Keywords",
+      "context": "Context",
+      "status": "Status",
+      "reviewed": "Reviewed",
+      "pending": "Pending",
+      "markReviewed": "Mark as Reviewed"
+    },
+    "analytics": "Analytics",
+    "refresh": "Refresh Data"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "users": "Users",
+    "roles": "Roles",
+    "statistics": "Statistics"
+  },
+  "analytics": {
+    "title": "Analytics & Reports",
+    "trends": "Trends",
+    "riskDistribution": "Risk Distribution",
+    "comparison": "Scale Comparison",
+    "filters": {
+      "classroom": "Classroom",
+      "allClassrooms": "All Classrooms",
+      "period": "Period",
+      "7days": "7 days",
+      "30days": "30 days",
+      "90days": "90 days"
+    },
+    "charts": {
+      "phq9Trend": "PHQ-9 Trend",
+      "gad7Trend": "GAD-7 Trend",
+      "averageScores": "Average Scores"
+    },
+    "generateReport": "Generate Report"
+  },
+  "chat": {
+    "title": "AI Consultant",
+    "placeholder": "Type a message...",
+    "send": "Send",
+    "typing": "AI is typing...",
+    "welcome": "Hello! I'm an AI consultant. How can I help you?",
+    "crisisWarning": "If you are in a crisis situation, please seek help from a specialist or call a helpline."
+  },
+  "history": {
+    "title": "Results History",
+    "noResults": "You don't have any assessment results yet",
+    "date": "Date",
+    "surveyType": "Assessment Type",
+    "risk": "Risk",
+    "viewDetails": "View Details"
+  }
+}
