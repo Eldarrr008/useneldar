@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 import { Building2, ShieldCheck, Lock } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -106,13 +107,33 @@ const Auth = () => {
       {/* Header */}
       <header className="border-b bg-primary text-primary-foreground">
         <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/10">
-              <Building2 className="h-5 w-5" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/10">
+                <Building2 className="h-5 w-5" />
+              </div>
+              <div>
+                <h1 className="text-lg font-bold">ZenithMind</h1>
+                <p className="text-xs text-primary-foreground/80">Система психологического мониторинга</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-lg font-bold">ZenithMind</h1>
-              <p className="text-xs text-primary-foreground/80">Система психологического мониторинга</p>
+            <div className="flex items-center gap-2">
+              <Button
+                variant={isLogin ? "secondary" : "ghost"}
+                size="sm"
+                onClick={() => setIsLogin(true)}
+                className={isLogin ? "" : "text-primary-foreground hover:bg-primary-foreground/10"}
+              >
+                Вход
+              </Button>
+              <Button
+                variant={!isLogin ? "secondary" : "ghost"}
+                size="sm"
+                onClick={() => setIsLogin(false)}
+                className={!isLogin ? "" : "text-primary-foreground hover:bg-primary-foreground/10"}
+              >
+                Регистрация
+              </Button>
             </div>
           </div>
         </div>
@@ -185,16 +206,25 @@ const Auth = () => {
                     : "Зарегистрироваться"}
                 </Button>
               </form>
-              <div className="mt-6 text-center">
-                <button
+              <div className="mt-6 flex items-center justify-center gap-4">
+                <Button
                   type="button"
-                  onClick={() => setIsLogin(!isLogin)}
-                  className="text-sm text-primary hover:underline"
+                  variant={isLogin ? "outline" : "default"}
+                  size="sm"
+                  onClick={() => setIsLogin(false)}
+                  className={isLogin ? "" : "pointer-events-none"}
                 >
-                  {isLogin
-                    ? "Нет учётной записи? Зарегистрироваться"
-                    : "Уже зарегистрированы? Войти"}
-                </button>
+                  Регистрация
+                </Button>
+                <Button
+                  type="button"
+                  variant={!isLogin ? "outline" : "default"}
+                  size="sm"
+                  onClick={() => setIsLogin(true)}
+                  className={!isLogin ? "" : "pointer-events-none"}
+                >
+                  Вход
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -217,10 +247,21 @@ const Auth = () => {
 
       {/* Footer */}
       <footer className="border-t bg-muted/30">
-        <div className="container mx-auto px-6 py-3">
-          <p className="text-center text-xs text-muted-foreground">
-            © 2024 ZenithMind. Система психологического мониторинга
-          </p>
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
+            <p className="text-xs text-muted-foreground">
+              © 2024 ZenithMind. Система психологического мониторинга
+            </p>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <span>Поддержка:</span>
+              <a 
+                href="mailto:galymzumysbekov@gmail.com" 
+                className="font-medium text-primary hover:underline"
+              >
+                galymzumysbekov@gmail.com
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
