@@ -78,7 +78,7 @@ const Landing = () => {
               </Button>
               <Button size="lg" variant="outline" onClick={() => navigate("/auth")}>
                 <UserCheck className="mr-2 h-5 w-5" />
-                {t('landing.getStarted')}
+                {t('landing.loginAsSpecialist')}
               </Button>
             </div>
           </div>
