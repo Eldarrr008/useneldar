@@ -29,6 +29,7 @@
     "subtitle": "A modern platform for diagnosing students' psychological state using AI technologies",
     "getStarted": "Get Started",
     "loginAsStudent": "Login as Student",
+    "loginAsSpecialist": "Login as Specialist",
     "features": {
       "title": "Platform Features",
       "psychodiagnostics": {
