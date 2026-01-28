@@ -155,7 +155,7 @@ const Auth = () => {
                     <Input
                       id="fullName"
                       type="text"
-                      placeholder="Иванов Иван Иванович"
+                      placeholder="Введите ваше ФИО"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       required={!isLogin}
