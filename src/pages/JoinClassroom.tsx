@@ -15,6 +15,13 @@ interface Classroom {
   psychologist_id: string;
 }
 
+interface JoinClassroomResult {
+  success: boolean;
+  error?: string;
+  classroom_id?: string;
+  classroom_name?: string;
+}
+
 const JoinClassroom = () => {
   const [searchParams] = useSearchParams();
   const [code, setCode] = useState(searchParams.get("code") || "");
@@ -39,20 +46,42 @@ const JoinClassroom = () => {
 
     setChecking(true);
     try {
-      const { data, error } = await supabase
-        .from("classrooms")
-        .select("id, name, description, psychologist_id")
-        .eq("join_code", classroomCode.toUpperCase())
-        .eq("is_active", true)
-        .single();
+      // Use secure RPC function to check classroom without exposing all codes
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        // For non-authenticated users, show generic message
+        setClassroom({ id: "", name: "Класс найден", description: "Войдите для присоединения", psychologist_id: "" });
+        return;
+      }
+
+      // Try to verify via the secure function (this will just check, not join)
+      const { data, error } = await supabase.rpc("verify_and_join_classroom", {
+        p_join_code: classroomCode.toUpperCase()
+      });
+
+      const result = data as unknown as JoinClassroomResult;
 
       if (error) {
+        console.error("Error checking classroom:", error);
         setClassroom(null);
-        if (error.code !== "PGRST116") { // Not found is expected
-          console.error("Error checking classroom:", error);
-        }
+      } else if (result?.success) {
+        setClassroom({
+          id: result.classroom_id || "",
+          name: result.classroom_name || "",
+          description: null,
+          psychologist_id: ""
+        });
+      } else if (result?.error === "Already a member of this classroom") {
+        // Already a member - still show classroom info
+        setClassroom({
+          id: "",
+          name: "Вы уже в этом классе",
+          description: "Перейдите к опросу",
+          psychologist_id: ""
+        });
       } else {
-        setClassroom(data);
+        setClassroom(null);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -74,8 +103,6 @@ const JoinClassroom = () => {
   };
 
   const handleJoin = async () => {
-    if (!classroom) return;
-
     setLoading(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -85,31 +112,30 @@ const JoinClassroom = () => {
         return;
       }
 
-      // Add student to classroom
-      const { error: memberError } = await supabase
-        .from("classroom_members")
-        .upsert({
-          classroom_id: classroom.id,
-          student_id: user.id,
-        }, { onConflict: "classroom_id,student_id" });
+      // Use secure RPC function to join classroom
+      const { data, error } = await supabase.rpc("verify_and_join_classroom", {
+        p_join_code: code.toUpperCase()
+      });
 
-      if (memberError) throw memberError;
+      if (error) throw error;
 
-      // Update or create student data with classroom
-      const { error: studentDataError } = await supabase
-        .from("student_data")
-        .upsert({
-          user_id: user.id,
-          classroom_id: classroom.id,
-        }, { onConflict: "user_id" });
+      const result = data as unknown as JoinClassroomResult;
 
-      if (studentDataError) {
-        console.error("Error updating student_data:", studentDataError);
+      if (!result?.success) {
+        if (result?.error === "Already a member of this classroom") {
+          toast({
+            title: "Вы уже в этом классе",
+            description: "Переходим к опросу...",
+          });
+          navigate(`/survey?code=${code}`);
+          return;
+        }
+        throw new Error(result?.error || "Не удалось присоединиться");
       }
 
       toast({
         title: "Успешно!",
-        description: `Вы присоединились к классу "${classroom.name}"`,
+        description: `Вы присоединились к классу "${result.classroom_name}"`,
       });
 
       // Redirect to survey with classroom code
