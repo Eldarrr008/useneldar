@@ -11,8 +11,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, Brain, Heart, Zap, Flame, TrendingUp, TrendingDown, Minus, Calendar, FileText } from "lucide-react";
+import { Loader2, Brain, Heart, Zap, Flame, TrendingUp, TrendingDown, Minus, Calendar, FileText, Download } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { generateStudentPDF, calculateTrends } from "@/lib/pdfGenerator";
+import { toast } from "@/hooks/use-toast";
 
 interface StudentResultsDialogProps {
   open: boolean;
@@ -54,12 +56,54 @@ export function StudentResultsDialog({
 }: StudentResultsDialogProps) {
   const [results, setResults] = useState<SurveyResult[]>([]);
   const [loading, setLoading] = useState(true);
+  const [classroomName, setClassroomName] = useState("");
+  const [psychologistName, setPsychologistName] = useState("");
 
   useEffect(() => {
     if (open && studentId) {
       fetchResults();
+      fetchAdditionalInfo();
     }
   }, [open, studentId]);
+
+  const fetchAdditionalInfo = async () => {
+    try {
+      // Get classroom name
+      const { data: studentData } = await supabase
+        .from("student_data")
+        .select("classroom_id")
+        .eq("user_id", studentId)
+        .maybeSingle();
+
+      if (studentData?.classroom_id) {
+        const { data: classroom } = await supabase
+          .from("classrooms")
+          .select("name")
+          .eq("id", studentData.classroom_id)
+          .maybeSingle();
+        
+        if (classroom) {
+          setClassroomName(classroom.name);
+        }
+      }
+
+      // Get psychologist name
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("full_name")
+          .eq("id", user.id)
+          .maybeSingle();
+        
+        if (profile) {
+          setPsychologistName(profile.full_name);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching additional info:", error);
+    }
+  };
 
   const fetchResults = async () => {
     setLoading(true);
@@ -102,6 +146,54 @@ export function StudentResultsDialog({
     if (trend === "worsened") return <TrendingUp className="h-4 w-4 text-red-600" />;
     if (trend === "same") return <Minus className="h-4 w-4 text-muted-foreground" />;
     return null;
+  };
+
+  const handleDownloadPDF = () => {
+    if (results.length === 0) {
+      toast({
+        title: "Нет данных",
+        description: "Нет результатов диагностик для генерации отчёта",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const surveyData = results.map((r) => ({
+        date: new Date(r.completed_at).toLocaleDateString("ru-RU"),
+        type: r.survey_type,
+        phq9: r.phq9_score,
+        gad7: r.gad7_score,
+        pss: r.pss_score,
+        burnout: r.burnout_score,
+        risk: r.overall_risk,
+      }));
+
+      const trends = calculateTrends(surveyData);
+
+      generateStudentPDF({
+        studentName,
+        studentId,
+        classroomName: classroomName || "Не указана",
+        generatedDate: new Date().toLocaleDateString("ru-RU"),
+        psychologistName: psychologistName || "Психолог",
+        results: surveyData,
+        latestRisk: latestResult?.overall_risk || "LOW",
+        trends,
+      });
+
+      toast({
+        title: "PDF сохранён",
+        description: `Отчёт по студенту ${studentName} успешно сгенерирован`,
+      });
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось сгенерировать PDF-отчёт",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -317,7 +409,15 @@ export function StudentResultsDialog({
           </div>
         )}
 
-        <div className="flex justify-end pt-4">
+        <div className="flex justify-between pt-4">
+          <Button 
+            variant="default" 
+            onClick={handleDownloadPDF}
+            disabled={results.length === 0}
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Скачать PDF
+          </Button>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Закрыть
           </Button>
