@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
-import { Building2, ShieldCheck, Lock } from "lucide-react";
+import { Building2, ShieldCheck, Lock, ArrowLeft } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 
 type UserRole = Database["public"]["Enums"]["app_role"];
@@ -109,6 +109,14 @@ const Auth = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate("/")}
+                className="text-primary-foreground hover:bg-primary-foreground/10"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/10">
                 <Building2 className="h-5 w-5" />
               </div>
@@ -116,24 +124,6 @@ const Auth = () => {
                 <h1 className="text-lg font-bold">ZenithMind</h1>
                 <p className="text-xs text-primary-foreground/80">Система психологического мониторинга</p>
               </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant={isLogin ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => setIsLogin(true)}
-                className={isLogin ? "" : "text-primary-foreground hover:bg-primary-foreground/10"}
-              >
-                Вход
-              </Button>
-              <Button
-                variant={!isLogin ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => setIsLogin(false)}
-                className={!isLogin ? "" : "text-primary-foreground hover:bg-primary-foreground/10"}
-              >
-                Регистрация
-              </Button>
             </div>
           </div>
         </div>
