@@ -423,6 +423,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      verify_and_join_classroom: {
+        Args: { p_join_code: string }
+        Returns: Json
+      }
     }
     Enums: {
       app_role: "admin" | "psychologist" | "student"
