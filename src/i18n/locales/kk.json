@@ -94,7 +94,15 @@
     "registerSuccess": "Тіркелу сәтті",
     "registerError": "Тіркелу қатесі",
     "passwordMismatch": "Құпия сөздер сәйкес келмейді",
-    "enterCredentials": "Кіру үшін деректеріңізді енгізіңіз"
+    "passwordTooShort": "Құпия сөз кемінде 6 таңбадан тұруы керек",
+    "enterCredentials": "Кіру үшін деректеріңізді енгізіңіз",
+    "emailConfirmation": {
+      "title": "Email-ді растаңыз",
+      "description": "Растау сілтемесін жібердік",
+      "checkInbox": "Поштаңызды тексеріп, аккаунтты белсендіру үшін сілтемені басыңыз",
+      "goToLogin": "Кіруге өту",
+      "resend": "Қайта жіберу"
+    }
   },
   "dashboard": {
     "title": "Жеке кабинет",

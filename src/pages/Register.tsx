@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2 } from "lucide-react";
+import { Loader2, Mail, CheckCircle } from "lucide-react";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -21,6 +21,8 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -28,7 +30,7 @@ export default function Register() {
       return;
     }
     if (password.length < 6) {
-      toast({ title: t('auth.registerError'), description: "Password must be at least 6 characters", variant: "destructive" });
+      toast({ title: t('auth.registerError'), description: t('auth.passwordTooShort'), variant: "destructive" });
       return;
     }
 
@@ -37,10 +39,19 @@ export default function Register() {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { full_name: fullName }, emailRedirectTo: `${window.location.origin}/` },
+        options: { 
+          data: { full_name: fullName }, 
+          emailRedirectTo: `${window.location.origin}/login` 
+        },
       });
       if (error) throw error;
-      if (data.user) {
+      
+      // Check if email confirmation is required
+      if (data.user && !data.session) {
+        // Email confirmation required
+        setShowConfirmation(true);
+      } else if (data.user && data.session) {
+        // Auto-confirm is enabled (shouldn't happen now)
         toast({ title: t('auth.registerSuccess'), description: t('auth.welcome') });
         navigate("/student/dashboard");
       }
@@ -50,6 +61,46 @@ export default function Register() {
       setLoading(false);
     }
   };
+
+  // Email confirmation screen
+  if (showConfirmation) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-4">
+        <div className="absolute top-4 right-4 flex items-center gap-2">
+          <LanguageSwitcher />
+          <ThemeToggle />
+        </div>
+        <Card className="w-full max-w-md">
+          <CardHeader className="space-y-4 text-center">
+            <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+              <Mail className="h-8 w-8 text-primary" />
+            </div>
+            <CardTitle className="text-2xl font-bold">{t('auth.emailConfirmation.title')}</CardTitle>
+            <CardDescription className="space-y-2">
+              <p>{t('auth.emailConfirmation.description')}</p>
+              <p className="font-medium text-foreground">{email}</p>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-start gap-3 p-4 bg-muted rounded-lg">
+              <CheckCircle className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+              <p className="text-sm text-muted-foreground">
+                {t('auth.emailConfirmation.checkInbox')}
+              </p>
+            </div>
+            <Button asChild className="w-full">
+              <Link to="/login">{t('auth.emailConfirmation.goToLogin')}</Link>
+            </Button>
+            <div className="text-center">
+              <Link to="/" className="text-sm text-muted-foreground hover:underline">
+                {t('auth.backToHome')}
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-4">
