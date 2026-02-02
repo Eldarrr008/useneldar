@@ -124,24 +124,10 @@ const SurveyPage = () => {
         .eq("user_id", user.id);
 
       if (classroomCode) {
-        const { data: classroom } = await supabase
-          .from("classrooms")
-          .select("id")
-          .eq("join_code", classroomCode.toUpperCase())
-          .eq("is_active", true)
-          .single();
-
-        if (classroom) {
-          await supabase.from("classroom_members").upsert({
-            classroom_id: classroom.id,
-            student_id: user.id,
-          }, { onConflict: "classroom_id,student_id" });
-
-          await supabase
-            .from("student_data")
-            .update({ classroom_id: classroom.id })
-            .eq("user_id", user.id);
-        }
+        // Use secure RPC function instead of direct query to avoid RLS recursion
+        await supabase.rpc("verify_and_join_classroom", {
+          p_join_code: classroomCode.toUpperCase()
+        });
       }
 
       setResponseId(data.id);
