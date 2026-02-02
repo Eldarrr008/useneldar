@@ -94,7 +94,15 @@
     "registerSuccess": "Регистрация успешна",
     "registerError": "Ошибка регистрации",
     "passwordMismatch": "Пароли не совпадают",
-    "enterCredentials": "Введите свои данные для входа"
+    "passwordTooShort": "Пароль должен быть не менее 6 символов",
+    "enterCredentials": "Введите свои данные для входа",
+    "emailConfirmation": {
+      "title": "Подтвердите email",
+      "description": "Мы отправили письмо с ссылкой для подтверждения на",
+      "checkInbox": "Проверьте почту и перейдите по ссылке для активации аккаунта",
+      "goToLogin": "Перейти к входу",
+      "resend": "Отправить повторно"
+    }
   },
   "dashboard": {
     "title": "Личный кабинет",
