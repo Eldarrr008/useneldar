@@ -6,6 +6,60 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Rate limiting storage (in-memory, resets on function restart)
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW_MS = 60000; // 1 minute
+const RATE_LIMIT_MAX_REQUESTS = 10; // 10 messages per minute
+
+// Input sanitization function
+function sanitizeInput(input: string): string {
+  // Remove null bytes and control characters (except newlines and tabs)
+  let sanitized = input.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+  
+  // Normalize excessive whitespace (more than 3 consecutive newlines)
+  sanitized = sanitized.replace(/\n{4,}/g, '\n\n\n');
+  
+  // Trim leading/trailing whitespace
+  sanitized = sanitized.trim();
+  
+  return sanitized;
+}
+
+// Check for suspicious patterns that might indicate prompt injection
+function detectSuspiciousPatterns(message: string): boolean {
+  const suspiciousPatterns = [
+    /ignore\s+(all\s+)?(previous|above|prior)\s+(instructions?|prompts?)/i,
+    /you\s+are\s+now\s+(?:a|an)\s+\w+/i,
+    /forget\s+(everything|all|your)\s+(you|instructions?)/i,
+    /disregard\s+(all\s+)?(previous|prior|above)/i,
+    /new\s+instruction[s]?:\s*/i,
+    /\[system\]/i,
+    /\[admin\]/i,
+    /role:\s*system/i,
+  ];
+  
+  return suspiciousPatterns.some(pattern => pattern.test(message));
+}
+
+// Rate limiting check
+function checkRateLimit(userId: string): { allowed: boolean; retryAfter?: number } {
+  const now = Date.now();
+  const userLimit = rateLimitMap.get(userId);
+  
+  if (!userLimit || now > userLimit.resetTime) {
+    rateLimitMap.set(userId, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return { allowed: true };
+  }
+  
+  if (userLimit.count >= RATE_LIMIT_MAX_REQUESTS) {
+    const retryAfter = Math.ceil((userLimit.resetTime - now) / 1000);
+    return { allowed: false, retryAfter };
+  }
+  
+  userLimit.count++;
+  return { allowed: true };
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -28,6 +82,21 @@ serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+    // Sanitize input
+    const sanitizedMessage = sanitizeInput(message);
+    
+    if (sanitizedMessage.length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'Message contains only invalid characters' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Log suspicious patterns (don't block, but log for review)
+    if (detectSuspiciousPatterns(sanitizedMessage)) {
+      console.warn("Suspicious pattern detected in message - proceeding with caution");
+    }
     
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -47,6 +116,24 @@ serve(async (req) => {
     
     if (authError || !user) {
       throw new Error("Unauthorized");
+    }
+
+    // Rate limiting check
+    const rateCheck = checkRateLimit(user.id);
+    if (!rateCheck.allowed) {
+      return new Response(
+        JSON.stringify({ 
+          error: `Too many requests. Please wait ${rateCheck.retryAfter} seconds.` 
+        }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            "Content-Type": "application/json",
+            "Retry-After": String(rateCheck.retryAfter)
+          } 
+        }
+      );
     }
 
     console.log("User authenticated:", user.id);
@@ -76,7 +163,7 @@ serve(async (req) => {
         .from("conversations")
         .insert({
           student_id: user.id,
-          title: message.substring(0, 50),
+          title: sanitizedMessage.substring(0, 50),
         })
         .select()
         .single();
@@ -93,7 +180,7 @@ serve(async (req) => {
       .insert({
         conversation_id: conversation.id,
         sender_id: user.id,
-        content: message,
+        content: sanitizedMessage,
         is_ai: false,
       })
       .select()
@@ -197,7 +284,7 @@ EXAMPLES OF PROFESSIONAL RESPONSES:
       "өзіме зиян", "өмірдің мәні жоқ", "суицид"
     ];
 
-    const messageText = message.toLowerCase();
+    const messageText = sanitizedMessage.toLowerCase();
     const detectedKeywords = crisisKeywords.filter(keyword => 
       messageText.includes(keyword)
     );
@@ -233,7 +320,7 @@ EXAMPLES OF PROFESSIONAL RESPONSES:
           message_id: userMessage.id,
           severity,
           keywords: detectedKeywords,
-          context: message,
+          context: sanitizedMessage,
         });
 
       // Update conversation crisis flag
