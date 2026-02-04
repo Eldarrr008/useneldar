@@ -263,5 +263,86 @@
     "surveyType": "Assessment Type",
     "risk": "Risk",
     "viewDetails": "View Details"
+  },
+  "questions": {
+    "required": "Required question",
+    "optional": "Optional question",
+    "enterAnswer": "Enter your answer...",
+    "options": {
+      "never": "Never",
+      "severalDays": "Several days",
+      "moreThanHalf": "More than half the days",
+      "nearlyEveryDay": "Nearly every day",
+      "almostNever": "Almost never",
+      "sometimes": "Sometimes",
+      "fairlyOften": "Fairly often",
+      "veryOften": "Very often",
+      "rarely": "Rarely",
+      "regularly": "Regularly",
+      "often": "Often",
+      "everyDay": "Every day",
+      "no": "No",
+      "yes": "Yes",
+      "neverDid": "Never",
+      "yesOver3Months": "Yes, more than 3 months ago",
+      "yesLast3Months": "Yes, within the last 3 months"
+    },
+    "phq9": {
+      "q1": "Over the last 2 weeks, how often have you been bothered by little interest or pleasure in doing things?",
+      "q2": "Over the last 2 weeks, how often have you been bothered by feeling down, depressed, or hopeless?",
+      "q3": "Over the last 2 weeks, how often have you been bothered by trouble falling or staying asleep, or sleeping too much?",
+      "q4": "Over the last 2 weeks, how often have you been bothered by feeling tired or having little energy?",
+      "q5": "Over the last 2 weeks, how often have you been bothered by poor appetite or overeating?",
+      "q6": "Over the last 2 weeks, how often have you been bothered by feeling bad about yourself — or that you are a failure or have let yourself or your family down?",
+      "q7": "Over the last 2 weeks, how often have you been bothered by trouble concentrating on things, such as reading or watching television?",
+      "q8": "Over the last 2 weeks, how often have you been bothered by moving or speaking so slowly that other people could have noticed? Or the opposite — being so fidgety or restless?",
+      "q9": "Over the last 2 weeks, how often have you been bothered by thoughts that you would be better off dead or of hurting yourself in some way?"
+    },
+    "gad7": {
+      "q1": "Over the last 2 weeks, how often have you been bothered by feeling nervous, anxious, or on edge?",
+      "q2": "Over the last 2 weeks, how often have you been bothered by not being able to stop or control worrying?",
+      "q3": "Over the last 2 weeks, how often have you been bothered by worrying too much about different things?",
+      "q4": "Over the last 2 weeks, how often have you been bothered by trouble relaxing?",
+      "q5": "Over the last 2 weeks, how often have you been bothered by being so restless that it's hard to sit still?",
+      "q6": "Over the last 2 weeks, how often have you been bothered by becoming easily annoyed or irritable?",
+      "q7": "Over the last 2 weeks, how often have you been bothered by feeling afraid as if something awful might happen?"
+    },
+    "pss": {
+      "q1": "In the last month, how often have you been upset because of something that happened unexpectedly?",
+      "q2": "In the last month, how often have you felt that you were unable to control the important things in your life?",
+      "q3": "In the last month, how often have you felt nervous and stressed?",
+      "q4": "In the last month, how often have you felt confident about your ability to handle your personal problems?",
+      "q5": "In the last month, how often have you felt that things were going your way?",
+      "q6": "In the last month, how often have you found that you could not cope with all the things that you had to do?",
+      "q7": "In the last month, how often have you been able to control irritations in your life?",
+      "q8": "In the last month, how often have you felt that you were on top of things?",
+      "q9": "In the last month, how often have you been angered because of things that happened that were outside of your control?",
+      "q10": "In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?"
+    },
+    "cssrs": {
+      "q1": "In the past month, have you wished you were dead or wished you could go to sleep and not wake up?",
+      "q2": "In the past month, have you actually had any thoughts of killing yourself?",
+      "q3": "Have you been thinking about how you might do this?",
+      "q4": "Have you had these thoughts and had some intention of acting on them?",
+      "q5": "Have you started to work out or worked out the details of how to kill yourself? Do you intend to carry out this plan?",
+      "q6": "Have you ever done anything, started to do anything, or prepared to do anything to end your life?"
+    },
+    "burnout": {
+      "ex1": "I feel emotionally drained by my studies.",
+      "ex2": "I feel used up at the end of a day at school.",
+      "ex3": "I feel tired when I get up in the morning and have to face another day at school.",
+      "ex4": "Studying or attending a class is really a strain for me.",
+      "ex5": "I feel burned out from my studies.",
+      "cy1": "I have become less interested in my studies since my enrollment.",
+      "cy2": "I have become less enthusiastic about my studies.",
+      "cy3": "I have become more cynical about the potential usefulness of my studies.",
+      "cy4": "I doubt the significance of my studies.",
+      "ef1": "I can effectively solve the problems that arise in my studies.",
+      "ef2": "I believe that I make an effective contribution to the classes that I attend.",
+      "ef3": "In my opinion, I am a good student.",
+      "ef4": "I feel stimulated when I achieve my study goals.",
+      "ef5": "I have learned many interesting things during my studies.",
+      "ef6": "During class I feel confident that I am effective in getting things done."
+    }
   }
 }
