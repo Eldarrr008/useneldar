@@ -4,6 +4,7 @@ export type SurveyType = "quick" | "comprehensive";
 export interface QuestionOption {
   id: string;
   label: string;
+  labelKey?: string; // Translation key for i18n
   value: number | string;
 }
 
@@ -11,10 +12,12 @@ export interface Question {
   id: string;
   category: "phq9" | "gad7" | "pss" | "burnout" | "open";
   text: string;
+  textKey?: string; // Translation key for i18n
   type: QuestionType;
   options?: QuestionOption[];
   required: boolean;
   placeholder?: string;
+  placeholderKey?: string; // Translation key for i18n
   inverted?: boolean; // Для инвертированных вопросов в PSS-10
 }
 
