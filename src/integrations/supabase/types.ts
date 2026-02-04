@@ -423,6 +423,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_classroom_member: {
+        Args: { _classroom_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_classroom_owner: {
+        Args: { _classroom_id: string; _psychologist_id: string }
+        Returns: boolean
+      }
       verify_and_join_classroom: {
         Args: { p_join_code: string }
         Returns: Json
