@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 
 // Extend jsPDF type for autotable
 declare module "jspdf" {
@@ -136,7 +136,7 @@ export const generateStudentPDF = (report: StudentReport): void => {
     getRiskLabelTranslit(r.risk || ""),
   ]);
   
-  doc.autoTable({
+  autoTable(doc, {
     startY: yPos,
     head: [["Data", "Tip", "PHQ-9", "GAD-7", "PSS-10", "Burnout", "Risk"]],
     body: tableData,
@@ -158,7 +158,7 @@ export const generateStudentPDF = (report: StudentReport): void => {
   });
   
   // Score Changes
-  yPos = doc.lastAutoTable.finalY + 15;
+  yPos = (doc as any).lastAutoTable.finalY + 15;
   doc.setFontSize(12);
   doc.setFont("helvetica", "bold");
   doc.text("Izmeneniya pokazateley", 20, yPos);
@@ -274,7 +274,7 @@ export const generateClassroomPDF = (report: ClassroomReport): void => {
       s.lastSurvey,
     ]);
     
-    doc.autoTable({
+    autoTable(doc, {
       startY: yPos,
       head: [["Imya", "Uroven riska", "Poslednyaya diagnostika"]],
       body: riskTableData,
@@ -288,7 +288,7 @@ export const generateClassroomPDF = (report: ClassroomReport): void => {
   }
   
   // Footer
-  const finalY = report.studentsAtRisk.length > 0 ? doc.lastAutoTable.finalY + 15 : yPos + 15;
+  const finalY = report.studentsAtRisk.length > 0 ? (doc as any).lastAutoTable.finalY + 15 : yPos + 15;
   doc.setFontSize(8);
   doc.setTextColor(128, 128, 128);
   doc.text("Konfidencialniy dokument. Tolko dlya sluzhebnogo polzovaniya.", 20, finalY);
