@@ -26,7 +26,12 @@ import {
   Moon,
   Sun,
   Coffee,
-  X
+  X,
+  Brain,
+  Lightbulb,
+  Leaf,
+  Film,
+  BookOpen
 } from "lucide-react";
 
 interface SoundItem {
@@ -43,14 +48,16 @@ interface VideoItem {
   descriptionKey: string;
   youtubeId: string;
   duration: string;
-  category: "relaxation" | "motivation" | "sleep";
+  category: "relaxation" | "motivation" | "sleep" | "films";
+  language: "ru" | "en" | "multi";
 }
 
 interface QuoteItem {
   id: string;
   textKey: string;
   author: string;
-  authorRole?: string;
+  authorRoleKey: string;
+  category: "philosophy" | "psychology" | "growth" | "modern";
 }
 
 const sounds: SoundItem[] = [
@@ -63,13 +70,15 @@ const sounds: SoundItem[] = [
 ];
 
 const videos: VideoItem[] = [
+  // Relaxation
   { 
     id: "breathing", 
     titleKey: "wellness.videos.breathing.title",
     descriptionKey: "wellness.videos.breathing.description",
     youtubeId: "DbDoBzGY3vo", 
     duration: "5:00",
-    category: "relaxation"
+    category: "relaxation",
+    language: "multi"
   },
   { 
     id: "meditation", 
@@ -77,31 +86,8 @@ const videos: VideoItem[] = [
     descriptionKey: "wellness.videos.meditation.description",
     youtubeId: "O-6f5wQXSu8", 
     duration: "10:00",
-    category: "relaxation"
-  },
-  { 
-    id: "sleep", 
-    titleKey: "wellness.videos.sleep.title",
-    descriptionKey: "wellness.videos.sleep.description",
-    youtubeId: "1ZYbU82GVz4", 
-    duration: "60:00",
-    category: "sleep"
-  },
-  { 
-    id: "motivation1", 
-    titleKey: "wellness.videos.motivation1.title",
-    descriptionKey: "wellness.videos.motivation1.description",
-    youtubeId: "mgmVOuLgFB0", 
-    duration: "4:32",
-    category: "motivation"
-  },
-  { 
-    id: "motivation2", 
-    titleKey: "wellness.videos.motivation2.title",
-    descriptionKey: "wellness.videos.motivation2.description",
-    youtubeId: "g-jwWYX7Jlo", 
-    duration: "3:15",
-    category: "motivation"
+    category: "relaxation",
+    language: "multi"
   },
   { 
     id: "focus", 
@@ -109,24 +95,155 @@ const videos: VideoItem[] = [
     descriptionKey: "wellness.videos.focus.description",
     youtubeId: "XULUBg_ZcAU", 
     duration: "45:00",
-    category: "relaxation"
+    category: "relaxation",
+    language: "multi"
+  },
+  // Sleep
+  { 
+    id: "sleep", 
+    titleKey: "wellness.videos.sleep.title",
+    descriptionKey: "wellness.videos.sleep.description",
+    youtubeId: "1ZYbU82GVz4", 
+    duration: "60:00",
+    category: "sleep",
+    language: "multi"
+  },
+  // Motivation - Russian
+  { 
+    id: "motivation_ru1", 
+    titleKey: "wellness.videos.motivationRu1.title",
+    descriptionKey: "wellness.videos.motivationRu1.description",
+    youtubeId: "PzI0hmNqGLY", 
+    duration: "8:12",
+    category: "motivation",
+    language: "ru"
+  },
+  { 
+    id: "motivation_ru2", 
+    titleKey: "wellness.videos.motivationRu2.title",
+    descriptionKey: "wellness.videos.motivationRu2.description",
+    youtubeId: "6VcXk8q3jT8", 
+    duration: "5:45",
+    category: "motivation",
+    language: "ru"
+  },
+  { 
+    id: "motivation_ru3", 
+    titleKey: "wellness.videos.motivationRu3.title",
+    descriptionKey: "wellness.videos.motivationRu3.description",
+    youtubeId: "Q2uhWWFjcfs", 
+    duration: "4:30",
+    category: "motivation",
+    language: "ru"
+  },
+  { 
+    id: "motivation_ru4", 
+    titleKey: "wellness.videos.motivationRu4.title",
+    descriptionKey: "wellness.videos.motivationRu4.description",
+    youtubeId: "bx-VYt0KLh0", 
+    duration: "6:20",
+    category: "motivation",
+    language: "ru"
+  },
+  // Motivation - English
+  { 
+    id: "motivation1", 
+    titleKey: "wellness.videos.motivation1.title",
+    descriptionKey: "wellness.videos.motivation1.description",
+    youtubeId: "UF8uR6Z6KLc", 
+    duration: "15:04",
+    category: "motivation",
+    language: "en"
+  },
+  { 
+    id: "motivation2", 
+    titleKey: "wellness.videos.motivation2.title",
+    descriptionKey: "wellness.videos.motivation2.description",
+    youtubeId: "mgmVOuLgFB0", 
+    duration: "4:32",
+    category: "motivation",
+    language: "en"
+  },
+  // Films & Animations
+  { 
+    id: "film1", 
+    titleKey: "wellness.videos.film1.title",
+    descriptionKey: "wellness.videos.film1.description",
+    youtubeId: "9D05ej8u-gU", 
+    duration: "3:40",
+    category: "films",
+    language: "ru"
+  },
+  { 
+    id: "film2", 
+    titleKey: "wellness.videos.film2.title",
+    descriptionKey: "wellness.videos.film2.description",
+    youtubeId: "QoABOdLXgdU", 
+    duration: "2:30",
+    category: "films",
+    language: "ru"
+  },
+  { 
+    id: "film3", 
+    titleKey: "wellness.videos.film3.title",
+    descriptionKey: "wellness.videos.film3.description",
+    youtubeId: "k0GQSJrpVhM", 
+    duration: "4:15",
+    category: "films",
+    language: "en"
   },
 ];
 
 const quotes: QuoteItem[] = [
-  { id: "1", textKey: "wellness.quotes.q1", author: "Steve Jobs", authorRole: "Apple" },
-  { id: "2", textKey: "wellness.quotes.q2", author: "Albert Einstein", authorRole: "Physicist" },
-  { id: "3", textKey: "wellness.quotes.q3", author: "Nelson Mandela", authorRole: "Leader" },
-  { id: "4", textKey: "wellness.quotes.q4", author: "Confucius", authorRole: "Philosopher" },
-  { id: "5", textKey: "wellness.quotes.q5", author: "Mahatma Gandhi", authorRole: "Leader" },
-  { id: "6", textKey: "wellness.quotes.q6", author: "Maya Angelou", authorRole: "Writer" },
-  { id: "7", textKey: "wellness.quotes.q7", author: "Dalai Lama", authorRole: "Spiritual Leader" },
+  // Philosophy & Wisdom
+  { id: "marcus1", textKey: "wellness.quotes.marcus1", author: "Марк Аврелий", authorRoleKey: "wellness.authors.marcusAurelius", category: "philosophy" },
+  { id: "seneca1", textKey: "wellness.quotes.seneca1", author: "Сенека", authorRoleKey: "wellness.authors.seneca", category: "philosophy" },
+  { id: "epictetus1", textKey: "wellness.quotes.epictetus1", author: "Эпиктет", authorRoleKey: "wellness.authors.epictetus", category: "philosophy" },
+  { id: "socrates1", textKey: "wellness.quotes.socrates1", author: "Сократ", authorRoleKey: "wellness.authors.socrates", category: "philosophy" },
+  { id: "confucius1", textKey: "wellness.quotes.confucius1", author: "Конфуций", authorRoleKey: "wellness.authors.confucius", category: "philosophy" },
+  { id: "confucius2", textKey: "wellness.quotes.confucius2", author: "Конфуций", authorRoleKey: "wellness.authors.confucius", category: "philosophy" },
+  { id: "laozi1", textKey: "wellness.quotes.laozi1", author: "Лао-цзы", authorRoleKey: "wellness.authors.laozi", category: "philosophy" },
+  { id: "aristotle1", textKey: "wellness.quotes.aristotle1", author: "Аристотель", authorRoleKey: "wellness.authors.aristotle", category: "philosophy" },
+  
+  // Psychology & Meaning
+  { id: "frankl1", textKey: "wellness.quotes.frankl1", author: "Виктор Франкл", authorRoleKey: "wellness.authors.frankl", category: "psychology" },
+  { id: "frankl2", textKey: "wellness.quotes.frankl2", author: "Виктор Франкл", authorRoleKey: "wellness.authors.frankl", category: "psychology" },
+  { id: "jung1", textKey: "wellness.quotes.jung1", author: "Карл Юнг", authorRoleKey: "wellness.authors.jung", category: "psychology" },
+  { id: "jung2", textKey: "wellness.quotes.jung2", author: "Карл Юнг", authorRoleKey: "wellness.authors.jung", category: "psychology" },
+  { id: "maslow1", textKey: "wellness.quotes.maslow1", author: "Абрахам Маслоу", authorRoleKey: "wellness.authors.maslow", category: "psychology" },
+  { id: "fromm1", textKey: "wellness.quotes.fromm1", author: "Эрих Фромм", authorRoleKey: "wellness.authors.fromm", category: "psychology" },
+  { id: "csikszentmihalyi1", textKey: "wellness.quotes.csikszentmihalyi1", author: "Михай Чиксентмихайи", authorRoleKey: "wellness.authors.csikszentmihalyi", category: "psychology" },
+  
+  // Personal Growth & Resilience
+  { id: "gandhi1", textKey: "wellness.quotes.gandhi1", author: "Махатма Ганди", authorRoleKey: "wellness.authors.gandhi", category: "growth" },
+  { id: "gandhi2", textKey: "wellness.quotes.gandhi2", author: "Махатма Ганди", authorRoleKey: "wellness.authors.gandhi", category: "growth" },
+  { id: "mandela1", textKey: "wellness.quotes.mandela1", author: "Нельсон Мандела", authorRoleKey: "wellness.authors.mandela", category: "growth" },
+  { id: "mandela2", textKey: "wellness.quotes.mandela2", author: "Нельсон Мандела", authorRoleKey: "wellness.authors.mandela", category: "growth" },
+  { id: "dalailama1", textKey: "wellness.quotes.dalailama1", author: "Далай-лама XIV", authorRoleKey: "wellness.authors.dalailama", category: "growth" },
+  { id: "dalailama2", textKey: "wellness.quotes.dalailama2", author: "Далай-лама XIV", authorRoleKey: "wellness.authors.dalailama", category: "growth" },
+  { id: "emerson1", textKey: "wellness.quotes.emerson1", author: "Ральф Эмерсон", authorRoleKey: "wellness.authors.emerson", category: "growth" },
+  
+  // Modern Thinkers & Leaders
+  { id: "jobs1", textKey: "wellness.quotes.jobs1", author: "Стив Джобс", authorRoleKey: "wellness.authors.jobs", category: "modern" },
+  { id: "jobs2", textKey: "wellness.quotes.jobs2", author: "Стив Джобс", authorRoleKey: "wellness.authors.jobs", category: "modern" },
+  { id: "einstein1", textKey: "wellness.quotes.einstein1", author: "Альберт Эйнштейн", authorRoleKey: "wellness.authors.einstein", category: "modern" },
+  { id: "einstein2", textKey: "wellness.quotes.einstein2", author: "Альберт Эйнштейн", authorRoleKey: "wellness.authors.einstein", category: "modern" },
+  { id: "sinek1", textKey: "wellness.quotes.sinek1", author: "Саймон Синек", authorRoleKey: "wellness.authors.sinek", category: "modern" },
+  { id: "angelou1", textKey: "wellness.quotes.angelou1", author: "Майя Энджелоу", authorRoleKey: "wellness.authors.angelou", category: "modern" },
 ];
 
 const categoryIcons = {
   relaxation: <Heart className="h-3.5 w-3.5" />,
   motivation: <Sun className="h-3.5 w-3.5" />,
   sleep: <Moon className="h-3.5 w-3.5" />,
+  films: <Film className="h-3.5 w-3.5" />,
+};
+
+const quoteCategoryIcons = {
+  philosophy: <BookOpen className="h-4 w-4" />,
+  psychology: <Brain className="h-4 w-4" />,
+  growth: <Leaf className="h-4 w-4" />,
+  modern: <Lightbulb className="h-4 w-4" />,
 };
 
 export function WellnessCenter() {
@@ -134,18 +251,28 @@ export function WellnessCenter() {
   const [activeSound, setActiveSound] = useState<string | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
-  const [videoFilter, setVideoFilter] = useState<"all" | "relaxation" | "motivation" | "sleep">("all");
+  const [videoFilter, setVideoFilter] = useState<"all" | "relaxation" | "motivation" | "sleep" | "films">("all");
+  const [quoteFilter, setQuoteFilter] = useState<"all" | "philosophy" | "psychology" | "growth" | "modern">("all");
 
   const handleSoundToggle = (soundId: string) => {
     setActiveSound(activeSound === soundId ? null : soundId);
   };
 
+  const filteredQuotes = quoteFilter === "all" 
+    ? quotes 
+    : quotes.filter(q => q.category === quoteFilter);
+
   const nextQuote = () => {
-    setCurrentQuoteIndex((prev) => (prev + 1) % quotes.length);
+    setCurrentQuoteIndex((prev) => (prev + 1) % filteredQuotes.length);
   };
 
   const prevQuote = () => {
-    setCurrentQuoteIndex((prev) => (prev - 1 + quotes.length) % quotes.length);
+    setCurrentQuoteIndex((prev) => (prev - 1 + filteredQuotes.length) % filteredQuotes.length);
+  };
+
+  const randomQuote = () => {
+    const newIndex = Math.floor(Math.random() * filteredQuotes.length);
+    setCurrentQuoteIndex(newIndex);
   };
 
   const filteredVideos = videoFilter === "all" 
@@ -155,6 +282,18 @@ export function WellnessCenter() {
   const activeCategory = (cat: string) => videoFilter === cat 
     ? "bg-primary text-primary-foreground" 
     : "bg-muted/50 hover:bg-muted";
+
+  const activeQuoteCategory = (cat: string) => quoteFilter === cat 
+    ? "bg-primary text-primary-foreground" 
+    : "bg-muted/50 hover:bg-muted";
+
+  // Reset quote index when filter changes
+  const handleQuoteFilterChange = (cat: "all" | "philosophy" | "psychology" | "growth" | "modern") => {
+    setQuoteFilter(cat);
+    setCurrentQuoteIndex(0);
+  };
+
+  const currentQuote = filteredQuotes[currentQuoteIndex] || filteredQuotes[0];
 
   return (
     <Card className="border overflow-hidden">
@@ -297,6 +436,13 @@ export function WellnessCenter() {
                     <Moon className="h-3 w-3" />
                     {t('wellness.categories.sleep')}
                   </button>
+                  <button 
+                    onClick={() => setVideoFilter("films")}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-full transition-all flex items-center gap-1.5 ${activeCategory("films")}`}
+                  >
+                    <Film className="h-3 w-3" />
+                    {t('wellness.categories.films')}
+                  </button>
                 </div>
               )}
             </div>
@@ -345,18 +491,34 @@ export function WellnessCenter() {
                             <Play className="h-6 w-6 text-primary ml-1" />
                           </div>
                         </div>
-                        <Badge 
-                          className={`absolute top-3 left-3 gap-1.5 ${
-                            video.category === "relaxation" 
-                              ? "bg-soft-green/90 text-soft-green-foreground" 
-                              : video.category === "sleep"
-                              ? "bg-gentle-lavender/90 text-gentle-lavender-foreground"
-                              : "bg-primary/90 text-primary-foreground"
-                          }`}
-                        >
-                          {categoryIcons[video.category]}
-                          {t(`wellness.categories.${video.category}`)}
-                        </Badge>
+                        <div className="absolute top-3 left-3 flex gap-2">
+                          <Badge 
+                            className={`gap-1.5 ${
+                              video.category === "relaxation" 
+                                ? "bg-soft-green/90 text-soft-green-foreground" 
+                                : video.category === "sleep"
+                                ? "bg-gentle-lavender/90 text-gentle-lavender-foreground"
+                                : video.category === "films"
+                                ? "bg-amber-500/90 text-white"
+                                : "bg-primary/90 text-primary-foreground"
+                            }`}
+                          >
+                            {categoryIcons[video.category]}
+                            {t(`wellness.categories.${video.category}`)}
+                          </Badge>
+                          <Badge 
+                            variant="outline" 
+                            className={`text-[10px] uppercase font-bold ${
+                              video.language === "ru" 
+                                ? "bg-blue-600/90 text-white border-none" 
+                                : video.language === "en"
+                                ? "bg-red-600/90 text-white border-none"
+                                : "bg-gray-600/90 text-white border-none"
+                            }`}
+                          >
+                            {video.language === "multi" ? "🌐" : video.language.toUpperCase()}
+                          </Badge>
+                        </div>
                         <Badge variant="outline" className="absolute bottom-3 right-3 bg-black/70 text-white border-none backdrop-blur-sm">
                           {video.duration}
                         </Badge>
@@ -378,7 +540,45 @@ export function WellnessCenter() {
           </TabsContent>
 
           {/* Quotes Tab */}
-          <TabsContent value="quotes" className="mt-5">
+          <TabsContent value="quotes" className="mt-5 space-y-4">
+            {/* Quote Category Filter */}
+            <div className="flex gap-2 flex-wrap justify-center">
+              <button 
+                onClick={() => handleQuoteFilterChange("all")}
+                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-all ${activeQuoteCategory("all")}`}
+              >
+                {t('wellness.filters.all')}
+              </button>
+              <button 
+                onClick={() => handleQuoteFilterChange("philosophy")}
+                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-all flex items-center gap-1.5 ${activeQuoteCategory("philosophy")}`}
+              >
+                <BookOpen className="h-3 w-3" />
+                {t('wellness.quoteCategories.philosophy')}
+              </button>
+              <button 
+                onClick={() => handleQuoteFilterChange("psychology")}
+                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-all flex items-center gap-1.5 ${activeQuoteCategory("psychology")}`}
+              >
+                <Brain className="h-3 w-3" />
+                {t('wellness.quoteCategories.psychology')}
+              </button>
+              <button 
+                onClick={() => handleQuoteFilterChange("growth")}
+                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-all flex items-center gap-1.5 ${activeQuoteCategory("growth")}`}
+              >
+                <Leaf className="h-3 w-3" />
+                {t('wellness.quoteCategories.growth')}
+              </button>
+              <button 
+                onClick={() => handleQuoteFilterChange("modern")}
+                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-all flex items-center gap-1.5 ${activeQuoteCategory("modern")}`}
+              >
+                <Lightbulb className="h-3 w-3" />
+                {t('wellness.quoteCategories.modern')}
+              </button>
+            </div>
+
             <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-accent/5 to-gentle-lavender/20 p-8 sm:p-10">
               {/* Decorative elements */}
               <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-3xl" />
@@ -387,66 +587,67 @@ export function WellnessCenter() {
               <Quote className="absolute top-6 left-6 h-10 w-10 text-primary/15" />
               <Quote className="absolute bottom-6 right-6 h-10 w-10 text-primary/15 rotate-180" />
               
-              <div className="relative z-10 text-center space-y-6 max-w-2xl mx-auto">
-                <p className="text-xl sm:text-2xl font-medium leading-relaxed italic text-foreground/90">
-                  "{t(quotes[currentQuoteIndex].textKey)}"
-                </p>
-                
-                <div className="flex flex-col items-center gap-1">
-                  <p className="text-base font-semibold text-foreground">
-                    {quotes[currentQuoteIndex].author}
+              {currentQuote && (
+                <div className="relative z-10 text-center space-y-6 max-w-2xl mx-auto">
+                  {/* Category Badge */}
+                  <Badge variant="secondary" className="gap-1.5">
+                    {quoteCategoryIcons[currentQuote.category]}
+                    {t(`wellness.quoteCategories.${currentQuote.category}`)}
+                  </Badge>
+
+                  <p className="text-xl sm:text-2xl font-medium leading-relaxed italic text-foreground/90">
+                    "{t(currentQuote.textKey)}"
                   </p>
-                  {quotes[currentQuoteIndex].authorRole && (
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                      {quotes[currentQuoteIndex].authorRole}
-                    </p>
-                  )}
-                </div>
-                
-                <div className="flex items-center justify-center gap-4 pt-4">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={prevQuote}
-                    className="h-10 w-10 rounded-full"
-                  >
-                    <ChevronLeft className="h-5 w-5" />
-                  </Button>
                   
-                  <div className="flex items-center gap-2">
-                    {quotes.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentQuoteIndex(index)}
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          index === currentQuoteIndex 
-                            ? "bg-primary w-6" 
-                            : "bg-muted-foreground/25 w-2 hover:bg-muted-foreground/50"
-                        }`}
-                      />
-                    ))}
+                  <div className="flex flex-col items-center gap-1">
+                    <p className="text-base font-semibold text-foreground">
+                      {currentQuote.author}
+                    </p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                      {t(currentQuote.authorRoleKey)}
+                    </p>
                   </div>
                   
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={nextQuote}
-                    className="h-10 w-10 rounded-full"
+                  <div className="flex items-center justify-center gap-4 pt-4">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={prevQuote}
+                      className="h-10 w-10 rounded-full"
+                      disabled={filteredQuotes.length <= 1}
+                    >
+                      <ChevronLeft className="h-5 w-5" />
+                    </Button>
+                    
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <span>{currentQuoteIndex + 1}</span>
+                      <span>/</span>
+                      <span>{filteredQuotes.length}</span>
+                    </div>
+                    
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={nextQuote}
+                      className="h-10 w-10 rounded-full"
+                      disabled={filteredQuotes.length <= 1}
+                    >
+                      <ChevronRight className="h-5 w-5" />
+                    </Button>
+                  </div>
+                  
+                  <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    onClick={randomQuote}
+                    className="mt-2 gap-2 rounded-full px-6"
+                    disabled={filteredQuotes.length <= 1}
                   >
-                    <ChevronRight className="h-5 w-5" />
+                    <Sparkles className="h-4 w-4" />
+                    {t('wellness.randomQuote')}
                   </Button>
                 </div>
-                
-                <Button 
-                  variant="secondary" 
-                  size="sm" 
-                  onClick={nextQuote}
-                  className="mt-2 gap-2 rounded-full px-6"
-                >
-                  <Sparkles className="h-4 w-4" />
-                  {t('wellness.randomQuote')}
-                </Button>
-              </div>
+              )}
             </div>
           </TabsContent>
         </Tabs>
