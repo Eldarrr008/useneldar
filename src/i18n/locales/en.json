@@ -180,8 +180,8 @@
         "description": "Relaxing music for quality nighttime rest"
       },
       "motivation1": {
-        "title": "Steve Jobs Speech",
-        "description": "Inspiring speech about following your dreams and life's meaning"
+        "title": "Steve Jobs Stanford Speech",
+        "description": "Legendary speech about life, death, and following your heart"
       },
       "motivation2": {
         "title": "Never Give Up",
@@ -190,27 +190,105 @@
       "focus": {
         "title": "Focus Music",
         "description": "Background music for productive studying and work"
+      },
+      "motivationRu1": {
+        "title": "Willpower and Discipline",
+        "description": "Motivational speech about developing willpower and achieving goals"
+      },
+      "motivationRu2": {
+        "title": "Path to Success",
+        "description": "Inspiring video about overcoming obstacles on the way to your dream"
+      },
+      "motivationRu3": {
+        "title": "Believe in Yourself",
+        "description": "Motivational video about believing in your abilities and potential"
+      },
+      "motivationRu4": {
+        "title": "Every Day is a New Chance",
+        "description": "Inspiring video about the value of each day and new opportunities"
+      },
+      "film1": {
+        "title": "Pursuit of Happyness — Motivational Moment",
+        "description": "Famous scene about protecting your dreams"
+      },
+      "film2": {
+        "title": "Rocky — Speech About Life",
+        "description": "Legendary Rocky speech about life hitting hard but moving forward"
+      },
+      "film3": {
+        "title": "Kung Fu Panda — No Secret Ingredient",
+        "description": "Inspiring moment about the secret to success being yourself"
       }
     },
     "quotes": {
-      "q1": "Your time is limited, don't waste it living someone else's life",
-      "q2": "In the middle of difficulty lies opportunity",
-      "q3": "It always seems impossible until it's done",
-      "q4": "It does not matter how slowly you go as long as you do not stop",
-      "q5": "Be the change you wish to see in the world",
-      "q6": "There is no greater purpose than helping others find their path",
-      "q7": "Happiness is not a destination, it's a way of traveling"
+      "marcus1": "It is not what happens to you, but how you react to it that matters",
+      "seneca1": "It is not that we have a short time to live, but that we waste a lot of it",
+      "epictetus1": "Don't seek to have events happen as you wish, but wish them to happen as they do happen, and all will be well",
+      "socrates1": "Know thyself",
+      "confucius1": "It does not matter how slowly you go as long as you do not stop",
+      "confucius2": "By three methods we may learn wisdom: by reflection, which is noblest; by imitation, which is easiest; and by experience, which is the bitterest",
+      "laozi1": "A journey of a thousand miles begins with a single step",
+      "aristotle1": "We are what we repeatedly do. Excellence, then, is not an act, but a habit",
+      "frankl1": "He who has a why to live can bear almost any how",
+      "frankl2": "Between stimulus and response there is a space. In that space is our power to choose our response",
+      "jung1": "Who looks outside, dreams; who looks inside, awakes",
+      "jung2": "I am not what happened to me, I am what I choose to become",
+      "maslow1": "If you plan on being anything less than you are capable of being, you will probably be unhappy all the days of your life",
+      "fromm1": "Man's main task in life is to give birth to himself, to become what he potentially is",
+      "csikszentmihalyi1": "The best moments in our lives are not passive times but when body or mind is stretched to its limits in achieving something difficult and worthwhile",
+      "gandhi1": "Be the change you wish to see in the world",
+      "gandhi2": "Strength does not come from physical capacity. It comes from an indomitable will",
+      "mandela1": "It always seems impossible until it's done",
+      "mandela2": "I never lose. I either win or learn",
+      "dalailama1": "Happiness is not something ready-made. It comes from your own actions",
+      "dalailama2": "If you can, help others; if you cannot do that, at least do not harm them",
+      "emerson1": "What lies behind us and what lies before us are tiny matters compared to what lies within us",
+      "jobs1": "Your time is limited, don't waste it living someone else's life",
+      "jobs2": "Stay hungry. Stay foolish",
+      "einstein1": "In the middle of difficulty lies opportunity",
+      "einstein2": "Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world",
+      "sinek1": "People don't buy what you do; they buy why you do it",
+      "angelou1": "There is no greater purpose than helping others find their path"
+    },
+    "quoteCategories": {
+      "philosophy": "Philosophy",
+      "psychology": "Psychology",
+      "growth": "Personal Growth",
+      "modern": "Modern Thinkers"
+    },
+    "authors": {
+      "marcusAurelius": "Roman Emperor, Stoic philosopher",
+      "seneca": "Roman Stoic philosopher",
+      "epictetus": "Greek Stoic philosopher",
+      "socrates": "Ancient Greek philosopher",
+      "confucius": "Chinese philosopher",
+      "laozi": "Ancient Chinese philosopher, founder of Taoism",
+      "aristotle": "Ancient Greek philosopher",
+      "frankl": "Austrian psychologist, founder of logotherapy",
+      "jung": "Swiss psychologist, founder of analytical psychology",
+      "maslow": "American psychologist, author of hierarchy of needs",
+      "fromm": "German-American psychologist and philosopher",
+      "csikszentmihalyi": "Hungarian-American psychologist, flow theory author",
+      "gandhi": "Indian political and spiritual leader",
+      "mandela": "Human rights activist, President of South Africa",
+      "dalailama": "Spiritual leader of Tibetan Buddhism",
+      "emerson": "American philosopher, essayist",
+      "jobs": "Co-founder of Apple",
+      "einstein": "Theoretical physicist, Nobel Prize laureate",
+      "sinek": "Author, motivational speaker",
+      "angelou": "American writer and poet"
     },
     "categories": {
       "relaxation": "Relaxation",
       "motivation": "Motivation",
-      "sleep": "Sleep"
+      "sleep": "Sleep",
+      "films": "Films"
     },
     "filters": {
       "all": "All"
     },
     "stop": "Stop",
-    "randomQuote": "New Quote"
+    "randomQuote": "Random Quote"
   },
   "survey": {
     "title": "Psychodiagnostics",
