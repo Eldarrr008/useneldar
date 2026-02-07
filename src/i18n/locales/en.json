@@ -70,6 +70,11 @@
       "title": "Ready to Start?",
       "description": "Register now and get access to all platform features"
     },
+    "stats": {
+      "students": "Students",
+      "confidential": "Confidential",
+      "available": "Availability"
+    },
     "footer": {
       "copyright": "© 2024 ZenithMind. All rights reserved.",
       "aiPowered": "Powered by AI",
