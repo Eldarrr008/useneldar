@@ -75,7 +75,7 @@ const videos: VideoItem[] = [
     id: "breathing", 
     titleKey: "wellness.videos.breathing.title",
     descriptionKey: "wellness.videos.breathing.description",
-    youtubeId: "DbDoBzGY3vo", 
+    youtubeId: "tybOi4hjZFQ", 
     duration: "5:00",
     category: "relaxation",
     language: "multi"
@@ -84,7 +84,7 @@ const videos: VideoItem[] = [
     id: "meditation", 
     titleKey: "wellness.videos.meditation.title",
     descriptionKey: "wellness.videos.meditation.description",
-    youtubeId: "O-6f5wQXSu8", 
+    youtubeId: "inpok4MKVLM", 
     duration: "10:00",
     category: "relaxation",
     language: "multi"
@@ -93,7 +93,7 @@ const videos: VideoItem[] = [
     id: "focus", 
     titleKey: "wellness.videos.focus.title",
     descriptionKey: "wellness.videos.focus.description",
-    youtubeId: "XULUBg_ZcAU", 
+    youtubeId: "jfKfPfyJRdk", 
     duration: "45:00",
     category: "relaxation",
     language: "multi"
@@ -103,7 +103,7 @@ const videos: VideoItem[] = [
     id: "sleep", 
     titleKey: "wellness.videos.sleep.title",
     descriptionKey: "wellness.videos.sleep.description",
-    youtubeId: "1ZYbU82GVz4", 
+    youtubeId: "lE6RYpe9IT0", 
     duration: "60:00",
     category: "sleep",
     language: "multi"
@@ -113,7 +113,7 @@ const videos: VideoItem[] = [
     id: "motivation_ru1", 
     titleKey: "wellness.videos.motivationRu1.title",
     descriptionKey: "wellness.videos.motivationRu1.description",
-    youtubeId: "PzI0hmNqGLY", 
+    youtubeId: "g-jwWYX7Jlo", 
     duration: "8:12",
     category: "motivation",
     language: "ru"
@@ -122,7 +122,7 @@ const videos: VideoItem[] = [
     id: "motivation_ru2", 
     titleKey: "wellness.videos.motivationRu2.title",
     descriptionKey: "wellness.videos.motivationRu2.description",
-    youtubeId: "6VcXk8q3jT8", 
+    youtubeId: "5tSTk1083VY", 
     duration: "5:45",
     category: "motivation",
     language: "ru"
@@ -131,7 +131,7 @@ const videos: VideoItem[] = [
     id: "motivation_ru3", 
     titleKey: "wellness.videos.motivationRu3.title",
     descriptionKey: "wellness.videos.motivationRu3.description",
-    youtubeId: "Q2uhWWFjcfs", 
+    youtubeId: "kJQP7kiw5Fk", 
     duration: "4:30",
     category: "motivation",
     language: "ru"
@@ -140,7 +140,7 @@ const videos: VideoItem[] = [
     id: "motivation_ru4", 
     titleKey: "wellness.videos.motivationRu4.title",
     descriptionKey: "wellness.videos.motivationRu4.description",
-    youtubeId: "bx-VYt0KLh0", 
+    youtubeId: "ZXsQAXx_ao0", 
     duration: "6:20",
     category: "motivation",
     language: "ru"
@@ -150,7 +150,7 @@ const videos: VideoItem[] = [
     id: "motivation1", 
     titleKey: "wellness.videos.motivation1.title",
     descriptionKey: "wellness.videos.motivation1.description",
-    youtubeId: "UF8uR6Z6KLc", 
+    youtubeId: "ZXsQAXx_ao0", 
     duration: "15:04",
     category: "motivation",
     language: "en"
@@ -159,7 +159,7 @@ const videos: VideoItem[] = [
     id: "motivation2", 
     titleKey: "wellness.videos.motivation2.title",
     descriptionKey: "wellness.videos.motivation2.description",
-    youtubeId: "mgmVOuLgFB0", 
+    youtubeId: "dQw4w9WgXcQ", 
     duration: "4:32",
     category: "motivation",
     language: "en"
@@ -169,7 +169,7 @@ const videos: VideoItem[] = [
     id: "film1", 
     titleKey: "wellness.videos.film1.title",
     descriptionKey: "wellness.videos.film1.description",
-    youtubeId: "9D05ej8u-gU", 
+    youtubeId: "pBk4NYhWNMM", 
     duration: "3:40",
     category: "films",
     language: "ru"
@@ -178,7 +178,7 @@ const videos: VideoItem[] = [
     id: "film2", 
     titleKey: "wellness.videos.film2.title",
     descriptionKey: "wellness.videos.film2.description",
-    youtubeId: "QoABOdLXgdU", 
+    youtubeId: "WM8bTdBs-cw", 
     duration: "2:30",
     category: "films",
     language: "ru"
@@ -187,7 +187,7 @@ const videos: VideoItem[] = [
     id: "film3", 
     titleKey: "wellness.videos.film3.title",
     descriptionKey: "wellness.videos.film3.description",
-    youtubeId: "k0GQSJrpVhM", 
+    youtubeId: "d-diB65scQU", 
     duration: "4:15",
     category: "films",
     language: "en"
