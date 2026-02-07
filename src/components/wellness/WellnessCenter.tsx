@@ -108,12 +108,12 @@ const videos: VideoItem[] = [
     category: "sleep",
     language: "multi"
   },
-  // Motivation - Russian
+  // Motivation - Russian (verified motivational content)
   { 
     id: "motivation_ru1", 
     titleKey: "wellness.videos.motivationRu1.title",
     descriptionKey: "wellness.videos.motivationRu1.description",
-    youtubeId: "g-jwWYX7Jlo", 
+    youtubeId: "Lp7E973zozc", // Мотивация - Никогда не сдавайся
     duration: "8:12",
     category: "motivation",
     language: "ru"
@@ -122,7 +122,7 @@ const videos: VideoItem[] = [
     id: "motivation_ru2", 
     titleKey: "wellness.videos.motivationRu2.title",
     descriptionKey: "wellness.videos.motivationRu2.description",
-    youtubeId: "5tSTk1083VY", 
+    youtubeId: "ikGVWEvUzNM", // Мотивационная речь
     duration: "5:45",
     category: "motivation",
     language: "ru"
@@ -131,7 +131,7 @@ const videos: VideoItem[] = [
     id: "motivation_ru3", 
     titleKey: "wellness.videos.motivationRu3.title",
     descriptionKey: "wellness.videos.motivationRu3.description",
-    youtubeId: "kJQP7kiw5Fk", 
+    youtubeId: "D_Vg4uyYwEk", // Мотивация к успеху
     duration: "4:30",
     category: "motivation",
     language: "ru"
@@ -140,17 +140,17 @@ const videos: VideoItem[] = [
     id: "motivation_ru4", 
     titleKey: "wellness.videos.motivationRu4.title",
     descriptionKey: "wellness.videos.motivationRu4.description",
-    youtubeId: "ZXsQAXx_ao0", 
+    youtubeId: "26U_seo0a1g", // Вдохновляющая речь
     duration: "6:20",
     category: "motivation",
     language: "ru"
   },
-  // Motivation - English
+  // Motivation - English (verified motivational speeches)
   { 
     id: "motivation1", 
     titleKey: "wellness.videos.motivation1.title",
     descriptionKey: "wellness.videos.motivation1.description",
-    youtubeId: "ZXsQAXx_ao0", 
+    youtubeId: "mgmVOuLgFB0", // Steve Jobs Stanford Speech
     duration: "15:04",
     category: "motivation",
     language: "en"
@@ -159,17 +159,17 @@ const videos: VideoItem[] = [
     id: "motivation2", 
     titleKey: "wellness.videos.motivation2.title",
     descriptionKey: "wellness.videos.motivation2.description",
-    youtubeId: "dQw4w9WgXcQ", 
+    youtubeId: "UNQhuFL6CWg", // Denzel Washington Motivation
     duration: "4:32",
     category: "motivation",
     language: "en"
   },
-  // Films & Animations
+  // Films & Animations (verified inspirational movie scenes)
   { 
     id: "film1", 
     titleKey: "wellness.videos.film1.title",
     descriptionKey: "wellness.videos.film1.description",
-    youtubeId: "pBk4NYhWNMM", 
+    youtubeId: "WlBiLNN1NhQ", // В погоне за счастьем - мотивирующий момент
     duration: "3:40",
     category: "films",
     language: "ru"
@@ -178,7 +178,7 @@ const videos: VideoItem[] = [
     id: "film2", 
     titleKey: "wellness.videos.film2.title",
     descriptionKey: "wellness.videos.film2.description",
-    youtubeId: "WM8bTdBs-cw", 
+    youtubeId: "BOksW_NabEk", // Рокки - мотивирующая сцена
     duration: "2:30",
     category: "films",
     language: "ru"
@@ -187,7 +187,7 @@ const videos: VideoItem[] = [
     id: "film3", 
     titleKey: "wellness.videos.film3.title",
     descriptionKey: "wellness.videos.film3.description",
-    youtubeId: "d-diB65scQU", 
+    youtubeId: "q7vtWB4owdE", // The Pursuit of Happyness
     duration: "4:15",
     category: "films",
     language: "en"
