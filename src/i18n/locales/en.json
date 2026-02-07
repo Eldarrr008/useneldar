@@ -143,14 +143,15 @@
   },
   "wellness": {
     "title": "Wellness Center",
-    "description": "Nature sounds, meditation videos and motivational quotes",
+    "description": "Nature sounds, meditations, and inspiring quotes for your peace of mind",
+    "badge": "For You",
     "tabs": {
       "sounds": "Sounds",
       "videos": "Videos",
       "quotes": "Quotes"
     },
     "sounds": {
-      "description": "Choose a calming sound for focus or relaxation",
+      "description": "Choose a calming sound for focus, study, or deep relaxation",
       "rain": "Rain",
       "ocean": "Ocean",
       "forest": "Forest",
@@ -158,23 +159,32 @@
       "fireplace": "Fireplace",
       "wind": "Wind"
     },
+    "nowPlaying": "Now playing",
     "videos": {
-      "description": "Short videos for meditation and motivation",
+      "description": "Videos for meditation, sleep, and motivation",
       "breathing": {
         "title": "4-7-8 Breathing Technique",
-        "description": "Relaxing breathing for stress relief"
+        "description": "Relaxing breathing for quick stress and anxiety relief"
       },
       "meditation": {
         "title": "10-Minute Meditation",
-        "description": "Quick meditation for mental clarity"
+        "description": "Quick meditation for mental clarity and inner peace"
+      },
+      "sleep": {
+        "title": "Deep Sleep Music",
+        "description": "Relaxing music for quality nighttime rest"
       },
       "motivation1": {
-        "title": "Steve Jobs Motivation",
-        "description": "Inspiring speech about following your dreams"
+        "title": "Steve Jobs Speech",
+        "description": "Inspiring speech about following your dreams and life's meaning"
       },
       "motivation2": {
         "title": "Never Give Up",
-        "description": "Motivational video about overcoming challenges"
+        "description": "Motivational video about strength of spirit and overcoming challenges"
+      },
+      "focus": {
+        "title": "Focus Music",
+        "description": "Background music for productive studying and work"
       }
     },
     "quotes": {
@@ -182,14 +192,20 @@
       "q2": "In the middle of difficulty lies opportunity",
       "q3": "It always seems impossible until it's done",
       "q4": "It does not matter how slowly you go as long as you do not stop",
-      "q5": "Be the change you wish to see in the world"
+      "q5": "Be the change you wish to see in the world",
+      "q6": "There is no greater purpose than helping others find their path",
+      "q7": "Happiness is not a destination, it's a way of traveling"
     },
     "categories": {
       "relaxation": "Relaxation",
-      "motivation": "Motivation"
+      "motivation": "Motivation",
+      "sleep": "Sleep"
+    },
+    "filters": {
+      "all": "All"
     },
     "stop": "Stop",
-    "nextQuote": "Next Quote"
+    "randomQuote": "New Quote"
   },
   "survey": {
     "title": "Psychodiagnostics",
