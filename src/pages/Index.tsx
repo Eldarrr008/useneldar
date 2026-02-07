@@ -9,6 +9,7 @@ import { ChatInterface } from "@/components/ChatInterface";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import logo from "@/assets/logo.png";
 import { 
   FileText, 
   Users, 
@@ -17,7 +18,6 @@ import {
   ClipboardList,
   LogOut,
   ArrowRight,
-  Building2,
   ShieldCheck,
   GraduationCap,
   History,
@@ -120,8 +120,9 @@ const Index = () => {
         <div className="container mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-foreground/10">
-                <Building2 className="h-6 w-6" />
+              <div className="relative">
+                <img src={logo} alt="ZenithMind Logo" className="h-12 w-12 object-contain" />
+                <div className="absolute -inset-1 bg-primary-foreground/10 rounded-full blur-lg -z-10" />
               </div>
               <div>
                 <h1 className="text-xl font-bold tracking-tight">ZenithMind</h1>
