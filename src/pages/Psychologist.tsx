@@ -47,6 +47,7 @@ import {
   BarChart3
 } from "lucide-react";
 import { StudentResultsDialog } from "@/components/psychologist/StudentResultsDialog";
+import { ClassroomAIAnalysis } from "@/components/psychologist/ClassroomAIAnalysis";
 
 interface Classroom {
   id: string;
@@ -593,16 +594,24 @@ const Psychologist = () => {
                             {classroom.join_code}
                           </code>
                         </div>
-                        <Button
-                          size="icon"
-                          variant="outline"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            copyJoinCode(classroom.join_code);
-                          }}
-                        >
-                          <Copy className="h-4 w-4" />
-                        </Button>
+                        <div className="flex items-center gap-2">
+                          <div onClick={(e) => e.stopPropagation()}>
+                            <ClassroomAIAnalysis 
+                              classroomId={classroom.id} 
+                              classroomName={classroom.name} 
+                            />
+                          </div>
+                          <Button
+                            size="icon"
+                            variant="outline"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              copyJoinCode(classroom.join_code);
+                            }}
+                          >
+                            <Copy className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
