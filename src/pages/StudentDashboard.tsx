@@ -24,7 +24,7 @@ import {
   History,
   ChevronRight
 } from "lucide-react";
-
+import { WellnessCenter } from "@/components/wellness/WellnessCenter";
 const StudentDashboard = () => {
   const [user, setUser] = useState<any>(null);
   const [joinCode, setJoinCode] = useState("");
@@ -316,6 +316,9 @@ const StudentDashboard = () => {
               </div>
             </CardHeader>
           </Card>
+
+          {/* Wellness Center */}
+          <WellnessCenter />
 
           {/* Information Notice */}
           <Card className="border-muted bg-muted/30">

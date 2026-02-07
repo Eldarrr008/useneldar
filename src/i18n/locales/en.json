@@ -141,6 +141,56 @@
       "disclaimer": "Diagnostic results are advisory and do not constitute a medical diagnosis"
     }
   },
+  "wellness": {
+    "title": "Wellness Center",
+    "description": "Nature sounds, meditation videos and motivational quotes",
+    "tabs": {
+      "sounds": "Sounds",
+      "videos": "Videos",
+      "quotes": "Quotes"
+    },
+    "sounds": {
+      "description": "Choose a calming sound for focus or relaxation",
+      "rain": "Rain",
+      "ocean": "Ocean",
+      "forest": "Forest",
+      "birds": "Birds",
+      "fireplace": "Fireplace",
+      "wind": "Wind"
+    },
+    "videos": {
+      "description": "Short videos for meditation and motivation",
+      "breathing": {
+        "title": "4-7-8 Breathing Technique",
+        "description": "Relaxing breathing for stress relief"
+      },
+      "meditation": {
+        "title": "10-Minute Meditation",
+        "description": "Quick meditation for mental clarity"
+      },
+      "motivation1": {
+        "title": "Steve Jobs Motivation",
+        "description": "Inspiring speech about following your dreams"
+      },
+      "motivation2": {
+        "title": "Never Give Up",
+        "description": "Motivational video about overcoming challenges"
+      }
+    },
+    "quotes": {
+      "q1": "Your time is limited, don't waste it living someone else's life",
+      "q2": "In the middle of difficulty lies opportunity",
+      "q3": "It always seems impossible until it's done",
+      "q4": "It does not matter how slowly you go as long as you do not stop",
+      "q5": "Be the change you wish to see in the world"
+    },
+    "categories": {
+      "relaxation": "Relaxation",
+      "motivation": "Motivation"
+    },
+    "stop": "Stop",
+    "nextQuote": "Next Quote"
+  },
   "survey": {
     "title": "Psychodiagnostics",
     "selectSurvey": "Select Assessment Type",
