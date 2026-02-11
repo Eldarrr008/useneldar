@@ -55,13 +55,13 @@ const Landing = () => {
               <ThemeToggle />
               <Button 
                 variant="ghost" 
-                onClick={() => navigate("/auth")}
+                onClick={() => navigate("/auth?mode=student")}
                 className="hidden sm:flex"
               >
                 <Lock className="mr-2 h-4 w-4" />
                 {t('common.login')}
               </Button>
-              <Button onClick={() => navigate("/auth?register=true")} className="gap-2">
+              <Button onClick={() => navigate("/auth?mode=student&register=true")} className="gap-2">
                 {t('common.register')}
                 <ArrowRight className="h-4 w-4" />
               </Button>
@@ -99,7 +99,7 @@ const Landing = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Button 
                 size="lg" 
-                onClick={() => navigate("/auth")} 
+                onClick={() => navigate("/auth?mode=student")} 
                 className="gap-3 h-14 px-8 text-base shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all"
               >
                 <GraduationCap className="h-5 w-5" />
@@ -109,7 +109,7 @@ const Landing = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
-                onClick={() => navigate("/auth")}
+                onClick={() => navigate("/auth?mode=specialist")}
                 className="h-14 px-8 text-base border-2 hover:bg-secondary/50"
               >
                 <UserCheck className="mr-2 h-5 w-5" />
