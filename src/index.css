@@ -10,128 +10,128 @@
 
 @layer base {
   :root {
-    /* Core - Soft cream/beige background */
-    --background: 40 30% 97%;
-    --foreground: 200 25% 20%;
+    /* Core - Warm sand/cream background (NOT pure white) */
+    --background: 36 33% 95%;
+    --foreground: 30 15% 25%;
 
-    /* Card - Warm white */
-    --card: 45 40% 99%;
-    --card-foreground: 200 25% 20%;
+    /* Card - Warm ivory */
+    --card: 38 35% 97%;
+    --card-foreground: 30 15% 25%;
 
-    --popover: 45 40% 99%;
-    --popover-foreground: 200 25% 20%;
+    --popover: 38 35% 97%;
+    --popover-foreground: 30 15% 25%;
 
-    /* Primary - Calming teal/sage */
-    --primary: 170 35% 40%;
-    --primary-foreground: 0 0% 100%;
+    /* Primary - Muted sage green (calming, nature) */
+    --primary: 152 28% 42%;
+    --primary-foreground: 40 30% 97%;
 
-    /* Secondary - Soft lavender */
-    --secondary: 240 20% 95%;
-    --secondary-foreground: 220 20% 35%;
+    /* Secondary - Soft sand */
+    --secondary: 33 25% 91%;
+    --secondary-foreground: 30 20% 35%;
 
-    /* Muted - Warm beige */
-    --muted: 35 25% 93%;
-    --muted-foreground: 200 15% 45%;
+    /* Muted - Warm oat */
+    --muted: 35 22% 90%;
+    --muted-foreground: 30 12% 50%;
 
-    /* Accent - Soft sage green */
-    --accent: 145 30% 55%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent - Gentle terracotta */
+    --accent: 16 45% 62%;
+    --accent-foreground: 38 35% 97%;
 
-    /* Success - Gentle green */
-    --success: 150 40% 45%;
-    --success-foreground: 0 0% 100%;
+    /* Success - Soft eucalyptus */
+    --success: 145 30% 48%;
+    --success-foreground: 40 30% 97%;
 
-    /* Warning - Soft peach/coral */
-    --warning: 25 80% 60%;
-    --warning-foreground: 0 0% 100%;
+    /* Warning - Warm apricot */
+    --warning: 28 65% 62%;
+    --warning-foreground: 30 20% 20%;
 
-    /* Destructive - Muted rose */
-    --destructive: 350 50% 55%;
-    --destructive-foreground: 0 0% 100%;
+    /* Destructive - Dusty rose */
+    --destructive: 355 40% 55%;
+    --destructive-foreground: 40 30% 97%;
 
-    /* Borders and inputs - Soft warm gray */
-    --border: 35 15% 85%;
-    --input: 35 15% 85%;
-    --ring: 170 35% 40%;
+    /* Borders and inputs - Warm sand */
+    --border: 33 18% 84%;
+    --input: 33 18% 84%;
+    --ring: 152 28% 42%;
 
-    /* Radius - Softer rounded corners */
+    /* Radius */
     --radius: 0.75rem;
 
-    /* Sidebar - Soft teal */
-    --sidebar-background: 170 30% 30%;
-    --sidebar-foreground: 40 30% 95%;
-    --sidebar-primary: 145 35% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 170 30% 35%;
-    --sidebar-accent-foreground: 40 30% 95%;
-    --sidebar-border: 170 25% 35%;
-    --sidebar-ring: 145 35% 55%;
+    /* Sidebar - Deep olive/sage */
+    --sidebar-background: 150 18% 28%;
+    --sidebar-foreground: 36 28% 92%;
+    --sidebar-primary: 145 25% 52%;
+    --sidebar-primary-foreground: 40 30% 97%;
+    --sidebar-accent: 150 18% 33%;
+    --sidebar-accent-foreground: 36 28% 92%;
+    --sidebar-border: 150 15% 34%;
+    --sidebar-ring: 145 25% 52%;
 
-    /* Custom psychological wellness colors */
-    --calm-blue: 195 50% 70%;
-    --calm-blue-foreground: 200 50% 20%;
-    --soft-green: 145 35% 65%;
-    --soft-green-foreground: 150 40% 20%;
-    --warm-beige: 35 40% 85%;
-    --warm-beige-foreground: 30 30% 25%;
-    --gentle-lavender: 260 30% 85%;
-    --gentle-lavender-foreground: 260 30% 25%;
+    /* Custom wellness colors */
+    --calm-blue: 180 25% 68%;
+    --calm-blue-foreground: 180 20% 22%;
+    --soft-green: 145 28% 62%;
+    --soft-green-foreground: 150 25% 22%;
+    --warm-beige: 33 35% 82%;
+    --warm-beige-foreground: 30 25% 25%;
+    --gentle-lavender: 270 22% 82%;
+    --gentle-lavender-foreground: 270 20% 28%;
   }
 
   .dark {
-    /* Dark mode - Deep calming navy/teal */
-    --background: 200 30% 10%;
-    --foreground: 40 20% 90%;
+    /* Dark mode - Deep warm charcoal (not pure black) */
+    --background: 30 12% 12%;
+    --foreground: 36 22% 88%;
 
-    --card: 200 25% 14%;
-    --card-foreground: 40 20% 90%;
+    --card: 30 10% 16%;
+    --card-foreground: 36 22% 88%;
 
-    --popover: 200 25% 14%;
-    --popover-foreground: 40 20% 90%;
+    --popover: 30 10% 16%;
+    --popover-foreground: 36 22% 88%;
 
-    --primary: 170 40% 50%;
-    --primary-foreground: 200 30% 10%;
+    --primary: 152 30% 48%;
+    --primary-foreground: 30 12% 12%;
 
-    --secondary: 200 20% 20%;
-    --secondary-foreground: 40 20% 85%;
+    --secondary: 30 12% 20%;
+    --secondary-foreground: 36 20% 82%;
 
-    --muted: 200 20% 18%;
-    --muted-foreground: 35 15% 55%;
+    --muted: 30 10% 20%;
+    --muted-foreground: 33 12% 55%;
 
-    --accent: 145 35% 50%;
-    --accent-foreground: 200 30% 10%;
+    --accent: 16 38% 52%;
+    --accent-foreground: 36 22% 92%;
 
-    --success: 150 40% 45%;
-    --success-foreground: 200 30% 10%;
+    --success: 145 28% 44%;
+    --success-foreground: 30 12% 12%;
 
-    --warning: 25 70% 55%;
-    --warning-foreground: 200 30% 10%;
+    --warning: 28 55% 52%;
+    --warning-foreground: 30 12% 12%;
 
-    --destructive: 350 45% 50%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 355 35% 48%;
+    --destructive-foreground: 36 22% 92%;
 
-    --border: 200 20% 22%;
-    --input: 200 20% 22%;
-    --ring: 170 40% 50%;
+    --border: 30 10% 22%;
+    --input: 30 10% 22%;
+    --ring: 152 30% 48%;
 
-    --sidebar-background: 200 30% 8%;
-    --sidebar-foreground: 40 20% 90%;
-    --sidebar-primary: 145 40% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 200 25% 14%;
-    --sidebar-accent-foreground: 40 20% 90%;
-    --sidebar-border: 200 20% 18%;
-    --sidebar-ring: 145 40% 50%;
+    --sidebar-background: 30 12% 9%;
+    --sidebar-foreground: 36 22% 88%;
+    --sidebar-primary: 145 28% 48%;
+    --sidebar-primary-foreground: 36 22% 92%;
+    --sidebar-accent: 30 10% 16%;
+    --sidebar-accent-foreground: 36 22% 88%;
+    --sidebar-border: 30 10% 20%;
+    --sidebar-ring: 145 28% 48%;
 
-    /* Custom psychological wellness colors - dark mode */
-    --calm-blue: 195 40% 45%;
-    --calm-blue-foreground: 195 40% 90%;
-    --soft-green: 145 35% 45%;
-    --soft-green-foreground: 145 35% 90%;
-    --warm-beige: 35 30% 30%;
-    --warm-beige-foreground: 35 30% 85%;
-    --gentle-lavender: 260 25% 40%;
-    --gentle-lavender-foreground: 260 25% 90%;
+    /* Custom wellness colors - dark mode */
+    --calm-blue: 180 22% 42%;
+    --calm-blue-foreground: 180 20% 88%;
+    --soft-green: 145 25% 42%;
+    --soft-green-foreground: 145 22% 88%;
+    --warm-beige: 33 22% 28%;
+    --warm-beige-foreground: 33 22% 85%;
+    --gentle-lavender: 270 18% 38%;
+    --gentle-lavender-foreground: 270 18% 88%;
   }
 }
 
