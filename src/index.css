@@ -10,13 +10,13 @@
 
 @layer base {
   :root {
-    /* Core - Warm sand/cream background (NOT pure white) */
-    --background: 36 33% 95%;
-    --foreground: 30 15% 25%;
+    /* Core - Clean warm cream (not pure white, not muddy) */
+    --background: 39 50% 98%;
+    --foreground: 25 20% 20%;
 
-    /* Card - Warm ivory */
-    --card: 38 35% 97%;
-    --card-foreground: 30 15% 25%;
+    /* Card - Slightly warmer than background */
+    --card: 40 40% 99%;
+    --card-foreground: 25 20% 20%;
 
     --popover: 38 35% 97%;
     --popover-foreground: 30 15% 25%;
