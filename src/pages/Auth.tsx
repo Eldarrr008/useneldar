@@ -316,7 +316,7 @@ const Auth = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
             <p className="text-xs text-muted-foreground">
-              © 2024 ZenithMind. Система психологического мониторинга
+              © 2026 ZenithMind. Система психологического мониторинга
             </p>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span>Поддержка:</span>

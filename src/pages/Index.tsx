@@ -345,7 +345,7 @@ const Index = () => {
       <footer className="mt-auto border-t bg-muted/30">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <p>© 2024 ZenithMind. Система психологического мониторинга</p>
+            <p>© 2026 ZenithMind. Система психологического мониторинга</p>
             <p>Данная система не заменяет консультацию квалифицированного специалиста</p>
           </div>
         </div>

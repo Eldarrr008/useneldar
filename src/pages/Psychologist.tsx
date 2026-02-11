@@ -797,7 +797,7 @@ const Psychologist = () => {
       <footer className="mt-auto border-t bg-muted/30">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <p>© 2024 ZenithMind. Панель психолога</p>
+            <p>© 2026 ZenithMind. Панель психолога</p>
             <p>Все данные конфиденциальны и защищены</p>
           </div>
         </div>
