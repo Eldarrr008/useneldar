@@ -40,11 +40,24 @@ const Auth = () => {
   };
 
   useEffect(() => {
+    // Check if user is already logged in on mount
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (user) {
         fetchRolesAndRedirect(user.id);
       }
     });
+
+    // Listen for auth state changes to handle logout properly
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        // Only auto-redirect on SIGNED_IN event (not initial session check)
+        if (event === "SIGNED_IN" && session?.user) {
+          fetchRolesAndRedirect(session.user.id);
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
   }, [navigate]);
 
   const handleAuth = async (e: React.FormEvent) => {

@@ -9,20 +9,18 @@ export const useUserRole = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchRoles = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        
-        if (!user) {
-          setRoles([]);
-          setLoading(false);
-          return;
-        }
+    const fetchRoles = async (userId: string | undefined) => {
+      if (!userId) {
+        setRoles([]);
+        setLoading(false);
+        return;
+      }
 
+      try {
         const { data, error } = await supabase
           .from("user_roles")
           .select("role")
-          .eq("user_id", user.id);
+          .eq("user_id", userId);
 
         if (error) {
           console.error("Error fetching roles:", error);
@@ -38,7 +36,25 @@ export const useUserRole = () => {
       }
     };
 
-    fetchRoles();
+    // Initial fetch
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      fetchRoles(user?.id);
+    });
+
+    // Listen for auth changes (login/logout)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (!session?.user) {
+          setRoles([]);
+          setLoading(false);
+        } else {
+          setLoading(true);
+          fetchRoles(session.user.id);
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const hasRole = (role: UserRole) => roles.includes(role);
