@@ -228,7 +228,7 @@ const Auth = () => {
                   <Input
                     id="email"
                     type="email"
-                    placeholder={isSpecialist ? "specialist@university.edu" : "student@university.edu"}
+                    placeholder="Введите электронную почту"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
