@@ -60,6 +60,7 @@ interface Profile {
 
 interface UserWithRoles extends Profile {
   roles: UserRole[];
+  email?: string;
 }
 
 const roleLabels: Record<UserRole, string> = {
@@ -115,11 +116,37 @@ const Admin = () => {
 
       if (rolesError) throw rolesError;
 
+      // Fetch emails from edge function
+      let emailMap: Record<string, string> = {};
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          const response = await fetch(
+            `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/list-user-emails`,
+            {
+              headers: {
+                Authorization: `Bearer ${session.access_token}`,
+                apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+              },
+            }
+          );
+          if (response.ok) {
+            const result = await response.json();
+            for (const u of result.users) {
+              emailMap[u.id] = u.email;
+            }
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch emails:", e);
+      }
+
       const usersWithRoles = profiles.map(profile => ({
         ...profile,
         roles: rolesData
           .filter(r => r.user_id === profile.id)
           .map(r => r.role),
+        email: emailMap[profile.id] || "",
       }));
 
       setUsers(usersWithRoles);
@@ -529,6 +556,7 @@ const Admin = () => {
                 <TableHeader>
                   <TableRow className="bg-muted/50">
                     <TableHead className="font-medium">Имя пользователя</TableHead>
+                    <TableHead className="font-medium">Эл. почта</TableHead>
                     <TableHead className="font-medium">Текущая роль</TableHead>
                     <TableHead className="font-medium">Дата регистрации</TableHead>
                     <TableHead className="font-medium">Изменить роль</TableHead>
@@ -538,7 +566,7 @@ const Admin = () => {
                 <TableBody>
                   {users.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                      <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
                         Пользователи не найдены
                       </TableCell>
                     </TableRow>
@@ -546,6 +574,7 @@ const Admin = () => {
                     users.map((user) => (
                       <TableRow key={user.id}>
                         <TableCell className="font-medium">{user.full_name}</TableCell>
+                        <TableCell className="text-muted-foreground text-sm">{user.email || "—"}</TableCell>
                         <TableCell>
                           <div className="flex gap-1.5">
                             {user.roles.map((role) => (
