@@ -10,127 +10,127 @@
 
 @layer base {
   :root {
-    /* Фон — тёплый молочно-бежевый #F4F1EC */
-    --background: 36 27% 94%;
-    /* Текст — мягкий тёмно-серый #2F3E46 */
-    --foreground: 195 20% 23%;
+    /* Фон — светлый голубовато-серый, чистый но не стерильный */
+    --background: 210 40% 98%;
+    /* Текст — глубокий тёмно-серый */
+    --foreground: 210 15% 25%;
 
-    /* Карточки — белый (но фон страницы НЕ белый) */
+    /* Карточки — белые с мягкой тенью */
     --card: 0 0% 100%;
-    --card-foreground: 195 20% 23%;
+    --card-foreground: 210 15% 25%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 195 20% 23%;
+    --popover-foreground: 210 15% 25%;
 
-    /* Primary — спокойный зелёно-серый #6B9080 */
-    --primary: 153 16% 49%;
+    /* Primary — свежий живой зелёный */
+    --primary: 158 45% 42%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary — мягкий песочный #EAE5DE */
-    --secondary: 35 21% 89%;
-    --secondary-foreground: 195 20% 23%;
+    /* Secondary — мягкий голубовато-серый */
+    --secondary: 210 20% 92%;
+    --secondary-foreground: 210 15% 25%;
 
-    /* Muted — вторичный текст #6C757D */
-    --muted: 35 21% 89%;
-    --muted-foreground: 210 6% 46%;
+    /* Muted */
+    --muted: 210 20% 94%;
+    --muted-foreground: 210 10% 46%;
 
-    /* Accent — лаванда #CDB4DB */
-    --accent: 288 28% 78%;
-    --accent-foreground: 195 20% 23%;
+    /* Accent — живой лавандовый */
+    --accent: 265 55% 68%;
+    --accent-foreground: 0 0% 100%;
 
-    /* Success — светлый зелёный акцент #A4C3B2 */
-    --success: 150 24% 70%;
-    --success-foreground: 195 20% 23%;
+    /* Success */
+    --success: 158 40% 55%;
+    --success-foreground: 0 0% 100%;
 
-    /* Warning — тёплый персиковый #E6B8A2 */
+    /* Warning — тёплый персиковый */
     --warning: 19 56% 77%;
-    --warning-foreground: 195 20% 23%;
+    --warning-foreground: 210 15% 25%;
 
-    /* Destructive — приглушённый розовый */
+    /* Destructive */
     --destructive: 350 45% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Borders — мягкие тёплые */
-    --border: 35 18% 84%;
-    --input: 35 18% 84%;
-    --ring: 153 16% 49%;
+    /* Borders */
+    --border: 210 20% 88%;
+    --input: 210 20% 88%;
+    --ring: 158 45% 42%;
 
     --radius: 0.75rem;
 
-    /* Sidebar — глубокий зелёно-серый */
-    --sidebar-background: 153 16% 38%;
-    --sidebar-foreground: 36 27% 94%;
-    --sidebar-primary: 150 24% 70%;
+    /* Sidebar */
+    --sidebar-background: 158 35% 30%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 158 45% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 153 16% 44%;
-    --sidebar-accent-foreground: 36 27% 94%;
-    --sidebar-border: 153 14% 42%;
-    --sidebar-ring: 150 24% 70%;
+    --sidebar-accent: 158 30% 36%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 158 25% 34%;
+    --sidebar-ring: 158 45% 55%;
 
     /* Wellness colors */
-    --calm-blue: 180 25% 68%;
-    --calm-blue-foreground: 195 20% 23%;
-    --soft-green: 150 24% 70%;
-    --soft-green-foreground: 195 20% 23%;
-    --warm-beige: 35 21% 89%;
-    --warm-beige-foreground: 195 20% 23%;
-    --gentle-lavender: 288 28% 78%;
-    --gentle-lavender-foreground: 195 20% 23%;
+    --calm-blue: 210 40% 75%;
+    --calm-blue-foreground: 210 15% 25%;
+    --soft-green: 158 40% 65%;
+    --soft-green-foreground: 210 15% 25%;
+    --warm-beige: 35 30% 90%;
+    --warm-beige-foreground: 210 15% 25%;
+    --gentle-lavender: 265 45% 78%;
+    --gentle-lavender-foreground: 210 15% 25%;
   }
 
   .dark {
-    /* Dark calm mode — тёплый глубокий */
-    --background: 195 15% 12%;
-    --foreground: 36 22% 88%;
+    /* Dark calm mode — глубокий синий */
+    --background: 220 20% 10%;
+    --foreground: 210 30% 90%;
 
-    --card: 195 12% 16%;
-    --card-foreground: 36 22% 88%;
+    --card: 220 18% 14%;
+    --card-foreground: 210 30% 90%;
 
-    --popover: 195 12% 16%;
-    --popover-foreground: 36 22% 88%;
+    --popover: 220 18% 14%;
+    --popover-foreground: 210 30% 90%;
 
-    --primary: 153 20% 48%;
-    --primary-foreground: 195 15% 12%;
+    --primary: 158 40% 48%;
+    --primary-foreground: 220 20% 10%;
 
-    --secondary: 195 10% 20%;
-    --secondary-foreground: 36 18% 82%;
+    --secondary: 220 15% 18%;
+    --secondary-foreground: 210 20% 82%;
 
-    --muted: 195 10% 20%;
-    --muted-foreground: 210 6% 55%;
+    --muted: 220 15% 18%;
+    --muted-foreground: 210 10% 55%;
 
-    --accent: 288 22% 52%;
-    --accent-foreground: 36 22% 92%;
+    --accent: 265 45% 58%;
+    --accent-foreground: 210 30% 95%;
 
-    --success: 150 20% 45%;
-    --success-foreground: 195 15% 12%;
+    --success: 158 35% 45%;
+    --success-foreground: 220 20% 10%;
 
     --warning: 19 45% 55%;
-    --warning-foreground: 195 15% 12%;
+    --warning-foreground: 220 20% 10%;
 
     --destructive: 350 35% 48%;
-    --destructive-foreground: 36 22% 92%;
+    --destructive-foreground: 210 30% 95%;
 
-    --border: 195 10% 22%;
-    --input: 195 10% 22%;
-    --ring: 153 20% 48%;
+    --border: 220 15% 20%;
+    --input: 220 15% 20%;
+    --ring: 158 40% 48%;
 
-    --sidebar-background: 195 15% 9%;
-    --sidebar-foreground: 36 22% 88%;
-    --sidebar-primary: 150 20% 48%;
-    --sidebar-primary-foreground: 36 22% 92%;
-    --sidebar-accent: 195 12% 16%;
-    --sidebar-accent-foreground: 36 22% 88%;
-    --sidebar-border: 195 10% 20%;
-    --sidebar-ring: 150 20% 48%;
+    --sidebar-background: 220 20% 8%;
+    --sidebar-foreground: 210 30% 90%;
+    --sidebar-primary: 158 40% 48%;
+    --sidebar-primary-foreground: 210 30% 95%;
+    --sidebar-accent: 220 18% 14%;
+    --sidebar-accent-foreground: 210 30% 90%;
+    --sidebar-border: 220 15% 18%;
+    --sidebar-ring: 158 40% 48%;
 
-    --calm-blue: 180 20% 42%;
-    --calm-blue-foreground: 180 18% 88%;
-    --soft-green: 150 20% 42%;
-    --soft-green-foreground: 150 18% 88%;
+    --calm-blue: 210 30% 42%;
+    --calm-blue-foreground: 210 25% 88%;
+    --soft-green: 158 30% 42%;
+    --soft-green-foreground: 158 25% 88%;
     --warm-beige: 35 18% 28%;
     --warm-beige-foreground: 35 18% 85%;
-    --gentle-lavender: 288 16% 38%;
-    --gentle-lavender-foreground: 288 16% 88%;
+    --gentle-lavender: 265 25% 42%;
+    --gentle-lavender-foreground: 265 20% 88%;
   }
 }
 
@@ -157,11 +157,18 @@
   }
 
   .wellness-card {
-    @apply bg-card border border-border shadow-sm rounded-xl;
+    @apply bg-card border border-border rounded-xl;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
   }
 
   .wellness-gradient {
-    background: linear-gradient(135deg, hsl(var(--calm-blue) / 0.15), hsl(var(--soft-green) / 0.15));
+    background: linear-gradient(135deg, hsl(210 40% 98%), hsl(158 30% 94%));
+  }
+
+  .wellness-blobs {
+    background:
+      radial-gradient(circle at 20% 20%, hsl(158 50% 90% / 0.5), transparent 40%),
+      radial-gradient(circle at 80% 60%, hsl(265 50% 92% / 0.5), transparent 40%);
   }
 
   .status-safe {
