@@ -1,41 +1,71 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Link } from "react-router-dom";
-import { Building2, ShieldCheck, Lock, ArrowLeft } from "lucide-react";
+import { Building2, ShieldCheck, Lock, ArrowLeft, GraduationCap, UserCheck } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 
 type UserRole = Database["public"]["Enums"]["app_role"];
 
 const Auth = () => {
+  const [searchParams] = useSearchParams();
+  const mode = searchParams.get("mode") || "student"; // "student" or "specialist"
+  const isSpecialist = mode === "specialist";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(!searchParams.has("register"));
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Helper to fetch user roles and redirect accordingly
-  const fetchRolesAndRedirect = async (userId: string) => {
+  // Validate roles match the login mode and redirect
+  const validateAndRedirect = async (userId: string) => {
     const { data: rolesData } = await supabase
       .from("user_roles")
       .select("role")
       .eq("user_id", userId);
     
     const roles: UserRole[] = rolesData?.map(r => r.role) || [];
-    
-    if (roles.includes("admin")) {
-      navigate("/admin");
-    } else if (roles.includes("psychologist")) {
-      navigate("/psychologist");
+
+    if (isSpecialist) {
+      // Specialist login: only psychologist or admin allowed
+      if (roles.includes("admin")) {
+        navigate("/admin");
+        return true;
+      } else if (roles.includes("psychologist")) {
+        navigate("/psychologist");
+        return true;
+      } else {
+        // Student trying to use specialist login — reject
+        await supabase.auth.signOut();
+        toast({
+          variant: "destructive",
+          title: "Доступ запрещён",
+          description: "Эта форма входа предназначена только для специалистов (психологов и администраторов).",
+        });
+        return false;
+      }
     } else {
-      navigate("/dashboard");
+      // Student login: only students allowed
+      if (roles.includes("admin") || roles.includes("psychologist")) {
+        // Specialist trying to use student login — reject
+        await supabase.auth.signOut();
+        toast({
+          variant: "destructive",
+          title: "Доступ запрещён",
+          description: "Для входа специалистов используйте форму «Вход для специалистов».",
+        });
+        return false;
+      } else {
+        navigate("/dashboard");
+        return true;
+      }
     }
   };
 
@@ -43,22 +73,20 @@ const Auth = () => {
     // Check if user is already logged in on mount
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (user) {
-        fetchRolesAndRedirect(user.id);
+        validateAndRedirect(user.id);
       }
     });
 
-    // Listen for auth state changes to handle logout properly
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        // Only auto-redirect on SIGNED_IN event (not initial session check)
         if (event === "SIGNED_IN" && session?.user) {
-          fetchRolesAndRedirect(session.user.id);
+          validateAndRedirect(session.user.id);
         }
       }
     );
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, isSpecialist]);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,17 +101,28 @@ const Auth = () => {
 
         if (error) throw error;
 
-        toast({
-          title: "Авторизация успешна",
-          description: "Добро пожаловать в систему",
-        });
-        
-        // Get current user and redirect by role
+        // Get current user and validate role
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
-          await fetchRolesAndRedirect(user.id);
+          const allowed = await validateAndRedirect(user.id);
+          if (allowed) {
+            toast({
+              title: "Авторизация успешна",
+              description: "Добро пожаловать в систему",
+            });
+          }
         }
       } else {
+        if (isSpecialist) {
+          toast({
+            variant: "destructive",
+            title: "Регистрация недоступна",
+            description: "Регистрация специалистов осуществляется только через администратора.",
+          });
+          setLoading(false);
+          return;
+        }
+
         const { error } = await supabase.auth.signUp({
           email,
           password,
@@ -115,6 +154,18 @@ const Auth = () => {
     }
   };
 
+  const titleText = isSpecialist
+    ? isLogin ? "Вход для специалистов" : "Регистрация"
+    : isLogin ? "Вход для студентов" : "Регистрация студента";
+
+  const descText = isSpecialist
+    ? "Для психологов и администраторов"
+    : isLogin
+      ? "Используйте учётные данные студента"
+      : "Создание новой учётной записи студента";
+
+  const IconComponent = isSpecialist ? UserCheck : GraduationCap;
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       {/* Header */}
@@ -135,7 +186,9 @@ const Auth = () => {
               </div>
               <div>
                 <h1 className="text-lg font-bold">ZenithMind</h1>
-                <p className="text-xs text-primary-foreground/80">Система психологического мониторинга</p>
+                <p className="text-xs text-primary-foreground/80">
+                  {isSpecialist ? "Панель специалистов" : "Студенческий портал"}
+                </p>
               </div>
             </div>
           </div>
@@ -149,20 +202,14 @@ const Auth = () => {
           <Card className="border shadow-institutional-md">
             <CardHeader className="space-y-1 text-center">
               <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                <Lock className="h-6 w-6 text-primary" />
+                <IconComponent className="h-6 w-6 text-primary" />
               </div>
-              <CardTitle className="text-xl">
-                {isLogin ? "Вход в систему" : "Регистрация"}
-              </CardTitle>
-              <CardDescription>
-                {isLogin
-                  ? "Используйте учётные данные организации"
-                  : "Создание новой учётной записи"}
-              </CardDescription>
+              <CardTitle className="text-xl">{titleText}</CardTitle>
+              <CardDescription>{descText}</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleAuth} className="space-y-4">
-                {!isLogin && (
+                {!isLogin && !isSpecialist && (
                   <div className="space-y-2">
                     <Label htmlFor="fullName">ФИО</Label>
                     <Input
@@ -181,7 +228,7 @@ const Auth = () => {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="user@university.edu"
+                    placeholder={isSpecialist ? "specialist@university.edu" : "student@university.edu"}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -209,24 +256,40 @@ const Auth = () => {
                     : "Зарегистрироваться"}
                 </Button>
               </form>
-              <div className="mt-6 flex items-center justify-center gap-4">
+
+              {/* Only show register/login toggle for students */}
+              {!isSpecialist && (
+                <div className="mt-6 flex items-center justify-center gap-4">
+                  <Button
+                    type="button"
+                    variant={isLogin ? "outline" : "default"}
+                    size="sm"
+                    onClick={() => setIsLogin(false)}
+                    className={isLogin ? "" : "pointer-events-none"}
+                  >
+                    Регистрация
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={!isLogin ? "outline" : "default"}
+                    size="sm"
+                    onClick={() => setIsLogin(true)}
+                    className={!isLogin ? "" : "pointer-events-none"}
+                  >
+                    Вход
+                  </Button>
+                </div>
+              )}
+
+              {/* Link to switch mode */}
+              <div className="mt-4 text-center">
                 <Button
-                  type="button"
-                  variant={isLogin ? "outline" : "default"}
+                  variant="link"
                   size="sm"
-                  onClick={() => setIsLogin(false)}
-                  className={isLogin ? "" : "pointer-events-none"}
+                  className="text-muted-foreground"
+                  onClick={() => navigate(isSpecialist ? "/auth?mode=student" : "/auth?mode=specialist")}
                 >
-                  Регистрация
-                </Button>
-                <Button
-                  type="button"
-                  variant={!isLogin ? "outline" : "default"}
-                  size="sm"
-                  onClick={() => setIsLogin(true)}
-                  className={!isLogin ? "" : "pointer-events-none"}
-                >
-                  Вход
+                  {isSpecialist ? "Войти как студент →" : "Вход для специалистов →"}
                 </Button>
               </div>
             </CardContent>
