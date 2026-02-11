@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { 
   Table, 
@@ -45,7 +46,8 @@ import {
   LogOut,
   RefreshCw,
   GraduationCap,
-  Trash2
+  Trash2,
+  Search
 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import type { Database } from "@/integrations/supabase/types";
@@ -96,6 +98,8 @@ const Admin = () => {
     activeCrises: 0,
   });
   const [riskDistribution, setRiskDistribution] = useState<{ name: string; value: number }[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [roleFilter, setRoleFilter] = useState<string>("all");
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -547,7 +551,40 @@ const Admin = () => {
                   </CardDescription>
                 </div>
               </div>
-              <Badge variant="secondary">{users.length} пользователей</Badge>
+              <Badge variant="secondary">
+                {(() => {
+                  const filtered = users.filter(user => {
+                    const q = searchQuery.toLowerCase();
+                    const matchesSearch = !q || user.full_name.toLowerCase().includes(q) || (user.email || "").toLowerCase().includes(q);
+                    const matchesRole = roleFilter === "all" || user.roles.includes(roleFilter as UserRole) || (roleFilter === "none" && user.roles.length === 0);
+                    return matchesSearch && matchesRole;
+                  });
+                  return `${filtered.length} из ${users.length}`;
+                })()} пользователей
+              </Badge>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 mt-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Поиск по имени или почте..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
+              <Select value={roleFilter} onValueChange={setRoleFilter}>
+                <SelectTrigger className="w-full sm:w-48">
+                  <SelectValue placeholder="Фильтр по роли" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Все роли</SelectItem>
+                  <SelectItem value="student">Студенты</SelectItem>
+                  <SelectItem value="psychologist">Психологи</SelectItem>
+                  <SelectItem value="admin">Администраторы</SelectItem>
+                  <SelectItem value="none">Без роли</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardHeader>
           <CardContent>
@@ -564,14 +601,23 @@ const Admin = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {users.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
-                        Пользователи не найдены
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    users.map((user) => (
+                  {(() => {
+                    const q = searchQuery.toLowerCase();
+                    const filtered = users.filter(user => {
+                      const matchesSearch = !q || user.full_name.toLowerCase().includes(q) || (user.email || "").toLowerCase().includes(q);
+                      const matchesRole = roleFilter === "all" || user.roles.includes(roleFilter as UserRole) || (roleFilter === "none" && user.roles.length === 0);
+                      return matchesSearch && matchesRole;
+                    });
+                    if (filtered.length === 0) {
+                      return (
+                        <TableRow>
+                          <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                            {users.length === 0 ? "Пользователи не найдены" : "Нет результатов по вашему запросу"}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    }
+                    return filtered.map((user) => (
                       <TableRow key={user.id}>
                         <TableCell className="font-medium">{user.full_name}</TableCell>
                         <TableCell className="text-muted-foreground text-sm">{user.email || "—"}</TableCell>
@@ -639,8 +685,8 @@ const Admin = () => {
                           </AlertDialog>
                         </TableCell>
                       </TableRow>
-                    ))
-                  )}
+                    ));
+                  })()}
                 </TableBody>
               </Table>
             </div>
