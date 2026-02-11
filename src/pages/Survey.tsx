@@ -173,7 +173,7 @@ const SurveyPage = () => {
         <div className="border-b bg-card">
           <div className="container mx-auto px-6 py-3">
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
+              <Button variant="ghost" size="sm" onClick={() => navigate("/dashboard")}>
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Назад к панели
               </Button>
@@ -334,7 +334,7 @@ const SurveyPage = () => {
                 </Button>
                 <Button 
                   variant="outline" 
-                  onClick={() => navigate("/")} 
+                  onClick={() => navigate("/dashboard")} 
                   className="w-full"
                 >
                   Вернуться на главную
