@@ -102,7 +102,7 @@ const History = () => {
             <Button 
               variant="ghost" 
               size="icon"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/dashboard")}
               className="text-primary-foreground hover:bg-primary-foreground/10"
             >
               <ArrowLeft className="h-5 w-5" />
