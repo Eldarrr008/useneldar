@@ -22,6 +22,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { 
   ArrowLeft, 
   Users, 
@@ -33,7 +44,8 @@ import {
   FileText,
   LogOut,
   RefreshCw,
-  GraduationCap
+  GraduationCap,
+  Trash2
 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import type { Database } from "@/integrations/supabase/types";
@@ -215,6 +227,42 @@ const Admin = () => {
         variant: "destructive",
         title: "Ошибка",
         description: "Не удалось обновить роль",
+      });
+    }
+  };
+
+  const handleDeleteUser = async (userId: string, userName: string) => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error("Not authenticated");
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-user`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.access_token}`,
+            apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+          },
+          body: JSON.stringify({ user_id: userId }),
+        }
+      );
+
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Failed to delete user");
+
+      toast({
+        title: "Пользователь удалён",
+        description: `${userName} был полностью удалён из системы`,
+      });
+      fetchData();
+    } catch (error: any) {
+      console.error("Error deleting user:", error);
+      toast({
+        variant: "destructive",
+        title: "Ошибка удаления",
+        description: error.message,
       });
     }
   };
@@ -483,13 +531,14 @@ const Admin = () => {
                     <TableHead className="font-medium">Имя пользователя</TableHead>
                     <TableHead className="font-medium">Текущая роль</TableHead>
                     <TableHead className="font-medium">Дата регистрации</TableHead>
-                    <TableHead className="font-medium text-right">Изменить роль</TableHead>
+                    <TableHead className="font-medium">Изменить роль</TableHead>
+                    <TableHead className="font-medium text-right">Действия</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {users.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
+                      <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
                         Пользователи не найдены
                       </TableCell>
                     </TableRow>
@@ -532,6 +581,33 @@ const Admin = () => {
                               <SelectItem value="admin">Администратор</SelectItem>
                             </SelectContent>
                           </Select>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive hover:bg-destructive/10">
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Удалить пользователя?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Вы уверены, что хотите удалить <strong>{user.full_name}</strong>? 
+                                  Это действие необратимо. Все данные пользователя (тесты, сообщения, членство в группах) будут удалены навсегда.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Отмена</AlertDialogCancel>
+                                <AlertDialogAction 
+                                  onClick={() => handleDeleteUser(user.id, user.full_name)}
+                                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                >
+                                  Удалить
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </TableCell>
                       </TableRow>
                     ))
