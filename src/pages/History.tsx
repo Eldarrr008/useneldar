@@ -8,7 +8,6 @@ import { Separator } from "@/components/ui/separator";
 import { 
   ArrowLeft, 
   FileText, 
-  Loader2, 
   Building2, 
   Calendar,
   TrendingUp,
@@ -17,6 +16,7 @@ import {
   ChevronRight,
   ClipboardList
 } from "lucide-react";
+import { HistorySkeleton } from "@/components/ui/page-skeleton";
 
 interface SurveyResponseItem {
   id: string;
@@ -83,14 +83,7 @@ const History = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p className="text-sm text-muted-foreground">Загрузка истории...</p>
-        </div>
-      </div>
-    );
+    return <HistorySkeleton />;
   }
 
   return (
@@ -122,7 +115,7 @@ const History = () => {
         </div>
       </header>
 
-      <main className="container mx-auto max-w-3xl px-6 py-8 space-y-6">
+      <main className="container mx-auto max-w-3xl px-4 sm:px-6 py-6 sm:py-8 space-y-6">
         {/* Stats Summary */}
         {responses.length > 0 && (
           <div className="grid gap-4 sm:grid-cols-3">

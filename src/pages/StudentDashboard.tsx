@@ -25,6 +25,8 @@ import {
   ChevronRight
 } from "lucide-react";
 import { WellnessCenter } from "@/components/wellness/WellnessCenter";
+import { DashboardSkeleton } from "@/components/ui/page-skeleton";
+
 const StudentDashboard = () => {
   const [user, setUser] = useState<any>(null);
   const [joinCode, setJoinCode] = useState("");
@@ -59,14 +61,7 @@ const StudentDashboard = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
-          <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
-        </div>
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   // Chat view
@@ -119,25 +114,35 @@ const StudentDashboard = () => {
     <div className="min-h-screen bg-background">
       {/* University-style Primary Header */}
       <header className="bg-primary text-primary-foreground">
-        <div className="container mx-auto px-6 py-5">
+        <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-foreground/10">
-                <Building2 className="h-6 w-6" />
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-primary-foreground/10">
+                <Building2 className="h-5 w-5 sm:h-6 sm:w-6" />
               </div>
               <div>
-                <h1 className="text-xl font-bold tracking-tight">ZenithMind</h1>
-                <p className="text-sm text-primary-foreground/80">
+                <h1 className="text-lg sm:text-xl font-bold tracking-tight">ZenithMind</h1>
+                <p className="text-xs sm:text-sm text-primary-foreground/80 hidden sm:block">
                   {t('landing.title')}
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
+              {isAdmin && (
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => navigate("/admin")}
+                  className="text-primary-foreground hover:bg-primary-foreground/10 sm:hidden"
+                >
+                  <Settings className="h-4 w-4" />
+                </Button>
+              )}
               {isAdmin && (
                 <Button 
                   variant="ghost" 
                   onClick={() => navigate("/admin")}
-                  className="text-primary-foreground hover:bg-primary-foreground/10"
+                  className="text-primary-foreground hover:bg-primary-foreground/10 hidden sm:flex"
                 >
                   <Settings className="mr-2 h-4 w-4" />
                   {t('admin.title')}
@@ -146,20 +151,38 @@ const StudentDashboard = () => {
               {(isPsychologist || isAdmin) && (
                 <Button 
                   variant="ghost" 
+                  size="icon"
                   onClick={() => navigate("/psychologist")}
-                  className="text-primary-foreground hover:bg-primary-foreground/10"
+                  className="text-primary-foreground hover:bg-primary-foreground/10 sm:hidden"
+                >
+                  <Users className="h-4 w-4" />
+                </Button>
+              )}
+              {(isPsychologist || isAdmin) && (
+                <Button 
+                  variant="ghost" 
+                  onClick={() => navigate("/psychologist")}
+                  className="text-primary-foreground hover:bg-primary-foreground/10 hidden sm:flex"
                 >
                   <Users className="mr-2 h-4 w-4" />
                   {t('psychologist.title')}
                 </Button>
               )}
-              <Separator orientation="vertical" className="h-8 bg-primary-foreground/20" />
+              <Separator orientation="vertical" className="h-8 bg-primary-foreground/20 hidden sm:block" />
               <LanguageSwitcher />
               <ThemeToggle />
               <Button 
                 variant="ghost" 
+                size="icon"
                 onClick={handleLogout}
-                className="text-primary-foreground hover:bg-primary-foreground/10"
+                className="text-primary-foreground hover:bg-primary-foreground/10 sm:hidden"
+              >
+                <LogOut className="h-4 w-4" />
+              </Button>
+              <Button 
+                variant="ghost" 
+                onClick={handleLogout}
+                className="text-primary-foreground hover:bg-primary-foreground/10 hidden sm:flex"
               >
                 <LogOut className="mr-2 h-4 w-4" />
                 {t('common.logout')}
@@ -190,7 +213,7 @@ const StudentDashboard = () => {
       <main className="container mx-auto px-6 py-8">
         <div className="mx-auto max-w-5xl space-y-8">
           {/* Welcome Section */}
-          <div className="space-y-1">
+          <div className="space-y-1 animate-fade-in">
             <h2 className="text-2xl font-semibold text-foreground">{t('dashboard.title')}</h2>
             <p className="text-muted-foreground">
               {t('dashboard.welcome')}
@@ -198,7 +221,7 @@ const StudentDashboard = () => {
           </div>
 
           {/* Main Actions Grid */}
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2" style={{ animationDelay: '0.1s' }}>
             {/* Survey Module */}
             <Card className="group cursor-pointer border transition-all hover:border-primary hover:shadow-institutional-md"
               onClick={() => navigate("/survey")}

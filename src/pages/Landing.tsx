@@ -81,22 +81,22 @@ const Landing = () => {
 
         <div className="container mx-auto px-6 relative">
           <div className="mx-auto max-w-4xl text-center space-y-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 animate-stagger-1">
               <Sparkles className="h-4 w-4 text-primary" />
               <span className="text-sm font-medium text-primary">AI-Powered Mental Wellness</span>
             </div>
             
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight animate-stagger-2">
               <span className="bg-gradient-to-r from-foreground via-foreground to-foreground/70 bg-clip-text text-transparent">
                 {t('landing.title')}
               </span>
             </h2>
             
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-stagger-3">
               {t('landing.subtitle')}
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 animate-stagger-4">
               <Button 
                 size="lg" 
                 onClick={() => navigate("/auth?mode=student")} 
@@ -118,7 +118,7 @@ const Landing = () => {
             </div>
 
             {/* Stats */}
-            <div className="flex flex-wrap justify-center gap-8 pt-8">
+            <div className="flex flex-wrap justify-center gap-8 pt-8 animate-stagger-5">
               {[
                 { icon: Users, value: "1000+", label: t('landing.stats.students') || "Студентов" },
                 { icon: Shield, value: "100%", label: t('landing.stats.confidential') || "Конфиденциально" },

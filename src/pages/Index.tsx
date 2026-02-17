@@ -23,6 +23,7 @@ import {
   History,
   ChevronRight
 } from "lucide-react";
+import { DashboardSkeleton } from "@/components/ui/page-skeleton";
 
 const Index = () => {
   const [user, setUser] = useState<any>(null);
@@ -57,14 +58,7 @@ const Index = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
-          <p className="text-sm text-muted-foreground">Загрузка системы...</p>
-        </div>
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   // Chat view
