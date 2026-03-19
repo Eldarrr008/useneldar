@@ -44,7 +44,8 @@ import {
   GraduationCap,
   Shield,
   Eye,
-  BarChart3
+  BarChart3,
+  ShieldAlert
 } from "lucide-react";
 import { StudentResultsDialog } from "@/components/psychologist/StudentResultsDialog";
 import { ClassroomAIAnalysis } from "@/components/psychologist/ClassroomAIAnalysis";
