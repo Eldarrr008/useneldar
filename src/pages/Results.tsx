@@ -38,6 +38,7 @@ import { Answer } from "@/types/survey";
 import { ScaleChart } from "@/components/results/ScaleChart";
 import { RiskIndicator } from "@/components/results/RiskIndicator";
 import { RecommendationsList } from "@/components/results/RecommendationsList";
+import { AffirmationCard } from "@/components/survey/AffirmationCard";
 
 interface SurveyResult {
   phq9: ScaleResult;
