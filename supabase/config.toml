@@ -2,3 +2,6 @@ project_id = "wufbzzfjnkdqatlxkfdz"
 
 [functions.chat-ai]
 verify_jwt = true
+
+[functions.generate-affirmation]
+verify_jwt = true

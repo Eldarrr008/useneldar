@@ -299,71 +299,9 @@ export function StudentResultsDialog({
 
             <Separator />
 
-            {/* Chart */}
+            {/* Extended Progress Charts */}
             {results.length > 1 && (
-              <div>
-                <h4 className="font-medium mb-4">Динамика показателей</h4>
-                <div className="h-64 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={chartData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                      <XAxis 
-                        dataKey="date" 
-                        tick={{ fontSize: 12 }} 
-                        stroke="hsl(var(--muted-foreground))" 
-                      />
-                      <YAxis 
-                        tick={{ fontSize: 12 }} 
-                        stroke="hsl(var(--muted-foreground))" 
-                      />
-                      <Tooltip 
-                        contentStyle={{ 
-                          backgroundColor: "hsl(var(--card))", 
-                          border: "1px solid hsl(var(--border))",
-                          borderRadius: "8px"
-                        }} 
-                      />
-                      <Legend />
-                      <Line 
-                        type="monotone" 
-                        dataKey="PHQ9" 
-                        stroke="hsl(var(--primary))" 
-                        strokeWidth={2}
-                        dot={{ fill: "hsl(var(--primary))" }}
-                        name="PHQ-9"
-                      />
-                      <Line 
-                        type="monotone" 
-                        dataKey="GAD7" 
-                        stroke="hsl(var(--accent))" 
-                        strokeWidth={2}
-                        dot={{ fill: "hsl(var(--accent))" }}
-                        name="GAD-7"
-                      />
-                      {chartData.some(d => d.PSS !== null) && (
-                        <Line 
-                          type="monotone" 
-                          dataKey="PSS" 
-                          stroke="hsl(48, 96%, 53%)" 
-                          strokeWidth={2}
-                          dot={{ fill: "hsl(48, 96%, 53%)" }}
-                          name="PSS-10"
-                        />
-                      )}
-                      {chartData.some(d => d.Burnout !== null) && (
-                        <Line 
-                          type="monotone" 
-                          dataKey="Burnout" 
-                          stroke="hsl(var(--destructive))" 
-                          strokeWidth={2}
-                          dot={{ fill: "hsl(var(--destructive))" }}
-                          name="Выгорание"
-                        />
-                      )}
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
+              <StudentProgressCharts results={results} />
             )}
 
             <Separator />
