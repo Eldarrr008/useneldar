@@ -12,9 +12,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Loader2, Brain, Heart, Zap, Flame, TrendingUp, TrendingDown, Minus, Calendar, FileText, Download } from "lucide-react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { generateStudentPDF, calculateTrends } from "@/lib/pdfGenerator";
 import { toast } from "@/hooks/use-toast";
+import { StudentProgressCharts } from "./StudentProgressCharts";
 
 interface StudentResultsDialogProps {
   open: boolean;
