@@ -119,6 +119,7 @@ const Psychologist = () => {
   const [user, setUser] = useState<any>(null);
   const [selectedStudent, setSelectedStudent] = useState<{ id: string; name: string } | null>(null);
   const [resultsDialogOpen, setResultsDialogOpen] = useState(false);
+  const [alertsData, setAlertsData] = useState<AlertData[]>([]);
   
   const { isAdmin } = useUserRole();
   const navigate = useNavigate();
@@ -128,6 +129,7 @@ const Psychologist = () => {
     totalStudents: 0,
     highRiskStudents: 0,
     unreviewedCrises: 0,
+    unresolvedAlerts: 0,
   });
 
   useEffect(() => {
