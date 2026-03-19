@@ -44,10 +44,12 @@ import {
   GraduationCap,
   Shield,
   Eye,
-  BarChart3
+  BarChart3,
+  ShieldAlert
 } from "lucide-react";
 import { StudentResultsDialog } from "@/components/psychologist/StudentResultsDialog";
 import { ClassroomAIAnalysis } from "@/components/psychologist/ClassroomAIAnalysis";
+import { AlertsSection } from "@/components/psychologist/AlertsSection";
 import { PsychologistSkeleton } from "@/components/ui/page-skeleton";
 
 interface Classroom {
@@ -80,6 +82,16 @@ interface CrisisDetection {
   created_at: string;
 }
 
+interface AlertData {
+  id: string;
+  student_id: string;
+  type: string;
+  message: string;
+  resolved: boolean | null;
+  created_at: string;
+  studentName?: string;
+}
+
 const riskColors: Record<string, string> = {
   LOW: "bg-green-100 text-green-700 border-green-200 dark:bg-green-950/50 dark:text-green-400 dark:border-green-800",
   MODERATE: "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-950/50 dark:text-yellow-400 dark:border-yellow-800",
@@ -108,6 +120,7 @@ const Psychologist = () => {
   const [user, setUser] = useState<any>(null);
   const [selectedStudent, setSelectedStudent] = useState<{ id: string; name: string } | null>(null);
   const [resultsDialogOpen, setResultsDialogOpen] = useState(false);
+  const [alertsData, setAlertsData] = useState<AlertData[]>([]);
   
   const { isAdmin } = useUserRole();
   const navigate = useNavigate();
@@ -117,6 +130,7 @@ const Psychologist = () => {
     totalStudents: 0,
     highRiskStudents: 0,
     unreviewedCrises: 0,
+    unresolvedAlerts: 0,
   });
 
   useEffect(() => {
@@ -131,7 +145,7 @@ const Psychologist = () => {
     }
     
     const channel = supabase
-      .channel("crisis_updates")
+      .channel("crisis_and_alerts_updates")
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "crisis_detections" },
@@ -141,6 +155,18 @@ const Psychologist = () => {
             variant: "destructive",
             title: "Новое кризисное оповещение",
             description: "Требуется рассмотрение специалиста",
+          });
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "alerts" },
+        () => {
+          fetchAlerts();
+          toast({
+            variant: "destructive",
+            title: "Новый срочный алерт",
+            description: "Требуется внимание специалиста",
           });
         }
       )
@@ -185,7 +211,7 @@ const Psychologist = () => {
         setSelectedClassroom(classroomsWithCounts[0].id);
       }
 
-      await fetchCrises();
+      await Promise.all([fetchCrises(), fetchAlerts()]);
 
       const totalStudents = classroomsWithCounts.reduce((sum, c) => sum + (c.member_count || 0), 0);
       setStats(prev => ({ ...prev, totalStudents }));
@@ -214,6 +240,32 @@ const Psychologist = () => {
       setCrises(data);
       const unreviewed = data.filter(c => !c.reviewed).length;
       setStats(prev => ({ ...prev, unreviewedCrises: unreviewed }));
+    }
+  };
+
+  const fetchAlerts = async () => {
+    const { data, error } = await supabase
+      .from("alerts")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(100);
+
+    if (!error && data) {
+      // Fetch student names for alerts
+      const studentIds = [...new Set(data.map(a => a.student_id))];
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("id, full_name")
+        .in("id", studentIds);
+
+      const alertsWithNames: AlertData[] = data.map(alert => ({
+        ...alert,
+        studentName: profiles?.find(p => p.id === alert.student_id)?.full_name,
+      }));
+
+      setAlertsData(alertsWithNames);
+      const unresolved = data.filter(a => !a.resolved).length;
+      setStats(prev => ({ ...prev, unresolvedAlerts: unresolved }));
     }
   };
 
@@ -531,6 +583,15 @@ const Psychologist = () => {
               <GraduationCap className="h-4 w-4" />
               Учащиеся
             </TabsTrigger>
+            <TabsTrigger value="alerts" className="gap-2">
+              <ShieldAlert className="h-4 w-4" />
+              Алерты
+              {stats.unresolvedAlerts > 0 && (
+                <Badge variant="destructive" className="ml-1 px-1.5 py-0 text-xs">
+                  {stats.unresolvedAlerts}
+                </Badge>
+              )}
+            </TabsTrigger>
             <TabsTrigger value="crises" className="gap-2">
               <AlertCircle className="h-4 w-4" />
               Кризисы
@@ -690,6 +751,15 @@ const Psychologist = () => {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+
+          <TabsContent value="alerts">
+            <AlertsSection
+              alerts={alertsData}
+              onAlertResolved={fetchAlerts}
+              userId={user?.id || ""}
+            />
           </TabsContent>
 
           <TabsContent value="crises">
