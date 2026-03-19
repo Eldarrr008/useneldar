@@ -144,7 +144,7 @@ const Psychologist = () => {
     }
     
     const channel = supabase
-      .channel("crisis_updates")
+      .channel("crisis_and_alerts_updates")
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "crisis_detections" },
@@ -154,6 +154,18 @@ const Psychologist = () => {
             variant: "destructive",
             title: "Новое кризисное оповещение",
             description: "Требуется рассмотрение специалиста",
+          });
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "alerts" },
+        () => {
+          fetchAlerts();
+          toast({
+            variant: "destructive",
+            title: "Новый срочный алерт",
+            description: "Требуется внимание специалиста",
           });
         }
       )
