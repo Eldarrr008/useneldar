@@ -210,7 +210,7 @@ const Psychologist = () => {
         setSelectedClassroom(classroomsWithCounts[0].id);
       }
 
-      await fetchCrises();
+      await Promise.all([fetchCrises(), fetchAlerts()]);
 
       const totalStudents = classroomsWithCounts.reduce((sum, c) => sum + (c.member_count || 0), 0);
       setStats(prev => ({ ...prev, totalStudents }));
