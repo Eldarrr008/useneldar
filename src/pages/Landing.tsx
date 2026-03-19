@@ -1,11 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { lazy, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import logo from "@/assets/logo.png";
+import brainLogo from "@/assets/brain-logo.png";
+
+const NeuralSphere = lazy(() => import("@/components/three/NeuralSphere"));
 import { 
   ShieldCheck, 
   Brain, 
