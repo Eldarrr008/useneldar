@@ -383,7 +383,7 @@ const Landing = () => {
         <div className="container mx-auto px-6 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
-              <img src={logo} alt="ZenithMind" className="h-8 w-8 object-contain" />
+              <img src={brainLogo} alt="ZenithMind" className="h-8 w-8 object-contain" />
               <span className="font-semibold">ZenithMind</span>
               <span className="text-sm text-muted-foreground">
                 {t('landing.footer.copyright')}
