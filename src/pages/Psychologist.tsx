@@ -81,6 +81,16 @@ interface CrisisDetection {
   created_at: string;
 }
 
+interface AlertData {
+  id: string;
+  student_id: string;
+  type: string;
+  message: string;
+  resolved: boolean | null;
+  created_at: string;
+  studentName?: string;
+}
+
 const riskColors: Record<string, string> = {
   LOW: "bg-green-100 text-green-700 border-green-200 dark:bg-green-950/50 dark:text-green-400 dark:border-green-800",
   MODERATE: "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-950/50 dark:text-yellow-400 dark:border-yellow-800",
