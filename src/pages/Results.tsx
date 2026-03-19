@@ -38,6 +38,7 @@ import { Answer } from "@/types/survey";
 import { ScaleChart } from "@/components/results/ScaleChart";
 import { RiskIndicator } from "@/components/results/RiskIndicator";
 import { RecommendationsList } from "@/components/results/RecommendationsList";
+import { AffirmationCard } from "@/components/survey/AffirmationCard";
 
 interface SurveyResult {
   phq9: ScaleResult;
@@ -239,6 +240,15 @@ export default function Results() {
       </header>
 
       <main className="container mx-auto max-w-5xl px-6 py-8 space-y-6">
+        {/* AI Affirmation */}
+        <AffirmationCard
+          phq9Score={result.phq9.score}
+          gad7Score={result.gad7.score}
+          pssScore={result.pss10?.score}
+          burnoutScore={result.burnout?.score}
+          overallRisk={result.overallRisk}
+        />
+
         {/* Overall Risk */}
         <RiskIndicator risk={result.overallRisk} />
 

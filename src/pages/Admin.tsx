@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { SurveyBuilder } from "@/components/admin/SurveyBuilder";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
@@ -536,7 +537,27 @@ const Admin = () => {
 
         <Separator />
 
-        {/* Users Table */}
+        {/* Survey Builder */}
+        <Card className="border">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                  <FileText className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <CardTitle className="text-base">Конструктор опросов</CardTitle>
+                  <CardDescription>
+                    Создание пользовательских опросов для диагностики
+                  </CardDescription>
+                </div>
+              </div>
+              <SurveyBuilder />
+            </div>
+          </CardHeader>
+        </Card>
+
+        <Separator />
         <Card className="border">
           <CardHeader>
             <div className="flex items-center justify-between">
