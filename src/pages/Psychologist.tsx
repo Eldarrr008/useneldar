@@ -48,6 +48,7 @@ import {
 } from "lucide-react";
 import { StudentResultsDialog } from "@/components/psychologist/StudentResultsDialog";
 import { ClassroomAIAnalysis } from "@/components/psychologist/ClassroomAIAnalysis";
+import { AlertsSection } from "@/components/psychologist/AlertsSection";
 import { PsychologistSkeleton } from "@/components/ui/page-skeleton";
 
 interface Classroom {
