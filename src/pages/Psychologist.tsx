@@ -753,6 +753,15 @@ const Psychologist = () => {
             </Card>
           </TabsContent>
 
+
+          <TabsContent value="alerts">
+            <AlertsSection
+              alerts={alertsData}
+              onAlertResolved={fetchAlerts}
+              userId={user?.id || ""}
+            />
+          </TabsContent>
+
           <TabsContent value="crises">
             <Card className="border">
               <CardHeader>
