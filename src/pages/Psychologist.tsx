@@ -582,6 +582,15 @@ const Psychologist = () => {
               <GraduationCap className="h-4 w-4" />
               Учащиеся
             </TabsTrigger>
+            <TabsTrigger value="alerts" className="gap-2">
+              <ShieldAlert className="h-4 w-4" />
+              Алерты
+              {stats.unresolvedAlerts > 0 && (
+                <Badge variant="destructive" className="ml-1 px-1.5 py-0 text-xs">
+                  {stats.unresolvedAlerts}
+                </Badge>
+              )}
+            </TabsTrigger>
             <TabsTrigger value="crises" className="gap-2">
               <AlertCircle className="h-4 w-4" />
               Кризисы
