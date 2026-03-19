@@ -75,10 +75,8 @@ const Landing = () => {
 
       {/* Hero Section */}
       <section className="relative py-20 md:py-32">
-        {/* 3D Neural Sphere Background */}
-        <Suspense fallback={null}>
-          <NeuralSphere />
-        </Suspense>
+
+
 
         {/* Animated background blobs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
