@@ -239,6 +239,15 @@ export default function Results() {
       </header>
 
       <main className="container mx-auto max-w-5xl px-6 py-8 space-y-6">
+        {/* AI Affirmation */}
+        <AffirmationCard
+          phq9Score={result.phq9.score}
+          gad7Score={result.gad7.score}
+          pssScore={result.pss10?.score}
+          burnoutScore={result.burnout?.score}
+          overallRisk={result.overallRisk}
+        />
+
         {/* Overall Risk */}
         <RiskIndicator risk={result.overallRisk} />
 
