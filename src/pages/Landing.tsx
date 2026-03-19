@@ -77,7 +77,7 @@ const Landing = () => {
       {/* Hero Section */}
       <section className="relative py-20 md:py-32">
         {/* Orb Background */}
-        <div className="absolute pointer-events-none" style={{ zIndex: 0, top: '-40%', left: '-20%', right: '-20%', bottom: '-40%' }}>
+        <div className="absolute pointer-events-none" style={{ zIndex: 0, top: '-20%', left: '-10%', right: '-10%', bottom: '-20%' }}>
           <Orb
             hoverIntensity={2}
             rotateOnHover
