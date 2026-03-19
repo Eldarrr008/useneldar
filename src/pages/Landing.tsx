@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { lazy, Suspense } from "react";
+import Orb from "@/components/Orb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -75,13 +76,15 @@ const Landing = () => {
 
       {/* Hero Section */}
       <section className="relative py-20 md:py-32">
-
-
-
-        {/* Animated background blobs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        {/* Orb Background */}
+        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+          <Orb
+            hoverIntensity={2}
+            rotateOnHover
+            hue={0}
+            forceHoverState={false}
+            backgroundColor="#000000"
+          />
         </div>
 
         <div className="container mx-auto px-6 relative z-10">
