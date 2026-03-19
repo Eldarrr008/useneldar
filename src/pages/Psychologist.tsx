@@ -242,6 +242,32 @@ const Psychologist = () => {
     }
   };
 
+  const fetchAlerts = async () => {
+    const { data, error } = await supabase
+      .from("alerts")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(100);
+
+    if (!error && data) {
+      // Fetch student names for alerts
+      const studentIds = [...new Set(data.map(a => a.student_id))];
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("id, full_name")
+        .in("id", studentIds);
+
+      const alertsWithNames: AlertData[] = data.map(alert => ({
+        ...alert,
+        studentName: profiles?.find(p => p.id === alert.student_id)?.full_name,
+      }));
+
+      setAlertsData(alertsWithNames);
+      const unresolved = data.filter(a => !a.resolved).length;
+      setStats(prev => ({ ...prev, unresolvedAlerts: unresolved }));
+    }
+  };
+
   const fetchStudentsByClassroom = async (classroomId: string) => {
     try {
       const { data: members, error: membersError } = await supabase
