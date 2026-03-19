@@ -41,7 +41,7 @@ const Landing = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <img src={logo} alt="ZenithMind Logo" className="h-10 w-10 object-contain" />
+                <img src={brainLogo} alt="ZenithMind Logo" className="h-10 w-10 object-contain" />
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-lg -z-10" />
               </div>
               <div>
