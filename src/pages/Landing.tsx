@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { lazy, Suspense } from "react";
 import Orb from "@/components/Orb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +8,6 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import brainLogo from "@/assets/brain-logo.png";
 
-const NeuralSphere = lazy(() => import("@/components/three/NeuralSphere"));
 import { 
   ShieldCheck, 
   Brain, 
@@ -27,12 +25,60 @@ import {
   Zap,
   Shield,
   Users,
-  TrendingUp
+  TrendingUp,
+  Palette,
+  Star,
+  Leaf
 } from "lucide-react";
 
 const Landing = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const features = [
+    {
+      icon: ClipboardList,
+      titleKey: "landing.features.psychodiagnostics.title",
+      descKey: "landing.features.psychodiagnostics.description",
+      gradient: "from-primary to-primary/70",
+      badges: ["PHQ-9", "GAD-7", "PSS-10", "MBI-SS"],
+    },
+    {
+      icon: MessageCircle,
+      titleKey: "landing.features.aiConsultation.title",
+      descKey: "landing.features.aiConsultation.description",
+      gradient: "from-accent to-accent/70",
+      topBadge: "24/7",
+      items: [
+        { text: t('dashboard.privacyNotice.title'), icon: Shield },
+        { text: t('landing.aiSection.earlyDetection'), icon: TrendingUp },
+      ],
+    },
+    {
+      icon: BarChart3,
+      titleKey: "landing.features.analytics.title",
+      descKey: "landing.features.analytics.description",
+      gradient: "from-success to-success/70",
+    },
+    {
+      icon: Palette,
+      titleKey: "landing.features.surveyBuilder.title",
+      descKey: "landing.features.surveyBuilder.description",
+      gradient: "from-warning to-warning/70",
+    },
+    {
+      icon: Star,
+      titleKey: "landing.features.affirmations.title",
+      descKey: "landing.features.affirmations.description",
+      gradient: "from-primary to-accent",
+    },
+    {
+      icon: Leaf,
+      titleKey: "landing.features.wellness.title",
+      descKey: "landing.features.wellness.description",
+      gradient: "from-success to-soft-green",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-background overflow-hidden">
@@ -50,7 +96,7 @@ const Landing = () => {
                   ZenithMind
                 </h1>
                 <p className="text-xs text-muted-foreground hidden sm:block">
-                  {t('landing.subtitle').slice(0, 35)}...
+                  {t('landing.subtitle').slice(0, 40)}...
                 </p>
               </div>
             </div>
@@ -76,7 +122,6 @@ const Landing = () => {
 
       {/* Hero Section */}
       <section className="relative py-20 md:py-32">
-        {/* Orb Background */}
         <div className="absolute pointer-events-none" style={{ zIndex: 0, top: '-20%', left: '-10%', right: '-10%', bottom: '-20%' }}>
           <Orb
             hoverIntensity={2}
@@ -147,7 +192,7 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Features Section — 6 cards */}
       <section className="py-20 bg-gradient-to-b from-background via-muted/30 to-background">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
@@ -162,84 +207,46 @@ const Landing = () => {
           </div>
           
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-            {/* Feature 1 */}
-            <Card className="group relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
-              <CardHeader>
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/80 shadow-lg shadow-primary/25 mb-4">
-                  <ClipboardList className="h-7 w-7 text-primary-foreground" />
-                </div>
-                <CardTitle className="text-xl">{t('landing.features.psychodiagnostics.title')}</CardTitle>
-                <CardDescription className="text-base">
-                  {t('landing.features.psychodiagnostics.description')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  {["PHQ-9 — Depression", "GAD-7 — Anxiety", "PSS-10 — Stress", "MBI-SS — Burnout"].map((item, i) => (
-                    <li key={i} className="flex items-center gap-3 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                      <span className="text-muted-foreground">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-
-            {/* Feature 2 */}
-            <Card className="group relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-accent/10 to-transparent rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
-              <div className="absolute top-4 right-4">
-                <Badge className="bg-accent text-accent-foreground">24/7</Badge>
-              </div>
-              <CardHeader>
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-accent to-accent/80 shadow-lg shadow-accent/25 mb-4">
-                  <MessageCircle className="h-7 w-7 text-accent-foreground" />
-                </div>
-                <CardTitle className="text-xl">{t('landing.features.aiConsultation.title')}</CardTitle>
-                <CardDescription className="text-base">
-                  {t('landing.features.aiConsultation.description')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  {[
-                    { text: "24/7", icon: Zap },
-                    { text: t('dashboard.privacyNotice.title'), icon: Shield },
-                    { text: t('landing.aiSection.earlyDetection'), icon: TrendingUp },
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-center gap-3 text-sm">
-                      <item.icon className="h-4 w-4 text-accent flex-shrink-0" />
-                      <span className="text-muted-foreground">{item.text}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-
-            {/* Feature 3 */}
-            <Card className="group relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 md:col-span-2 lg:col-span-1">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-secondary/30 to-transparent rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
-              <CardHeader>
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-secondary to-secondary/80 shadow-lg mb-4">
-                  <BarChart3 className="h-7 w-7 text-secondary-foreground" />
-                </div>
-                <CardTitle className="text-xl">{t('landing.features.analytics.title')}</CardTitle>
-                <CardDescription className="text-base">
-                  {t('landing.features.analytics.description')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  {[t('history.title'), t('analytics.trends'), t('analytics.comparison')].map((item, i) => (
-                    <li key={i} className="flex items-center gap-3 text-sm">
-                      <CheckCircle2 className="h-4 w-4 text-secondary-foreground flex-shrink-0" />
-                      <span className="text-muted-foreground">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+            {features.map((feat, i) => (
+              <Card key={i} className="group relative overflow-hidden border-0 bg-gradient-to-br from-card to-card/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
+                {feat.topBadge && (
+                  <div className="absolute top-4 right-4">
+                    <Badge className="bg-accent text-accent-foreground">{feat.topBadge}</Badge>
+                  </div>
+                )}
+                <CardHeader>
+                  <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${feat.gradient} shadow-lg mb-4`}>
+                    <feat.icon className="h-7 w-7 text-white" />
+                  </div>
+                  <CardTitle className="text-xl">{t(feat.titleKey)}</CardTitle>
+                  <CardDescription className="text-base">
+                    {t(feat.descKey)}
+                  </CardDescription>
+                </CardHeader>
+                {feat.badges && (
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {feat.badges.map((b, j) => (
+                        <Badge key={j} variant="secondary" className="text-xs">{b}</Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                )}
+                {feat.items && (
+                  <CardContent>
+                    <ul className="space-y-3">
+                      {feat.items.map((item, j) => (
+                        <li key={j} className="flex items-center gap-3 text-sm">
+                          <item.icon className="h-4 w-4 text-accent flex-shrink-0" />
+                          <span className="text-muted-foreground">{item.text}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                )}
+              </Card>
+            ))}
           </div>
         </div>
       </section>
@@ -300,7 +307,6 @@ const Landing = () => {
             ))}
           </div>
 
-          {/* AI Tech Stack */}
           <div className="mt-12 text-center">
             <div className="flex flex-wrap justify-center gap-3">
               {["🧠 NLP", "📊 ML", "💬 LLM", "🔒 Secure AI"].map((tech, i) => (
@@ -322,9 +328,9 @@ const Landing = () => {
 
           <div className="flex flex-col md:flex-row gap-8 max-w-5xl mx-auto">
             {[
-              { step: 1, ...{ title: t('landing.howItWorks.step1.title'), description: t('landing.howItWorks.step1.description') } },
-              { step: 2, ...{ title: t('landing.howItWorks.step2.title'), description: t('landing.howItWorks.step2.description') } },
-              { step: 3, ...{ title: t('landing.howItWorks.step3.title'), description: t('landing.howItWorks.step3.description') } },
+              { step: 1, title: t('landing.howItWorks.step1.title'), description: t('landing.howItWorks.step1.description') },
+              { step: 2, title: t('landing.howItWorks.step2.title'), description: t('landing.howItWorks.step2.description') },
+              { step: 3, title: t('landing.howItWorks.step3.title'), description: t('landing.howItWorks.step3.description') },
             ].map((item, i) => (
               <div key={i} className="flex-1 relative">
                 <div className="text-center p-6 rounded-2xl bg-card shadow-lg">
