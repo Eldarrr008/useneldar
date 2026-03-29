@@ -10,72 +10,72 @@
 
 @layer base {
   :root {
-    /* Фон — светлый голубовато-серый, чистый но не стерильный */
-    --background: 210 40% 98%;
-    /* Текст — глубокий тёмно-серый */
-    --foreground: 210 15% 25%;
+    /* Фон — тёплый кремовый, уютный */
+    --background: 30 30% 97%;
+    /* Текст — тёплый тёмно-коричневый */
+    --foreground: 25 20% 20%;
 
-    /* Карточки — белые с мягкой тенью */
-    --card: 0 0% 100%;
-    --card-foreground: 210 15% 25%;
+    /* Карточки — тёплый белый */
+    --card: 30 20% 99%;
+    --card-foreground: 25 20% 20%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 15% 25%;
+    --popover: 30 20% 99%;
+    --popover-foreground: 25 20% 20%;
 
-    /* Primary — свежий живой зелёный */
-    --primary: 158 45% 42%;
+    /* Primary — тёплый терракотовый/коралловый */
+    --primary: 15 65% 55%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary — мягкий голубовато-серый */
-    --secondary: 210 20% 92%;
-    --secondary-foreground: 210 15% 25%;
+    /* Secondary — мягкий песочный */
+    --secondary: 35 25% 91%;
+    --secondary-foreground: 25 20% 25%;
 
     /* Muted */
-    --muted: 210 20% 94%;
-    --muted-foreground: 210 10% 46%;
+    --muted: 30 20% 93%;
+    --muted-foreground: 25 12% 48%;
 
-    /* Accent — живой лавандовый */
-    --accent: 265 55% 68%;
+    /* Accent — тёплый золотисто-янтарный */
+    --accent: 35 75% 55%;
     --accent-foreground: 0 0% 100%;
 
-    /* Success */
-    --success: 158 40% 55%;
+    /* Success — тёплый зелёный */
+    --success: 145 40% 48%;
     --success-foreground: 0 0% 100%;
 
-    /* Warning — тёплый персиковый */
-    --warning: 19 56% 77%;
-    --warning-foreground: 210 15% 25%;
+    /* Warning — мягкий персиковый */
+    --warning: 25 60% 72%;
+    --warning-foreground: 25 20% 20%;
 
     /* Destructive */
-    --destructive: 350 45% 55%;
+    --destructive: 0 55% 55%;
     --destructive-foreground: 0 0% 100%;
 
     /* Borders */
-    --border: 210 20% 88%;
-    --input: 210 20% 88%;
-    --ring: 158 45% 42%;
+    --border: 30 20% 88%;
+    --input: 30 20% 88%;
+    --ring: 15 65% 55%;
 
     --radius: 0.75rem;
 
     /* Sidebar */
-    --sidebar-background: 158 35% 30%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 158 45% 55%;
+    --sidebar-background: 15 45% 30%;
+    --sidebar-foreground: 30 30% 97%;
+    --sidebar-primary: 15 55% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 158 30% 36%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 158 25% 34%;
-    --sidebar-ring: 158 45% 55%;
+    --sidebar-accent: 15 35% 36%;
+    --sidebar-accent-foreground: 30 30% 97%;
+    --sidebar-border: 15 30% 34%;
+    --sidebar-ring: 15 55% 55%;
 
     /* Wellness colors */
-    --calm-blue: 210 40% 75%;
-    --calm-blue-foreground: 210 15% 25%;
-    --soft-green: 158 40% 65%;
-    --soft-green-foreground: 210 15% 25%;
-    --warm-beige: 35 30% 90%;
-    --warm-beige-foreground: 210 15% 25%;
-    --gentle-lavender: 265 45% 78%;
-    --gentle-lavender-foreground: 210 15% 25%;
+    --calm-blue: 200 35% 72%;
+    --calm-blue-foreground: 25 20% 20%;
+    --soft-green: 145 35% 60%;
+    --soft-green-foreground: 25 20% 20%;
+    --warm-beige: 35 35% 88%;
+    --warm-beige-foreground: 25 20% 20%;
+    --gentle-lavender: 280 35% 75%;
+    --gentle-lavender-foreground: 25 20% 20%;
   }
 
   .dark {
