@@ -25,50 +25,62 @@
     "system": "System"
   },
   "landing": {
-    "title": "Psychological Monitoring for Educational Institutions",
-    "subtitle": "A modern platform for diagnosing students' psychological state using AI technologies",
+    "title": "Caring for Students' Mental Health",
+    "subtitle": "Smart platform for psychological diagnostics, personalized support, and wellness tracking — powered by AI",
     "getStarted": "Get Started",
-    "loginAsStudent": "Login as Student",
-    "loginAsSpecialist": "Login as Specialist",
+    "loginAsStudent": "I'm a Student",
+    "loginAsSpecialist": "I'm a Specialist",
     "features": {
-      "title": "Platform Features",
+      "title": "What the Platform Can Do",
       "psychodiagnostics": {
-        "title": "Psychodiagnostics",
-        "description": "Standardized methods: PHQ-9, GAD-7, PSS-10, MBI-SS, C-SSRS"
+        "title": "Scientific Diagnostics",
+        "description": "Validated PHQ-9, GAD-7, PSS-10, and MBI-SS scales for precise state assessment"
       },
       "aiConsultation": {
-        "title": "AI Consultations",
-        "description": "24/7 support with artificial intelligence"
+        "title": "AI Support 24/7",
+        "description": "Confidential AI assistant for primary psychological help at any time"
       },
       "analytics": {
-        "title": "Analytics",
-        "description": "Progress tracking and detailed reports"
+        "title": "Progress Charts",
+        "description": "Visual dynamics for each scale with trends and statistics"
+      },
+      "surveyBuilder": {
+        "title": "Survey Builder",
+        "description": "Create custom questionnaires with different question types"
+      },
+      "affirmations": {
+        "title": "AI Affirmations",
+        "description": "Personalized motivational messages from AI after each assessment"
+      },
+      "wellness": {
+        "title": "Wellness Center",
+        "description": "Meditations, nature sounds, and inspiring quotes for inner balance"
       }
     },
     "aiSection": {
-      "title": "AI Technologies",
-      "intelligentAnalysis": "Intelligent Analysis",
-      "aiAssistant": "AI Assistant",
+      "title": "AI Guarding Your Well-being",
+      "intelligentAnalysis": "Deep Results Analysis",
+      "aiAssistant": "Personal AI Assistant",
       "earlyDetection": "Early Crisis Detection"
     },
     "howItWorks": {
       "title": "How It Works",
       "step1": {
-        "title": "Registration",
-        "description": "Create an account in a minute"
+        "title": "Sign Up",
+        "description": "Create an account in a minute — free and secure"
       },
       "step2": {
-        "title": "Diagnostics",
-        "description": "Take the assessment"
+        "title": "Take Assessment",
+        "description": "Answer scientific scale questions — AI will process the results"
       },
       "step3": {
-        "title": "Results",
-        "description": "Get personalized recommendations"
+        "title": "Get Support",
+        "description": "Recommendations, affirmations, and progress tracking — all in one place"
       }
     },
     "cta": {
-      "title": "Ready to Start?",
-      "description": "Register now and get access to all platform features"
+      "title": "Start Caring for Yourself Today",
+      "description": "Join thousands of students who monitor their mental health"
     },
     "stats": {
       "students": "Students",
