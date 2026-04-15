@@ -206,7 +206,7 @@ export default function Results() {
               <Button 
                 variant="ghost" 
                 size="icon"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/history")}
                 className="text-primary-foreground hover:bg-primary-foreground/10"
               >
                 <ArrowLeft className="h-5 w-5" />
@@ -352,7 +352,7 @@ export default function Results() {
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-4">
           <Button 
-            onClick={() => navigate("/")} 
+            onClick={() => navigate("/dashboard")} 
             className="flex-1 gap-2 bg-gradient-to-r from-primary to-accent hover:opacity-90"
           >
             <MessageCircle className="h-4 w-4" />
