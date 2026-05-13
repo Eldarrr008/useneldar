@@ -28,7 +28,7 @@
     "title": "Caring for Pupils' Mental Health",
     "subtitle": "Smart platform for psychological diagnostics, personalized support, and wellness tracking — powered by AI",
     "getStarted": "Get Started",
-    "loginAsPupil": "I'm a Pupil",
+    "loginAsStudent": "I'm a Pupil",
     "loginAsSpecialist": "I'm a Specialist",
     "features": {
       "title": "What the Platform Can Do",
@@ -83,7 +83,7 @@
       "description": "Join thousands of pupils who monitor their mental health"
     },
     "stats": {
-      "pupils": "Pupils",
+      "students": "Pupils",
       "confidential": "Confidential",
       "available": "Availability"
     },
@@ -127,7 +127,7 @@
     "role": {
       "admin": "Administrator",
       "psychologist": "Psychologist",
-      "pupil": "Pupil"
+      "student": "Pupil"
     },
     "modules": {
       "psychodiagnostics": {
@@ -353,19 +353,19 @@
     "title": "Psychologist Panel",
     "tabs": {
       "classrooms": "Classrooms",
-      "pupils": "Pupils",
+      "students": "Pupils",
       "crises": "Crises"
     },
     "classrooms": {
       "title": "Pupil Groups",
       "create": "Create Group",
       "joinCode": "Join Code",
-      "pupilsCount": "Pupils"
+      "studentsCount": "Pupils"
     },
-    "pupils": {
+    "students": {
       "title": "Pupils",
       "selectClassroom": "Select a classroom",
-      "noPupils": "No pupils in this group",
+      "noStudents": "No pupils in this group",
       "riskLevel": "Risk Level",
       "lastSurvey": "Last Assessment",
       "viewResults": "Results"
