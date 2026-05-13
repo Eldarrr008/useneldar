@@ -25,10 +25,10 @@
     "system": "System"
   },
   "landing": {
-    "title": "Caring for Students' Mental Health",
+    "title": "Caring for Pupils' Mental Health",
     "subtitle": "Smart platform for psychological diagnostics, personalized support, and wellness tracking — powered by AI",
     "getStarted": "Get Started",
-    "loginAsStudent": "I'm a Student",
+    "loginAsPupil": "I'm a Pupil",
     "loginAsSpecialist": "I'm a Specialist",
     "features": {
       "title": "What the Platform Can Do",
@@ -80,10 +80,10 @@
     },
     "cta": {
       "title": "Start Caring for Yourself Today",
-      "description": "Join thousands of students who monitor their mental health"
+      "description": "Join thousands of pupils who monitor their mental health"
     },
     "stats": {
-      "students": "Students",
+      "pupils": "Pupils",
       "confidential": "Confidential",
       "available": "Availability"
     },
@@ -127,7 +127,7 @@
     "role": {
       "admin": "Administrator",
       "psychologist": "Psychologist",
-      "student": "Student"
+      "pupil": "Pupil"
     },
     "modules": {
       "psychodiagnostics": {
@@ -353,19 +353,19 @@
     "title": "Psychologist Panel",
     "tabs": {
       "classrooms": "Classrooms",
-      "students": "Students",
+      "pupils": "Pupils",
       "crises": "Crises"
     },
     "classrooms": {
-      "title": "Student Groups",
+      "title": "Pupil Groups",
       "create": "Create Group",
       "joinCode": "Join Code",
-      "studentsCount": "Students"
+      "pupilsCount": "Pupils"
     },
-    "students": {
-      "title": "Students",
+    "pupils": {
+      "title": "Pupils",
       "selectClassroom": "Select a classroom",
-      "noStudents": "No students in this group",
+      "noPupils": "No pupils in this group",
       "riskLevel": "Risk Level",
       "lastSurvey": "Last Assessment",
       "viewResults": "Results"
@@ -500,7 +500,7 @@
       "cy4": "I doubt the significance of my studies.",
       "ef1": "I can effectively solve the problems that arise in my studies.",
       "ef2": "I believe that I make an effective contribution to the classes that I attend.",
-      "ef3": "In my opinion, I am a good student.",
+      "ef3": "In my opinion, I am a good pupil.",
       "ef4": "I feel stimulated when I achieve my study goals.",
       "ef5": "I have learned many interesting things during my studies.",
       "ef6": "During class I feel confident that I am effective in getting things done."
