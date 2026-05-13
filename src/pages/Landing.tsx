@@ -173,7 +173,7 @@ const Landing = () => {
             {/* Stats */}
             <div className="flex flex-wrap justify-center gap-8 pt-8 animate-stagger-5">
               {[
-                { icon: Users, value: "1000+", label: t('landing.stats.students') || "Студентов" },
+                { icon: Users, value: "1000+", label: t('landing.stats.students') || "Учеников" },
                 { icon: Shield, value: "100%", label: t('landing.stats.confidential') || "Конфиденциально" },
                 { icon: Zap, value: "24/7", label: t('landing.stats.available') || "Доступность" },
               ].map((stat, i) => (
