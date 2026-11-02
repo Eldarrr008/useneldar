@@ -285,6 +285,42 @@ export type Database = {
           },
         ]
       }
+      methodology_catalog: {
+        Row: {
+          category: string
+          code: string
+          created_at: string
+          evidence_notes: string
+          id: string
+          review_notes: string
+          source_url: string | null
+          status: string
+          title: string
+        }
+        Insert: {
+          category: string
+          code: string
+          created_at?: string
+          evidence_notes?: string
+          id?: string
+          review_notes?: string
+          source_url?: string | null
+          status?: string
+          title: string
+        }
+        Update: {
+          category?: string
+          code?: string
+          created_at?: string
+          evidence_notes?: string
+          id?: string
+          review_notes?: string
+          source_url?: string | null
+          status?: string
+          title?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
