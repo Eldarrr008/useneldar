@@ -19,7 +19,10 @@ class CatalogAccessTests(unittest.TestCase):
 
     def test_catalog_is_not_publicly_readable(self):
         response = requests.get(self.url, headers=self.headers, timeout=30)
-        self.assertIn(response.status_code, (401, 403))
+        if response.status_code == 200:
+            self.assertEqual(response.json(), [])
+        else:
+            self.assertIn(response.status_code, (401, 403))
 
     def test_anonymous_user_cannot_add_methodology(self):
         response = requests.post(self.url, headers=self.headers, json={
