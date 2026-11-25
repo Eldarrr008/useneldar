@@ -8,6 +8,20 @@
       "when": 1793596531508,
       "tag": "0000_add_separate_methodology_catalog",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795601835753,
+      "tag": "0001_scope_student_safety_access",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795601865055,
+      "tag": "0002_persist_survey_and_chat_alerts",
+      "breakpoints": true
     }
   ]
 }

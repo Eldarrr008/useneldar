@@ -19,27 +19,48 @@ export type Database = {
           created_at: string
           id: string
           message: string
+          message_id: string | null
           resolved: boolean | null
           student_id: string
+          survey_response_id: string | null
           type: string
         }
         Insert: {
           created_at?: string
           id?: string
           message: string
+          message_id?: string | null
           resolved?: boolean | null
           student_id: string
+          survey_response_id?: string | null
           type: string
         }
         Update: {
           created_at?: string
           id?: string
           message?: string
+          message_id?: string | null
           resolved?: boolean | null
           student_id?: string
+          survey_response_id?: string | null
           type?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "alerts_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alerts_survey_response_id_fkey"
+            columns: ["survey_response_id"]
+            isOneToOne: false
+            referencedRelation: "survey_responses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       chat_messages: {
         Row: {
@@ -257,6 +278,7 @@ export type Database = {
           created_at: string
           id: string
           is_ai: boolean
+          request_id: string | null
           sender_id: string
         }
         Insert: {
@@ -265,6 +287,7 @@ export type Database = {
           created_at?: string
           id?: string
           is_ai?: boolean
+          request_id?: string | null
           sender_id: string
         }
         Update: {
@@ -273,6 +296,7 @@ export type Database = {
           created_at?: string
           id?: string
           is_ai?: boolean
+          request_id?: string | null
           sender_id?: string
         }
         Relationships: [
@@ -484,6 +508,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_support_student: { Args: { p_student: string }; Returns: boolean }
       generate_classroom_code: { Args: never; Returns: string }
       has_role: {
         Args: {
@@ -499,6 +524,17 @@ export type Database = {
       is_classroom_owner: {
         Args: { _classroom_id: string; _psychologist_id: string }
         Returns: boolean
+      }
+      persist_chat_safety: {
+        Args: {
+          p_content: string
+          p_conversation: string
+          p_keywords: string[]
+          p_request: string
+          p_severity: string
+          p_student: string
+        }
+        Returns: Json
       }
       verify_and_join_classroom: {
         Args: { p_join_code: string }
